@@ -4,6 +4,143 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>BFP — دليل هيكلة الدورة المستندية المخزنية — ERP</title>
+/* ==============================================
+   تحسينات العرض على الهواتف والأجهزة اللوحية
+   ============================================== */
+
+/* عندما يكون عرض الشاشة 768px أو أقل (تابلت/هاتف) */
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 10pt;
+    padding: 8px;
+  }
+
+  .page-wrapper {
+    max-width: 100%;
+    margin: 0;
+    box-shadow: none;
+  }
+
+  .cover {
+    padding: 25px 15px;
+    min-height: auto;
+  }
+
+  .section {
+    padding: 12px 10px;
+    margin: 0;
+    page-break-before: auto;
+  }
+
+  .section h2 {
+    font-size: 14pt;
+    margin: -12px -10px 10px -10px;
+    padding: 10px 10px;
+  }
+
+  .section h3 {
+    font-size: 11pt;
+  }
+
+  .section h4 {
+    font-size: 10pt;
+  }
+
+  .toc {
+    padding: 15px 15px;
+  }
+
+  .toc h2 {
+    font-size: 14pt;
+  }
+
+  .toc-list {
+    columns: 1;           /* عمود واحد فقط */
+  }
+
+  /* جعل الجداول قابلة للتمرير أفقياً */
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    font-size: 7.5pt;
+  }
+
+  table th,
+  table td {
+    padding: 5px 6px;
+    font-size: 7pt;
+  }
+
+  /* الشبكات تتحول إلى عمودين أو عمود واحد */
+  .kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .flow-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  /* أزرار التنقل تكون أكبر للمس */
+  .home-btn {
+    padding: 10px 16px;
+    font-size: 10pt;
+    margin: 6px 0;
+  }
+
+  /* شعار BFP يصغر */
+  .bfp-circle {
+    width: 90px;
+    height: 90px;
+  }
+
+  .bfp-circle span {
+    font-size: 28pt;
+  }
+
+  .brandzo-red {
+    font-size: 24pt;
+  }
+
+  /* صناديق التنبيه */
+  .callout {
+    padding: 10px 12px;
+    font-size: 9pt;
+    gap: 8px;
+  }
+}
+
+/* تحسين إضافي للهواتف الصغيرة جداً (أقل من 480px) */
+@media screen and (max-width: 480px) {
+  .kpi-row {
+    grid-template-columns: 1fr;    /* عمود واحد */
+  }
+
+  .flow-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fields-grid {
+    grid-template-columns: 1fr;    /* جميع حقول الإدخال في عمود واحد */
+  }
+
+  .cover h1, .cover .cover-subtitle {
+    font-size: 10pt;
+  }
+
+  .cover .cover-flow {
+    font-size: 9pt;
+    padding: 6px 12px;
+  }
+
+  .home-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
     <style>
         :root {
             --bfp-red: #c0392b;
