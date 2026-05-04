@@ -18,13 +18,6 @@
             --bfp-purple: #4E2A84;
             --bfp-green: #145A32;
             --paper: #fffef9;
-            --bg-main: #f1f4f8;
-            --bg-card: #ffffff;
-            --text-main: #212529;
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
-            --radius-md: 12px;
-            --radius-sm: 8px;
         }
 
         * {
@@ -35,44 +28,73 @@
 
         body {
             font-family: 'Segoe UI', 'Tahoma', 'Cairo', 'Noto Naskh Arabic', sans-serif;
-            background: var(--bg-main);
-            color: var(--text-main);
+            background: #e9ecef;
+            color: #212529;
             line-height: 1.7;
-            font-size: 11pt;
+            font-size: clamp(10pt, 2.5vw, 12pt);
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
             scroll-behavior: smooth;
-            padding: 10px;
-            min-height: 100vh;
+        }
+
+        /* ── TOP NAVIGATION BAR ───────────────────── */
+        .top-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--bfp-dark);
+            padding: 8px 5%;
             display: flex;
-            flex-direction: column;
+            justify-content: flex-end;
             align-items: center;
-            transition: background 0.2s;
+            border-bottom: 2px solid var(--bfp-gold);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+        }
+        .operational-guide-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bfp-red);
+            color: #fff;
+            padding: clamp(8px, 2vw, 12px) clamp(16px, 3vw, 28px);
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: clamp(9pt, 1.5vw, 11pt);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+            white-space: nowrap;
+        }
+        .operational-guide-btn:hover {
+            background: var(--bfp-darkred);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+        }
+        .operational-guide-btn:active {
+            transform: translateY(0);
         }
 
         .page-wrapper {
             width: 100%;
-            max-width: 1200px;
+            max-width: 100%;
             margin: 0 auto;
-            background: var(--bg-card);
-            box-shadow: var(--shadow-md);
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            background: #fff;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+            overflow-x: hidden;
         }
 
         @media screen and (min-width: 769px) {
-            .page-wrapper {
-                max-width: 1200px;
-            }
+            .page-wrapper { max-width: 960px; }
+        }
+        @media screen and (min-width: 1200px) {
+            .page-wrapper { max-width: 1200px; }
         }
 
         /* ── COVER PAGE ──────────────────────────── */
         .cover {
             background: linear-gradient(160deg, #1a0a0a 0%, #2d0f0f 30%, #c0392b 70%, #8b1a1a 100%);
             color: #fff;
-            padding: 30px 20px;
+            padding: clamp(20px, 6vw, 60px) clamp(15px, 4vw, 60px);
             text-align: center;
             page-break-after: always;
             position: relative;
@@ -82,14 +104,16 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            border-radius: var(--radius-md) var(--radius-md) 0 0;
         }
 
+        @media screen and (min-width: 600px) {
+            .cover { min-height: 60vh; }
+        }
         @media screen and (min-width: 769px) {
-            .cover {
-                padding: 50px 40px 40px;
-                min-height: 50vh;
-            }
+            .cover { min-height: 80vh; }
+        }
+        @media screen and (min-width: 1024px) {
+            .cover { min-height: 50vh; }
         }
 
         .cover::before {
@@ -101,18 +125,10 @@
             height: 250px;
             border: 2px solid rgba(255, 255, 255, 0.08);
             border-radius: 50%;
-            pointer-events: none;
         }
-
         @media screen and (min-width: 769px) {
-            .cover::before {
-                top: -120px;
-                right: -120px;
-                width: 500px;
-                height: 500px;
-            }
+            .cover::before { top: -120px; right: -120px; width: 500px; height: 500px; }
         }
-
         .cover::after {
             content: '';
             position: absolute;
@@ -122,16 +138,9 @@
             height: 180px;
             border: 2px solid rgba(255, 255, 255, 0.06);
             border-radius: 50%;
-            pointer-events: none;
         }
-
         @media screen and (min-width: 769px) {
-            .cover::after {
-                bottom: -80px;
-                left: -80px;
-                width: 350px;
-                height: 350px;
-            }
+            .cover::after { bottom: -80px; left: -80px; width: 350px; height: 350px; }
         }
 
         .bfp-logo-wrapper {
@@ -140,25 +149,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: clamp(8px, 2vw, 18px);
             margin-bottom: 8px;
             flex-wrap: wrap;
         }
-
         @media screen and (min-width: 769px) {
-            .bfp-logo-wrapper {
-                gap: 18px;
-                margin-bottom: 10px;
-                flex-wrap: nowrap;
-            }
+            .bfp-logo-wrapper { flex-wrap: nowrap; }
         }
 
         .bfp-circle {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 80px;
-            height: 80px;
+            width: clamp(70px, 15vw, 140px);
+            height: clamp(70px, 15vw, 140px);
             border-radius: 50%;
             background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.35), rgba(220, 40, 40, 0.7) 60%, rgba(140, 20, 20, 0.9));
             box-shadow: 0 0 20px rgba(255, 60, 60, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.3), 0 4px 16px rgba(0, 0, 0, 0.4);
@@ -166,40 +170,20 @@
             backdrop-filter: blur(6px);
             position: relative;
         }
-
-        @media screen and (min-width: 769px) {
-            .bfp-circle {
-                width: 140px;
-                height: 140px;
-                box-shadow: 0 0 30px rgba(255, 60, 60, 0.5), inset 0 0 25px rgba(255, 255, 255, 0.3), 0 8px 32px rgba(0, 0, 0, 0.4);
-                border: 3px solid rgba(255, 255, 255, 0.5);
-            }
-        }
-
         .bfp-circle::after {
             content: '';
             position: absolute;
-            top: 8px;
-            left: 15px;
-            width: 25px;
-            height: 12px;
+            top: 12%;
+            left: 20%;
+            width: 30%;
+            height: 15%;
             background: rgba(255, 255, 255, 0.25);
             border-radius: 50%;
             transform: rotate(-20deg);
         }
-
-        @media screen and (min-width: 769px) {
-            .bfp-circle::after {
-                top: 12px;
-                left: 25px;
-                width: 40px;
-                height: 20px;
-            }
-        }
-
         .bfp-circle span {
             color: #fff;
-            font-size: 28pt;
+            font-size: clamp(24pt, 6vw, 48pt);
             font-weight: 900;
             letter-spacing: 3px;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
@@ -207,16 +191,9 @@
             z-index: 2;
         }
 
-        @media screen and (min-width: 769px) {
-            .bfp-circle span {
-                font-size: 48pt;
-                letter-spacing: 4px;
-            }
-        }
-
         .brandzo-red {
             color: #ff2d2d;
-            font-size: 22pt;
+            font-size: clamp(20pt, 5vw, 42pt);
             font-weight: 900;
             letter-spacing: 1px;
             text-shadow: 0 2px 10px rgba(180, 0, 0, 0.6);
@@ -224,18 +201,10 @@
             z-index: 1;
         }
 
-        @media screen and (min-width: 769px) {
-            .brandzo-red {
-                font-size: 42pt;
-                letter-spacing: 2px;
-                text-shadow: 0 2px 12px rgba(180, 0, 0, 0.6);
-            }
-        }
-
         .franchise-sub {
             display: block;
             color: #222;
-            font-size: 9pt;
+            font-size: clamp(8pt, 1.5vw, 10pt);
             font-weight: 600;
             letter-spacing: 1px;
             margin-top: -6px;
@@ -246,16 +215,8 @@
             border-radius: 12px;
         }
 
-        @media screen and (min-width: 769px) {
-            .franchise-sub {
-                font-size: 10pt;
-                margin-top: -8px;
-                padding: 2px 14px;
-            }
-        }
-
         .cover-divider {
-            width: 60px;
+            width: clamp(50px, 15vw, 100px);
             height: 3px;
             background: #e8b830;
             margin: 12px auto;
@@ -263,15 +224,8 @@
             z-index: 1;
         }
 
-        @media screen and (min-width: 769px) {
-            .cover-divider {
-                width: 100px;
-                margin: 20px auto;
-            }
-        }
-
         .cover-subtitle {
-            font-size: 11pt;
+            font-size: clamp(10pt, 2vw, 14pt);
             font-weight: 400;
             opacity: 0.9;
             margin-bottom: 10px;
@@ -281,16 +235,8 @@
             line-height: 1.6;
         }
 
-        @media screen and (min-width: 769px) {
-            .cover-subtitle {
-                font-size: 14pt;
-                margin-bottom: 12px;
-                letter-spacing: 1px;
-            }
-        }
-
         .cover-flow {
-            font-size: 9pt;
+            font-size: clamp(8pt, 1.5vw, 12pt);
             font-weight: 600;
             letter-spacing: 1px;
             position: relative;
@@ -304,335 +250,175 @@
             border: 1px solid rgba(255, 255, 255, 0.25);
         }
 
-        @media screen and (min-width: 769px) {
-            .cover-flow {
-                font-size: 12pt;
-                letter-spacing: 2px;
-                padding: 10px 22px;
-                margin: 8px 0 20px;
-            }
-        }
-
         .cover-badge {
             display: inline-block;
             border: 1px solid rgba(255, 255, 255, 0.3);
             padding: 4px 12px;
             border-radius: 20px;
-            font-size: 8pt;
+            font-size: clamp(7pt, 1.2vw, 9pt);
             margin: 4px;
             position: relative;
             z-index: 1;
             letter-spacing: 1px;
             background: rgba(255, 255, 255, 0.08);
-        }
-
-        @media screen and (min-width: 769px) {
-            .cover-badge {
-                padding: 6px 18px;
-                font-size: 9pt;
-                margin: 6px;
-            }
+            white-space: nowrap;
         }
 
         .cover-meta {
             position: relative;
             z-index: 1;
-            font-size: 9pt;
+            font-size: clamp(8pt, 1.3vw, 10pt);
             opacity: 0.85;
             line-height: 1.8;
             margin-top: 15px;
         }
 
-        @media screen and (min-width: 769px) {
-            .cover-meta {
-                font-size: 10pt;
-                line-height: 2;
-                margin-top: 25px;
-            }
-        }
-
         /* ── TOC ──────────────────────────────────── */
         .toc {
-            padding: 20px 15px;
+            padding: clamp(15px, 5vw, 40px);
             page-break-after: always;
-            background: var(--paper);
-            border-bottom: 1px solid var(--bfp-border);
+            background: #fffef9;
         }
-
-        @media screen and (min-width: 769px) {
-            .toc {
-                padding: 30px 40px;
-            }
-        }
-
         .toc h2 {
             color: #c0392b;
-            font-size: 15pt;
+            font-size: clamp(13pt, 3vw, 18pt);
             border-bottom: 3px solid #e8b830;
             padding-bottom: 10px;
             margin-bottom: 15px;
         }
-
-        @media screen and (min-width: 769px) {
-            .toc h2 {
-                font-size: 18pt;
-                margin-bottom: 20px;
-            }
-        }
-
         .toc-list {
             list-style: none;
             columns: 1;
             column-gap: 20px;
         }
-
         @media screen and (min-width: 600px) {
-            .toc-list {
-                columns: 2;
-                column-gap: 30px;
-            }
+            .toc-list { columns: 2; }
         }
-
         .toc-list li {
             padding: 6px 0;
             border-bottom: 1px dotted #dee2e6;
             break-inside: avoid;
-            font-size: 9pt;
+            font-size: clamp(8pt, 1.5vw, 10pt);
         }
-
-        @media screen and (min-width: 769px) {
-            .toc-list li {
-                padding: 7px 0;
-                font-size: 10pt;
-            }
-        }
-
-        .toc-list li::before {
-            content: '📄 ';
-            font-size: 8pt;
-        }
-
-        @media screen and (min-width: 769px) {
-            .toc-list li::before {
-                font-size: 9pt;
-            }
-        }
-
+        .toc-list li::before { content: '📄 '; font-size: 8pt; }
         .toc-list a {
             text-decoration: none;
             color: #212529;
             display: block;
             transition: all 0.2s;
         }
-        .toc-list a:hover {
-            color: #c0392b;
-            font-weight: 700;
-            padding-right: 6px;
-        }
+        .toc-list a:hover { color: #c0392b; font-weight: 700; padding-right: 6px; }
         .toc-num {
             display: inline-block;
             background: #c0392b;
             color: #fff;
-            width: 20px;
-            height: 20px;
+            width: clamp(18px, 4vw, 24px);
+            height: clamp(18px, 4vw, 24px);
             text-align: center;
             border-radius: 50%;
-            font-size: 8pt;
-            line-height: 20px;
+            font-size: clamp(7pt, 1.2vw, 9pt);
+            line-height: clamp(18px, 4vw, 24px);
             margin-left: 6px;
             font-weight: bold;
         }
 
-        @media screen and (min-width: 769px) {
-            .toc-num {
-                width: 24px;
-                height: 24px;
-                font-size: 9pt;
-                line-height: 24px;
-                margin-left: 8px;
-            }
-        }
-
         /* ── SECTIONS ──────────────────────────────── */
         .section {
-            padding: 20px 15px;
+            padding: clamp(12px, 4vw, 35px);
             page-break-before: always;
-            background: var(--paper);
-            border-bottom: 1px solid var(--bfp-border);
+            background: #fffef9;
         }
-        .section:first-of-type {
-            page-break-before: auto;
-        }
-
-        @media screen and (min-width: 769px) {
-            .section {
-                padding: 30px 40px;
-            }
-        }
-
+        .section:first-of-type { page-break-before: auto; }
         .section h2 {
-            font-size: 13pt;
+            font-size: clamp(12pt, 2.5vw, 16pt);
             color: #fff;
             background: #c0392b;
-            padding: 10px 12px;
+            padding: clamp(8px, 2vw, 12px) clamp(12px, 3vw, 20px);
             border-radius: 8px 8px 0 0;
             margin: -15px -12px 15px -12px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
-
         @media screen and (min-width: 769px) {
-            .section h2 {
-                font-size: 16pt;
-                padding: 12px 20px;
-                margin: -25px -35px 20px -35px;
-                gap: 10px;
-            }
+            .section h2 { margin: -25px -35px 20px -35px; }
         }
-
         .section h3 {
             color: #8b1a1a;
-            font-size: 11pt;
+            font-size: clamp(10pt, 2vw, 13pt);
             margin: 14px 0 8px;
             border-right: 3px solid #e8b830;
             padding-right: 10px;
         }
-
-        @media screen and (min-width: 769px) {
-            .section h3 {
-                font-size: 13pt;
-                margin: 18px 0 10px;
-                border-right: 4px solid #e8b830;
-                padding-right: 12px;
-            }
-        }
-
         .section h4 {
             color: #4E2A84;
-            font-size: 10pt;
+            font-size: clamp(9pt, 1.8vw, 11pt);
             margin: 10px 0 5px;
         }
 
-        @media screen and (min-width: 769px) {
-            .section h4 {
-                font-size: 11pt;
-                margin: 12px 0 6px;
-            }
+        /* ── RESPONSIVE TABLE CONTAINER ───────────── */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 10px 0 14px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
         }
-
-        /* ── TABLES ────────────────────────────────── */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 10px 0 14px;
-            font-size: 8pt;
+            font-size: clamp(7pt, 1.2vw, 9.5pt);
             page-break-inside: avoid;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            border-radius: 8px;
-            overflow: hidden;
-            display: block;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            white-space: nowrap;
+            min-width: 600px; /* عرض أدنى للقراءة، مع إمكانية التمرير */
+            white-space: nowrap; /* منع التفاف النص الافتراضي */
         }
-
-        @media screen and (min-width: 769px) {
+        @media screen and (max-width: 600px) {
             table {
-                font-size: 9pt;
-                margin: 12px 0 18px;
-                display: table;
-                overflow-x: visible;
+                min-width: auto;
                 white-space: normal;
             }
+            table th, table td {
+                white-space: normal;
+                word-wrap: break-word;
+                padding: 6px 4px;
+                font-size: clamp(6.5pt, 2vw, 8pt);
+            }
         }
-
         table th {
             background: #c0392b;
             color: #fff;
-            padding: 7px 6px;
+            padding: clamp(6px, 1.5vw, 10px);
             text-align: center;
             font-weight: 600;
-            font-size: 7.5pt;
+            font-size: clamp(7pt, 1.2vw, 9pt);
             letter-spacing: 0.2px;
             white-space: nowrap;
         }
-
-        @media screen and (min-width: 769px) {
-            table th {
-                padding: 9px 8px;
-                font-size: 8.5pt;
-                letter-spacing: 0.3px;
-            }
-        }
-
         table td {
-            padding: 6px 6px;
+            padding: clamp(5px, 1.5vw, 10px);
             border: 1px solid #dee2e6;
             text-align: center;
             vertical-align: middle;
-            white-space: nowrap;
         }
-
-        @media screen and (min-width: 769px) {
-            table td {
-                padding: 7px 8px;
-            }
-        }
-
-        table tr:nth-child(even) td {
-            background: #f8f9fa;
-        }
-        table tr:hover td {
-            background: #e9f2fa;
-        }
-        .col-ar {
-            text-align: right;
-        }
-        .col-en {
-            text-align: left;
-            direction: ltr;
-        }
+        table tr:nth-child(even) td { background: #f8f9fa; }
+        table tr:hover td { background: #e9f2fa; }
+        .col-ar { text-align: right; }
+        .col-en { text-align: left; direction: ltr; }
         .tag {
             display: inline-block;
             padding: 2px 6px;
             border-radius: 10px;
-            font-size: 7pt;
+            font-size: clamp(6.5pt, 1vw, 8pt);
             font-weight: 600;
             white-space: nowrap;
         }
-
-        @media screen and (min-width: 769px) {
-            .tag {
-                padding: 2px 8px;
-                font-size: 8pt;
-            }
-        }
-
-        .tag-green {
-            background: #d4edda;
-            color: #145A32;
-        }
-        .tag-yellow {
-            background: #fff3cd;
-            color: #7E5109;
-        }
-        .tag-red {
-            background: #f8d7da;
-            color: #9B1C1C;
-        }
-        .tag-blue {
-            background: #d1ecf1;
-            color: #1B3A6B;
-        }
-        .tag-purple {
-            background: #e8d5f5;
-            color: #4E2A84;
-        }
-        .tag-teal {
-            background: #c8e6d9;
-            color: #0D4F3C;
-        }
+        .tag-green { background: #d4edda; color: #145A32; }
+        .tag-yellow { background: #fff3cd; color: #7E5109; }
+        .tag-red { background: #f8d7da; color: #9B1C1C; }
+        .tag-blue { background: #d1ecf1; color: #1B3A6B; }
+        .tag-purple { background: #e8d5f5; color: #4E2A84; }
+        .tag-teal { background: #c8e6d9; color: #0D4F3C; }
 
         /* ── CODE ──────────────────────────────────── */
         code {
@@ -641,25 +427,18 @@
             padding: 1px 4px;
             border-radius: 3px;
             font-family: 'Consolas', 'Courier New', monospace;
-            font-size: 8pt;
+            font-size: clamp(7pt, 1vw, 9pt);
             direction: ltr;
             display: inline-block;
-        }
-
-        @media screen and (min-width: 769px) {
-            code {
-                padding: 2px 6px;
-                font-size: 9pt;
-            }
         }
 
         pre {
             background: #1a1a2e;
             color: #e0e0e0;
-            padding: 10px;
+            padding: clamp(8px, 2vw, 16px);
             border-radius: 8px;
             overflow-x: auto;
-            font-size: 7pt;
+            font-size: clamp(6.5pt, 1vw, 8.5pt);
             line-height: 1.4;
             direction: ltr;
             text-align: left;
@@ -669,95 +448,22 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        @media screen and (min-width: 769px) {
-            pre {
-                padding: 16px;
-                font-size: 8.5pt;
-                line-height: 1.5;
-                margin: 10px 0;
-            }
-        }
-
         /* ── CALLOUT BOXES ────────────────────────── */
         .callout {
-            padding: 10px 12px;
+            padding: clamp(8px, 2.5vw, 18px);
             border-radius: 8px;
             margin: 10px 0;
-            font-size: 9pt;
+            font-size: clamp(8pt, 1.4vw, 10pt);
             page-break-inside: avoid;
             display: flex;
             align-items: flex-start;
             gap: 8px;
-            background: #fff;
         }
-
-        @media screen and (min-width: 769px) {
-            .callout {
-                padding: 14px 18px;
-                margin: 14px 0;
-                font-size: 10pt;
-                gap: 10px;
-            }
-        }
-
-        .callout-info {
-            background: #e8f4fd;
-            border-right: 4px solid #2E75B6;
-            color: #1B3A6B;
-        }
-
-        @media screen and (min-width: 769px) {
-            .callout-info {
-                border-right: 5px solid #2E75B6;
-            }
-        }
-
-        .callout-warning {
-            background: #fff8e5;
-            border-right: 4px solid #e8b830;
-            color: #7E5109;
-        }
-
-        @media screen and (min-width: 769px) {
-            .callout-warning {
-                border-right: 5px solid #e8b830;
-            }
-        }
-
-        .callout-danger {
-            background: #fdecea;
-            border-right: 4px solid #9B1C1C;
-            color: #7b1515;
-        }
-
-        @media screen and (min-width: 769px) {
-            .callout-danger {
-                border-right: 5px solid #9B1C1C;
-            }
-        }
-
-        .callout-success {
-            background: #e6f4ea;
-            border-right: 4px solid #145A32;
-            color: #0D4F3C;
-        }
-
-        @media screen and (min-width: 769px) {
-            .callout-success {
-                border-right: 5px solid #145A32;
-            }
-        }
-
-        .callout-icon {
-            font-size: 14pt;
-            flex-shrink: 0;
-        }
-
-        @media screen and (min-width: 769px) {
-            .callout-icon {
-                font-size: 18pt;
-            }
-        }
+        .callout-info { background: #e8f4fd; border-right: 4px solid #2E75B6; color: #1B3A6B; }
+        .callout-warning { background: #fff8e5; border-right: 4px solid #e8b830; color: #7E5109; }
+        .callout-danger { background: #fdecea; border-right: 4px solid #9B1C1C; color: #7b1515; }
+        .callout-success { background: #e6f4ea; border-right: 4px solid #145A32; color: #0D4F3C; }
+        .callout-icon { font-size: clamp(12pt, 3vw, 18pt); flex-shrink: 0; }
 
         /* ── FLOW GRID ─────────────────────────────── */
         .flow-grid {
@@ -767,78 +473,28 @@
             margin: 12px 0;
             page-break-inside: avoid;
         }
-
-        @media screen and (min-width: 500px) and (max-width: 768px) {
-            .flow-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
+        @media screen and (min-width: 600px) {
+            .flow-grid { grid-template-columns: repeat(3, 1fr); }
         }
-
         @media screen and (min-width: 769px) {
-            .flow-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-                gap: 10px;
-                margin: 16px 0;
-            }
+            .flow-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
         }
-
         .flow-card {
             background: #fff;
             border: 2px solid #dee2e6;
             border-radius: 10px;
-            padding: 10px 8px;
+            padding: clamp(6px, 2vw, 14px);
             text-align: center;
-            font-size: 8pt;
+            font-size: clamp(7.5pt, 1.3vw, 9pt);
             transition: all 0.2s;
             position: relative;
         }
-
-        @media screen and (min-width: 769px) {
-            .flow-card {
-                padding: 14px 10px;
-                font-size: 9pt;
-            }
-        }
-
-        .flow-card.master {
-            border-color: #2E75B6;
-            background: #f0f6fb;
-        }
-        .flow-card.transaction {
-            border-color: #0D4F3C;
-            background: #f2f9f5;
-        }
-        .flow-card.report {
-            border-color: #4E2A84;
-            background: #f7f2fa;
-        }
-        .flow-card .icon {
-            font-size: 16pt;
-            display: block;
-            margin-bottom: 3px;
-        }
-
-        @media screen and (min-width: 769px) {
-            .flow-card .icon {
-                font-size: 22pt;
-                margin-bottom: 4px;
-            }
-        }
-
-        .flow-card .flow-title {
-            font-weight: 700;
-            color: #1B3A6B;
-        }
-        .flow-card .flow-sub {
-            font-size: 7pt;
-            color: #6c757d;
-        }
-
-        @media screen and (min-width: 769px) {
-            .flow-card .flow-sub {
-                font-size: 8pt;
-            }
-        }
+        .flow-card.master { border-color: #2E75B6; background: #f0f6fb; }
+        .flow-card.transaction { border-color: #0D4F3C; background: #f2f9f5; }
+        .flow-card.report { border-color: #4E2A84; background: #f7f2fa; }
+        .flow-card .icon { font-size: clamp(14pt, 3vw, 22pt); display: block; margin-bottom: 3px; }
+        .flow-card .flow-title { font-weight: 700; color: #1B3A6B; }
+        .flow-card .flow-sub { font-size: clamp(6.5pt, 1vw, 8pt); color: #6c757d; }
 
         /* ── KPI CARDS ─────────────────────────────── */
         .kpi-row {
@@ -848,68 +504,26 @@
             margin: 10px 0;
             page-break-inside: avoid;
         }
-
-        @media screen and (max-width: 480px) {
-            .kpi-row {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media screen and (min-width: 769px) {
-            .kpi-row {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 12px;
-                margin: 14px 0;
-            }
-        }
-
+        @media screen and (max-width: 480px) { .kpi-row { grid-template-columns: 1fr; } }
+        @media screen and (min-width: 600px) { .kpi-row { grid-template-columns: repeat(3, 1fr); } }
+        @media screen and (min-width: 769px) { .kpi-row { grid-template-columns: repeat(4, 1fr); } }
         .kpi-card {
             background: #fff;
             border-radius: 10px;
-            padding: 10px;
+            padding: clamp(8px, 2vw, 14px);
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
             border-top: 4px solid #c0392b;
         }
-
-        @media screen and (min-width: 769px) {
-            .kpi-card {
-                padding: 14px;
-            }
-        }
-
-        .kpi-card.green {
-            border-top-color: #145A32;
-        }
-        .kpi-card.amber {
-            border-top-color: #e8b830;
-        }
-        .kpi-card.red {
-            border-top-color: #9B1C1C;
-        }
+        .kpi-card.green { border-top-color: #145A32; }
+        .kpi-card.amber { border-top-color: #e8b830; }
+        .kpi-card.red { border-top-color: #9B1C1C; }
         .kpi-card .kpi-value {
-            font-size: 16pt;
+            font-size: clamp(14pt, 3.5vw, 22pt);
             font-weight: 900;
             color: #c0392b;
         }
-
-        @media screen and (min-width: 769px) {
-            .kpi-card .kpi-value {
-                font-size: 22pt;
-            }
-        }
-
-        .kpi-card .kpi-label {
-            font-size: 8pt;
-            color: #6c757d;
-            margin-top: 2px;
-        }
-
-        @media screen and (min-width: 769px) {
-            .kpi-card .kpi-label {
-                font-size: 9pt;
-            }
-        }
+        .kpi-card .kpi-label { font-size: clamp(7pt, 1.2vw, 9pt); color: #6c757d; margin-top: 2px; }
 
         /* ── HOME BUTTON ──────────────────────────── */
         .home-btn {
@@ -918,35 +532,22 @@
             justify-content: center;
             background: #c0392b;
             color: #fff !important;
-            padding: 8px 16px;
+            padding: clamp(6px, 1.5vw, 8px) clamp(14px, 3vw, 18px);
             border-radius: 25px;
             text-decoration: none;
-            font-size: 9pt;
+            font-size: clamp(8pt, 1.3vw, 10pt);
             font-weight: 700;
             margin: 8px 0;
             transition: all 0.2s;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
             text-align: center;
             min-height: 44px;
             min-width: 44px;
-            border: none;
-            cursor: pointer;
         }
-
-        @media screen and (min-width: 769px) {
-            .home-btn {
-                padding: 8px 18px;
-                font-size: 10pt;
-                margin: 10px 0;
-                min-height: auto;
-                min-width: auto;
-            }
-        }
-
         .home-btn:hover {
             background: #8b1a1a;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
         }
 
         /* ── ILLUSTRATION BOXES ───────────────────── */
@@ -954,156 +555,50 @@
             background: #fff;
             border: 1px solid #dee2e6;
             border-radius: 8px;
-            padding: 10px;
+            padding: clamp(8px, 2vw, 16px);
             margin: 12px 0;
             page-break-inside: avoid;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
         }
-
-        @media screen and (min-width: 769px) {
-            .illustration-box {
-                padding: 16px;
-                margin: 16px 0;
-            }
-        }
-
         .illustration-box h4 {
             color: #c0392b;
             margin-top: 0;
             border-bottom: 1px solid #eee;
             padding-bottom: 6px;
             margin-bottom: 10px;
-            font-size: 10pt;
+            font-size: clamp(9pt, 1.5vw, 11pt);
         }
-
-        @media screen and (min-width: 769px) {
-            .illustration-box h4 {
-                padding-bottom: 8px;
-                margin-bottom: 12px;
-                font-size: 11pt;
-            }
-        }
-
         .svg-container {
             text-align: center;
             margin: 8px 0;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
         }
-
-        @media screen and (min-width: 769px) {
-            .svg-container {
-                margin: 10px 0;
-            }
-        }
-
-        .svg-container svg {
-            max-width: 100%;
-            height: auto;
-        }
+        .svg-container svg { max-width: 100%; height: auto; }
 
         /* ── PRINT ──────────────────────────────────── */
         @media print {
-            body {
-                background: #fff;
-                font-size: 10pt;
-                padding: 0;
-            }
-            .page-wrapper {
-                max-width: 100%;
-                box-shadow: none;
-                margin: 0;
-                border-radius: 0;
-            }
-            .section {
-                padding: 15px 20px;
-                page-break-before: always;
-                background: #fff;
-                border-bottom: none;
-            }
-            .section:first-of-type {
-                page-break-before: auto;
-            }
-            .section h2 {
-                margin: -15px -20px 15px -20px;
-                font-size: 14pt;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            .cover {
-                min-height: 100vh;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-                border-radius: 0;
-            }
-            table {
-                display: table;
-                overflow-x: visible;
-                font-size: 7.5pt;
-            }
-            table th {
-                font-size: 7pt;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            pre {
-                font-size: 7pt;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            .kpi-row {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            @page {
-                size: A4;
-                margin: 10mm;
-            }
-        }
-
-        /* ── ENHANCED RESPONSIVE ADJUSTMENTS ──────── */
-        @media screen and (max-width: 480px) {
-            body {
-                padding: 5px;
-            }
-            .page-wrapper {
-                border-radius: 0;
-            }
-            .cover {
-                padding: 20px 10px;
-            }
-            .bfp-circle {
-                width: 65px;
-                height: 65px;
-            }
-            .bfp-circle span {
-                font-size: 22pt;
-            }
-            .brandzo-red {
-                font-size: 18pt;
-            }
-            .cover-flow {
-                font-size: 8pt;
-                padding: 6px 10px;
-            }
-            .cover-subtitle {
-                font-size: 10pt;
-            }
-            .section {
-                padding: 15px 12px;
-            }
-            .section h2 {
-                font-size: 12pt;
-                margin: -15px -12px 12px -12px;
-            }
+            body { background: #fff; font-size: 10pt; }
+            .top-nav { display: none; }
+            .page-wrapper { max-width: 100%; box-shadow: none; margin: 0; }
+            .section { padding: 15px 20px; page-break-before: always; background: #fff; }
+            .section:first-of-type { page-break-before: auto; }
+            .section h2 { margin: -15px -20px 15px -20px; font-size: 14pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .cover { min-height: 100vh; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            table { display: table; overflow-x: visible; font-size: 7.5pt; min-width: auto; white-space: nowrap; }
+            .table-responsive { overflow-x: visible; }
         }
     </style>
 </head>
 <body>
+    <header class="top-nav">
+        <a href="Brandzo_Operational_Guide" class="operational-guide-btn" title="فتح الدليل التشغيلي">
+            📘 الدليل التشغيلي
+        </a>
+    </header>
+
     <div class="page-wrapper">
 
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
-        <!-- COVER PAGE -->
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
         <div class="cover">
             <div class="bfp-logo-wrapper">
                 <div class="bfp-circle">
@@ -1136,9 +631,6 @@
             </div>
         </div>
 
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
-        <!-- TABLE OF CONTENTS with anchor links -->
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
         <div class="toc" id="toc">
             <h2>📑 فهرس المحتويات — Table of Contents</h2>
             <a href="#sec1" class="home-btn">🏠 الصفحة الرئيسية (Dashboard)</a>
@@ -1167,9 +659,6 @@
             </ol>
         </div>
 
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
-        <!-- SECTION 1: DASHBOARD -->
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
         <div class="section" id="sec1">
             <h2>🏢 1. لوحة القيادة — Dashboard (Sheet 1)</h2>
             <a href="#toc" class="home-btn">🏠 الصفحة الرئيسية</a>
@@ -1218,21 +707,32 @@
 
             <h3>🧭 أزرار التنقل السريع</h3>
             <p>شريط التنقل في الصف 18 يحتوي على 15 زراً للانتقال المباشر إلى جميع الشيتات:</p>
+            <div class="table-responsive">
             <table>
-                <tr><th>📋 صنف</th><th>🏢 فرع</th><th>🏭 مورد</th><th>👤 عميل</th><th>📍 موقع</th><th>🏷 خصم</th><th>🛒 PO</th><th>📥 وارد</th><th>📤 صادر</th></tr>
-                <tr><td>Items</td><td>Branch</td><td>Supplier</td><td>Customer</td><td>Location</td><td>Discount</td><td>Purchase</td><td>Inbound</td><td>Outbound</td></tr>
-                <tr><th>↩️ مرتجع</th><th>💔 تالف</th><th>🔄 تحويل</th><th>⚖️ تسوية</th><th>📊 مخزون</th><th colspan="4">📈 تقارير</th></tr>
-                <tr><td>Return</td><td>Damage</td><td>Transfer</td><td>Adjust</td><td>Inventory</td><td colspan="4">Reports</td></tr>
+                <tr>
+                    <th>📋 صنف</th><th>🏢 فرع</th><th>🏭 مورد</th><th>👤 عميل</th><th>📍 موقع</th>
+                    <th>🏷 خصم</th><th>🛒 PO</th><th>📥 وارد</th><th>📤 صادر</th>
+                </tr>
+                <tr>
+                    <td>Items</td><td>Branch</td><td>Supplier</td><td>Customer</td><td>Location</td>
+                    <td>Discount</td><td>Purchase</td><td>Inbound</td><td>Outbound</td>
+                </tr>
+                <tr>
+                    <th>↩️ مرتجع</th><th>💔 تالف</th><th>🔄 تحويل</th><th>⚖️ تسوية</th><th>📊 مخزون</th>
+                    <th colspan="4">📈 تقارير</th>
+                </tr>
+                <tr>
+                    <td>Return</td><td>Damage</td><td>Transfer</td><td>Adjust</td><td>Inventory</td>
+                    <td colspan="4">Reports</td>
+                </tr>
             </table>
+            </div>
             <p style="font-size:9pt;color:#6c757d;">📡 <strong>ملاحظة الباركود:</strong> امسح كود الصنف في عمود C من شيتات Inbound_Log أو Outbound_Log ليتم جلب البيانات تلقائياً.</p>
 
             <h3>🔄 زر Refresh</h3>
             <p>زر <code>🔄 Refresh</code> في Dashboard يشغّل الماكرو <code>RefreshReports()</code> الذي يعيد حساب جميع المعادلات لتحديث المؤشرات.</p>
         </div>
 
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
-        <!-- SECTION 2: VBA SETUP -->
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
         <div class="section" id="sec2">
             <h2>⚙️ 2. إعداد VBA — VBA_Setup (Sheet 2)</h2>
             <a href="#toc" class="home-btn">🏠 الصفحة الرئيسية</a>
@@ -1242,15 +742,30 @@
             </div>
 
             <h3>الخطوات الثلاث للتثبيت</h3>
+            <div class="table-responsive">
             <table>
                 <tr><th>#</th><th>الخطوة</th><th>التفاصيل</th></tr>
-                <tr><td><span class="tag tag-blue">1</span></td><td><strong>تثبيت Module1</strong></td><td>Alt+F11 ← Insert ← Module ← الصق كود Module1 ← Ctrl+S</td></tr>
-                <tr><td><span class="tag tag-teal">2</span></td><td><strong>تفعيل الباركود</strong></td><td>في Project Explorer: انقر مزدوجاً Inbound_Log ← الصق كود WS_INB | انقر Outbound_Log ← الصق كود WS_OUT</td></tr>
-                <tr><td><span class="tag tag-purple">3</span></td><td><strong>إنشاء الأزرار</strong></td><td>Alt+F8 ← AutoSetupAllButtons ← Run ← انتظر 5-10 ثوانٍ ← رسالة تأكيد ✅</td></tr>
+                <tr>
+                    <td><span class="tag tag-blue">1</span></td>
+                    <td><strong>تثبيت Module1</strong></td>
+                    <td>Alt+F11 ← Insert ← Module ← الصق كود Module1 ← Ctrl+S</td>
+                </tr>
+                <tr>
+                    <td><span class="tag tag-teal">2</span></td>
+                    <td><strong>تفعيل الباركود</strong></td>
+                    <td>في Project Explorer: انقر مزدوجاً Inbound_Log ← الصق كود WS_INB | انقر Outbound_Log ← الصق كود WS_OUT</td>
+                </tr>
+                <tr>
+                    <td><span class="tag tag-purple">3</span></td>
+                    <td><strong>إنشاء الأزرار</strong></td>
+                    <td>Alt+F8 ← AutoSetupAllButtons ← Run ← انتظر 5-10 ثوانٍ ← رسالة تأكيد ✅</td>
+                </tr>
             </table>
+            </div>
 
             <h3>📋 كود Module1 — نظرة عامة</h3>
             <p>يحتوي Module1 على جميع الماكروهات الرئيسية (40+ إجراء) موزعة على الأقسام التالية:</p>
+            <div class="table-responsive">
             <table>
                 <tr><th>القسم</th><th>الوظائف</th><th>الماكروهات الرئيسية</th></tr>
                 <tr><td>Auto Setup</td><td>إنشاء أزرار Form Control على جميع الشيتات</td><td><code>AutoSetupAllButtons()</code>، <code>SetupSheetButtons()</code></td></tr>
@@ -1262,16 +777,15 @@
                 <tr><td>Protection</td><td>حماية وفك حماية الشيتات</td><td><code>ProtectAllSheets()</code>، <code>UnprotectAllSheets()</code></td></tr>
                 <tr><td>Navigation</td><td>التنقل والعودة للرئيسية</td><td><code>GoHome()</code>، <code>RefreshReports()</code></td></tr>
             </table>
+            </div>
         </div>
 
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
-        <!-- SECTION 3: PURCHASE ORDERS -->
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
         <div class="section" id="sec3">
             <h2>🛒 3. أوامر الشراء — Purchase_Orders (Sheet 3)</h2>
             <a href="#toc" class="home-btn">🏠 الصفحة الرئيسية</a>
 
             <h3>هيكل الأعمدة (14 عموداً)</h3>
+            <div class="table-responsive">
             <table>
                 <tr><th>#</th><th>العمود</th><th>النوع</th><th>الوصف</th></tr>
                 <tr><td>A</td><td>رقم الأمر 🔒</td><td><span class="tag tag-blue">تلقائي</span></td><td>PO-XXXX — يولد تلقائياً عند الإضافة</td></tr>
@@ -1289,8 +803,10 @@
                 <tr><td>M</td><td>ملاحظات</td><td><span class="tag tag-yellow">إدخال</span></td><td>نص حر</td></tr>
                 <tr><td>N</td><td>تأخير 🔒</td><td><span class="tag tag-blue">معادلة</span></td><td>عدد أيام التأخير عن التسليم المتوقع</td></tr>
             </table>
+            </div>
 
             <h3>الأزرار الخاصة</h3>
+            <div class="table-responsive">
             <table>
                 <tr><th>الزر</th><th>الماكرو</th><th>الوظيفة</th></tr>
                 <tr><td>➕ أمر جديد</td><td><code>AddPurchaseOrder()</code></td><td>ينشئ PO جديد برقم تلقائي وتاريخ اليوم وحالة "معلق"</td></tr>
@@ -1299,6 +815,7 @@
                 <tr><td>✏️ تعديل</td><td><code>EditSelectedRow()</code></td><td>يفك حماية الصف المحدد للتعديل</td></tr>
                 <tr><td>🗑️ حذف</td><td><code>DeleteSelectedRow()</code></td><td>يحذف الصف المحدد نهائياً بعد تأكيد</td></tr>
             </table>
+            </div>
 
             <h3>الحالات ودلالات الألوان</h3>
             <p>
@@ -1310,14 +827,12 @@
             </p>
         </div>
 
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
-        <!-- SECTION 4: ITEMS MASTER -->
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
         <div class="section" id="sec4">
             <h2>📦 4. بطاقة الأصناف — Items_Master (Sheet 4)</h2>
             <a href="#toc" class="home-btn">🏠 الصفحة الرئيسية</a>
 
             <h3>هيكل الأعمدة (12 عموداً)</h3>
+            <div class="table-responsive">
             <table>
                 <tr><th>#</th><th>العمود</th><th>النوع</th><th>المحتوى / المعادلة</th></tr>
                 <tr><td>A</td><td>كود 🔒</td><td><span class="tag tag-blue">تلقائي</span></td><td>ITM-XXX — يولد تلقائياً</td></tr>
@@ -1333,6 +848,7 @@
                 <tr><td>K</td><td>الرصيد 🔒</td><td><span class="tag tag-blue">معادلة</span></td><td>I - J + Stock_Adjustments</td></tr>
                 <tr><td>L</td><td>الحالة 🔒</td><td><span class="tag tag-blue">معادلة</span></td><td>متاح/منخفض/نافذ حسب الرصيد والحد الأدنى</td></tr>
             </table>
+            </div>
 
             <h3>الفئات المتاحة</h3>
             <p>
@@ -1349,9 +865,6 @@
             </p>
         </div>
 
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
-        <!-- SECTION 5: LOCATIONS MASTER (ENHANCED) -->
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
         <div class="section" id="sec5">
             <h2>📍 5. المواقع — Locations_Master (Sheet 5)</h2>
             <a href="#toc" class="home-btn">🏠 الصفحة الرئيسية</a>
@@ -1359,6 +872,7 @@
                 <span class="callout-icon">🤖</span>
                 <span>يستخدم نظام <strong>التخزين الذكي (Smart Storage)</strong> عبر ماكرو <code>FindBestLocation()</code> لاقتراح الموقع الأكثر فراغاً تلقائياً عند الاستلام.</span>
             </div>
+            <div class="table-responsive">
             <table>
                 <tr><th>#</th><th>العمود</th><th>الوصف</th></tr>
                 <tr><td>A</td><td>كود الموقع</td><td>مثل LOC-A1، LOC-C1... (30 موقعاً)</td></tr>
@@ -1372,6 +886,7 @@
                 <tr><td>K</td><td>إشغال%</td><td>نسبة الإشغال</td></tr>
                 <tr><td>L</td><td>الحالة 🔒</td><td>ممتلئ / شبه ممتلئ / متاح</td></tr>
             </table>
+            </div>
             <p><strong>أكبر موقع:</strong> LOC-C8 (سعة 600) | <strong>أصغر موقع:</strong> LOC-I1 (سعة 10)</p>
 
             <div class="illustration-box">
@@ -1422,14 +937,12 @@
             </div>
         </div>
 
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
-        <!-- SECTIONS 6-9: MASTER DATA -->
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
         <div class="section" id="sec6">
             <h2>🏢🏭👤🏷 6-9. البيانات الرئيسية — Master Data (Sheets 6-9)</h2>
             <a href="#toc" class="home-btn">🏠 الصفحة الرئيسية</a>
 
             <h3>🏢 6. المخازن — Warehouses</h3>
+            <div class="table-responsive">
             <table>
                 <tr><th>الكود</th><th>الاسم</th><th>المدير</th><th>الحالة</th></tr>
                 <tr><td>WH001</td><td>مخزن رقم 1</td><td>أحمد سالم</td><td><span class="tag tag-green">نشط</span></td></tr>
@@ -1438,8 +951,10 @@
                 <tr><td>WH004</td><td>مخزن رقم 4</td><td>محمد المرغني</td><td><span class="tag tag-green">نشط</span></td></tr>
                 <tr><td>WH005</td><td>مخزن رقم 5</td><td>عمر حسن</td><td><span class="tag tag-red">موقوف</span></td></tr>
             </table>
+            </div>
 
             <h3>🏭 7. الموردون — Suppliers</h3>
+            <div class="table-responsive">
             <table>
                 <tr><th>الكود</th><th>الاسم</th><th>جهة الاتصال</th><th>الحالة</th></tr>
                 <tr><td>SUP001</td><td>دار الغذاء</td><td>أحمد سالم</td><td><span class="tag tag-green">نشط</span></td></tr>
@@ -1448,11 +963,13 @@
                 <tr><td>SUP004</td><td>شبنة</td><td>محمد المرغني</td><td><span class="tag tag-green">نشط</span></td></tr>
                 <tr><td>SUP005</td><td>طرابلس</td><td>عمر حسن</td><td><span class="tag tag-red">موقوف</span></td></tr>
             </table>
+            </div>
         </div>
 
         <div class="section" id="sec8">
             <h3>👤 8. العملاء — Customers</h3>
             <a href="#toc" class="home-btn">🏠 الصفحة الرئيسية</a>
+            <div class="table-responsive">
             <table>
                 <tr><th>الكود</th><th>الاسم</th><th>النوع</th><th>جهة الاتصال</th><th>الحالة</th></tr>
                 <tr><td>CUS001</td><td>قسم التجزئة أ</td><td>داخلي</td><td>Mohammed Saad</td><td><span class="tag tag-green">نشط</span></td></tr>
@@ -1461,11 +978,13 @@
                 <tr><td>CUS004</td><td>عميل مؤسسي Y</td><td>خارجي</td><td>Ibrahim Noor</td><td><span class="tag tag-green">نشط</span></td></tr>
                 <tr><td>CUS005</td><td>القطاع الحكومي Z</td><td>خارجي</td><td>Mansour Saeed</td><td><span class="tag tag-green">نشط</span></td></tr>
             </table>
+            </div>
         </div>
 
         <div class="section" id="sec9">
             <h3>🏷 9. الخصومات — Discounts</h3>
             <a href="#toc" class="home-btn">🏠 الصفحة الرئيسية</a>
+            <div class="table-responsive">
             <table>
                 <tr><th>الكود</th><th>الاسم</th><th>النوع</th><th>القيمة</th><th>ملاحظات</th></tr>
                 <tr><td>DIS001</td><td>خصم الكميات</td><td>نسبة مئوية</td><td>10%</td><td>على الكميات > 100 وحدة</td></tr>
@@ -1474,11 +993,9 @@
                 <tr><td>DIS004</td><td>خصم ثابت</td><td>مبلغ ثابت</td><td>50 ريال</td><td>خصم مباشر</td></tr>
                 <tr><td>DIS005</td><td>تصفية مخزون</td><td>نسبة مئوية</td><td>30%</td><td>للأصناف بطيئة الحركة</td></tr>
             </table>
+            </div>
         </div>
 
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
-        <!-- SECTIONS 10-16: TRANSACTIONS -->
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
         <div class="section" id="sec10">
             <h2>📥 10. سند الاستلام — Inbound_Log (Sheet 10)</h2>
             <a href="#toc" class="home-btn">🏠 الصفحة الرئيسية</a>
@@ -1488,6 +1005,7 @@
             </div>
 
             <h3>هيكل الأعمدة (14 عموداً)</h3>
+            <div class="table-responsive">
             <table>
                 <tr><th>#</th><th>العمود</th><th>النوع</th><th>الوصف</th></tr>
                 <tr><td>A</td><td>رقم السند 🔒</td><td><span class="tag tag-blue">تلقائي</span></td><td>INB-XXX</td></tr>
@@ -1505,6 +1023,7 @@
                 <tr><td>M</td><td>الفرع 🤖</td><td><span class="tag tag-blue">تلقائي</span></td><td>يُملأ تلقائياً من Items_Master</td></tr>
                 <tr><td>N</td><td>ملاحظات</td><td><span class="tag tag-yellow">إدخال</span></td><td>نص حر</td></tr>
             </table>
+            </div>
 
             <h3>الأزرار</h3>
             <p>
@@ -1525,6 +1044,7 @@
             </div>
 
             <h3>هيكل الأعمدة (14 عموداً)</h3>
+            <div class="table-responsive">
             <table>
                 <tr><th>#</th><th>العمود</th><th>النوع</th><th>الوصف</th></tr>
                 <tr><td>A</td><td>رقم السند 🔒</td><td><span class="tag tag-blue">تلقائي</span></td><td>OUT-XXX</td></tr>
@@ -1542,11 +1062,9 @@
                 <tr><td>M</td><td>الصافي 🔒</td><td><span class="tag tag-blue">معادلة</span></td><td>L × E × (1 - K%) أو L × E - K</td></tr>
                 <tr><td>N</td><td>ملاحظات</td><td><span class="tag tag-yellow">إدخال</span></td><td>نص حر</td></tr>
             </table>
+            </div>
         </div>
 
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
-        <!-- SECTIONS 12-16: OTHER SHEETS (ENHANCED WITH ILLUSTRATIONS) -->
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
         <div class="section" id="sec12">
             <h2>↩️ 12. سند الإرجاع — Returns_Log (Sheet 12)</h2>
             <a href="#toc" class="home-btn">🏠 الصفحة الرئيسية</a>
@@ -1746,9 +1264,6 @@
             </div>
         </div>
 
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
-        <!-- SECTION 17: REPORTS -->
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
         <div class="section" id="sec17">
             <h2>📈 17. التقارير التحليلية — Reports (Sheet 17)</h2>
             <a href="#toc" class="home-btn">🏠 الصفحة الرئيسية</a>
@@ -1758,6 +1273,7 @@
             </div>
 
             <h3>التقارير الأربعة</h3>
+            <div class="table-responsive">
             <table>
                 <tr><th>#</th><th>التقرير</th><th>الوصف</th></tr>
                 <tr><td>1</td><td>📦 البضاعة الراكدة</td><td>الأصناف بطيئة الحركة مع توصيات (عروض تنافسية، ترحيل، تخفيض)</td></tr>
@@ -1765,49 +1281,53 @@
                 <tr><td>3</td><td>🏢 استهلاك الفروع</td><td>صادر ووارد ومرتجعات وتوالف وتحويلات لكل فرع مع الصافي</td></tr>
                 <tr><td>4</td><td>💔 التوالف والمرتجعات</td><td>نسبة التوالف والمرتجعات لكل صنف مع تقييم الموردين وتوصيات</td></tr>
             </table>
+            </div>
         </div>
 
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
-        <!-- SECTION 18: _CATEGORIES -->
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
         <div class="section" id="sec18">
             <h2>📋 18. القوائم المرجعية — _Categories (Sheet 18)</h2>
             <a href="#toc" class="home-btn">🏠 الصفحة الرئيسية</a>
+            <div class="table-responsive">
             <table>
                 <tr><th>العمود A</th><th>العمود C</th><th>العمود E</th></tr>
                 <tr><td><strong>14 فئة:</strong> ملابس، مواد غذائية، تغليف، إلكترونيات، أثاث، قرطاسية، صحة، معدات، كهربائي، سلامة، منظفات، مواد خام، مخزون دوار، إكسسوارات، أخرى</td>
                     <td><strong>11 وحدة:</strong> قطعة، عبوة، رزمة، زجاجة، بكرة، كيلو، لتر، متر، صندوق، كرتون، مجموعة</td>
                     <td><strong>5 حالات PO:</strong> معلق، مؤكد، مستلم جزئياً، مستلم كلياً، ملغي</td></tr>
             </table>
+            </div>
         </div>
 
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
-        <!-- SECTION 19: VBA REFERENCE -->
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
         <div class="section" id="sec19">
             <h2>💻 19. ماكروهات VBA — المرجع الكامل</h2>
             <a href="#toc" class="home-btn">🏠 الصفحة الرئيسية</a>
 
             <h3>📋 Auto Setup</h3>
+            <div class="table-responsive">
             <table>
                 <tr><th>الماكرو</th><th>النوع</th><th>الوظيفة</th></tr>
                 <tr><td><code>AutoSetupAllButtons()</code></td><td>Sub</td><td>ينشئ جميع أزرار Form Control على جميع الشيتات. شغّله مرة واحدة فقط.</td></tr>
                 <tr><td><code>SetupSheetButtons()</code></td><td>Function</td><td>دالة مساعدة — تنشئ الأزرار في شيت محدد وتُعيد عددها.</td></tr>
             </table>
+            </div>
 
             <h3>🔢 Auto ID</h3>
+            <div class="table-responsive">
             <table>
                 <tr><th>الماكرو</th><th>النوع</th><th>الوسائط</th><th>مثال الناتج</th></tr>
                 <tr><td><code>AutoID()</code></td><td>Function</td><td>sheetName, colNum, prefix, padLen</td><td>PO-0036, INB-032, ITM-032</td></tr>
             </table>
+            </div>
 
             <h3>🤖 Smart Storage</h3>
+            <div class="table-responsive">
             <table>
                 <tr><th>الماكرو</th><th>النوع</th><th>الوظيفة</th></tr>
                 <tr><td><code>FindBestLocation()</code></td><td>Function</td><td>يبحث في Locations_Master عن الموقع صاحب أكبر مساحة حرة. يقبل فلتر فرع اختياري.</td></tr>
             </table>
+            </div>
 
             <h3>➕ Add Operations</h3>
+            <div class="table-responsive">
             <table>
                 <tr><th>الماكرو</th><th>الشيت المستهدف</th><th>ما يفعله</th></tr>
                 <tr><td><code>AddPurchaseOrder()</code></td><td>Purchase_Orders</td><td>ينشئ PO جديد بحالة "معلق"</td></tr>
@@ -1816,49 +1336,57 @@
                 <tr><td><code>AddOutboundRow()</code></td><td>Outbound_Log</td><td>ينشئ سند صرف جديد</td></tr>
                 <tr><td><code>AddItemRow()</code></td><td>Items_Master</td><td>ينشئ صنف جديد مع اقتراح موقع</td></tr>
             </table>
+            </div>
 
             <h3>🖨 Print</h3>
+            <div class="table-responsive">
             <table>
                 <tr><th>الماكرو</th><th>يطبع</th></tr>
                 <tr><td><code>PrintPO()</code></td><td>Purchase_Orders — A3:N، أفقي</td></tr>
                 <tr><td><code>PrintInbound()</code></td><td>Inbound_Log — A4:N، أفقي</td></tr>
                 <tr><td><code>PrintOutbound()</code></td><td>Outbound_Log — A4:N، أفقي</td></tr>
             </table>
+            </div>
 
             <h3>✏️ Edit / Delete</h3>
+            <div class="table-responsive">
             <table>
                 <tr><th>الماكرو</th><th>الوظيفة</th></tr>
                 <tr><td><code>EditSelectedRow()</code></td><td>يفك حماية الشيت لتعديل الصف المحدد</td></tr>
                 <tr><td><code>DeleteSelectedRow()</code></td><td>يحذف الصف نهائياً بعد تأكيد ⛔</td></tr>
                 <tr><td><code>ConfirmPO()</code></td><td>يغير حالة أمر الشراء إلى "مؤكد"</td></tr>
             </table>
+            </div>
 
             <h3>🔒 Protection</h3>
+            <div class="table-responsive">
             <table>
                 <tr><th>الماكرو</th><th>الوظيفة</th></tr>
                 <tr><td><code>ProtectAllSheets()</code></td><td>يحمي جميع الشيتات بكلمة مرور <code>Brandzo2026</code></td></tr>
                 <tr><td><code>UnprotectAllSheets()</code></td><td>يفك حماية جميع الشيتات</td></tr>
             </table>
+            </div>
 
             <h3>🧭 Navigation</h3>
+            <div class="table-responsive">
             <table>
                 <tr><th>الماكرو</th><th>الوظيفة</th></tr>
                 <tr><td><code>GoHome()</code></td><td>ينتقل إلى Dashboard</td></tr>
                 <tr><td><code>RefreshReports()</code></td><td>يعيد حساب جميع المعادلات</td></tr>
                 <tr><td><code>ResetStatusBar()</code></td><td>يعيد ضبط شريط الحالة</td></tr>
             </table>
+            </div>
 
             <h3>📡 Worksheet Events — الباركود</h3>
+            <div class="table-responsive">
             <table>
                 <tr><th>الحدث</th><th>الشيت</th><th>ما يفعله</th></tr>
                 <tr><td><code>Worksheet_Change</code></td><td>Inbound_Log</td><td>عند مسح باركود في عمود C: يملأ الموقع والفرع تلقائياً</td></tr>
                 <tr><td><code>Worksheet_Change</code></td><td>Outbound_Log</td><td>نفس البحث + يظهر الرصيد + تحذير إذا الرصيد = 0</td></tr>
             </table>
+            </div>
         </div>
 
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
-        <!-- SECTION 20: DATA FLOW -->
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
         <div class="section" id="sec20">
             <h2>🔄 20. تدفق البيانات — Data Flow</h2>
             <a href="#toc" class="home-btn">🏠 الصفحة الرئيسية</a>
@@ -1953,9 +1481,6 @@
             </div>
         </div>
 
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
-        <!-- SECTION 21: SOP -->
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
         <div class="section" id="sec21">
             <h2>📋 21. إرشادات التشغيل — SOP</h2>
             <a href="#toc" class="home-btn">🏠 الصفحة الرئيسية</a>
@@ -2011,9 +1536,6 @@
             <p>لفك الحماية: <code>UnprotectAllSheets()</code> | لإعادة الحماية: <code>ProtectAllSheets()</code></p>
         </div>
 
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
-        <!-- FINAL FOOTER -->
-        <!-- ═══════════════════════════════════════════════════════════════════ -->
         <div class="section" style="text-align:center;background:#f8f9fa;page-break-before:always;">
             <div class="bfp-logo-wrapper" style="margin-bottom:5px;">
                 <div class="bfp-circle" style="width:90px;height:90px;">
@@ -2038,4 +1560,4 @@
 
     </div>
 </body>
-</html>
+                                                                                               </html>
