@@ -468,16 +468,10 @@
         /* ── FLOW GRID ─────────────────────────────── */
         .flow-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 8px;
             margin: 12px 0;
             page-break-inside: avoid;
-        }
-        @media screen and (min-width: 600px) {
-            .flow-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-        @media screen and (min-width: 769px) {
-            .flow-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
         }
         .flow-card {
             background: #fff;
@@ -499,14 +493,11 @@
         /* ── KPI CARDS ─────────────────────────────── */
         .kpi-row {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 8px;
             margin: 10px 0;
             page-break-inside: avoid;
         }
-        @media screen and (max-width: 480px) { .kpi-row { grid-template-columns: 1fr; } }
-        @media screen and (min-width: 600px) { .kpi-row { grid-template-columns: repeat(3, 1fr); } }
-        @media screen and (min-width: 769px) { .kpi-row { grid-template-columns: repeat(4, 1fr); } }
         .kpi-card {
             background: #fff;
             border-radius: 10px;
@@ -592,7 +583,7 @@
 </head>
 <body>
     <header class="top-nav">
-        <a href="Brandzo_Operational_Guide" class="operational-guide-btn" title="فتح الدليل التشغيلي">
+        <a href="Brandzo_Operational_Guide.html" class="operational-guide-btn" title="فتح الدليل التشغيلي">
             📘 الدليل التشغيلي
         </a>
     </header>
@@ -633,6 +624,12 @@
 
         <div class="toc" id="toc">
             <h2>📑 فهرس المحتويات — Table of Contents</h2>
+
+            <div style="margin: 15px 0;">
+                <input type="text" id="dashboardSearch" placeholder="🔍 بحث في المحتويات..."
+                    style="width: 100%; padding: 12px; border: 2px solid var(--bfp-red); border-radius: 8px; font-family: inherit; font-size: 11pt; box-sizing: border-box;">
+            </div>
+
             <a href="#sec1" class="home-btn">🏠 الصفحة الرئيسية (Dashboard)</a>
             <ol class="toc-list">
                 <li><span class="toc-num">1</span> <a href="#sec1">لوحة القيادة — Dashboard</a></li>
@@ -1559,5 +1556,21 @@
         </div>
 
     </div>
+
+    <script>
+        document.getElementById('dashboardSearch').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const items = document.querySelectorAll('.toc-list li');
+
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
                                                                                                </html>

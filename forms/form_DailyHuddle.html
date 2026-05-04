@@ -451,8 +451,23 @@
             print-color-adjust: exact !important;
         }
     </style>
+
+    <style>
+        @media print { .no-print { display: none !important; } }
+        .form-input { width: 100%; border: none; border-bottom: 1px solid #eee; font-family: inherit; font-size: inherit; background: transparent; }
+        .form-input:focus { outline: none; background: #f9f9f9; }
+        input.field-line, textarea.field-line { border: none; border-bottom: 1.5px solid #333; width: 100%; font-family: inherit; font-size: inherit; background: transparent; }
+        textarea.field-line { height: 100px; resize: vertical; }
+    </style>
+
 </head>
 <body>
+
+    <div style="text-align: center; margin-bottom: 20px;" class="no-print">
+        <a href="../index.html" style="padding: 10px 20px; background: #c0392b; color: white; text-decoration: none; border-radius: 5px; margin: 0 10px;">🏠 Dashboard</a>
+        <a href="../Brandzo_Operational_Guide.html" style="padding: 10px 20px; background: #1B3A6B; color: white; text-decoration: none; border-radius: 5px; margin: 0 10px;">📘 Guide</a>
+    </div>
+
 
     <!-- ========== PAGE WRAPPER ========== -->
     <div class="page-wrapper">
@@ -478,7 +493,7 @@
         </div>
 
         <!-- Print Button (Top) -->
-        <button class="print-btn" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+        <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
 
         <!-- ========== FORM ========== -->
         <div class="form-wrap">
@@ -491,16 +506,16 @@
 
                 <div class="section-title">📋 بيانات الاجتماع — Meeting Info</div>
                 <div class="fields-grid">
-                    <div class="field-group"><label>التاريخ (Date)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>الوردية (Shift)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>وقت الاجتماع (Time)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>المشرف / قائد الوردية (Shift Leader)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>عدد الحضور (Attendance)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>المكان (Location / Zone)</label><div class="field-line"></div></div>
+                    <div class="field-group"><label>التاريخ (Date)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>الوردية (Shift)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>وقت الاجتماع (Time)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>المشرف / قائد الوردية (Shift Leader)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>عدد الحضور (Attendance)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>المكان (Location / Zone)</label><input type="text" class="field-line"></div>
                 </div>
 
                 <div class="section-title">🛡️ أولاً: السلامة (2 دقيقة) — Safety First</div>
-                <div class="field-group"><label>موقف السلامة اليوم أو ملاحظة من أمس (Safety Share)</label><div class="field-line" style="min-height:50px;"></div></div>
+                <div class="field-group"><label>موقف السلامة اليوم أو ملاحظة من أمس (Safety Share)</label><input type="text" class="field-line" style="min-height:50px;"></div>
                 <div class="fields-grid two">
                     <div class="field-group"><label>هل توجد حوادث معلقة من الأمس؟</label>
                         <div style="display:flex; gap:20px; padding:6px 0;">
@@ -508,7 +523,7 @@
                             <label style="font-weight:400;"><input type="checkbox"> لا</label>
                         </div>
                     </div>
-                    <div class="field-group"><label>تفاصيل (إن وجدت)</label><div class="field-line"></div></div>
+                    <div class="field-group"><label>تفاصيل (إن وجدت)</label><input type="text" class="field-line"></div>
                 </div>
 
                 <div class="section-title">📊 ثانياً: أداء الأمس (3 دقائق) — Yesterday's KPIs</div>
@@ -528,26 +543,26 @@
 
                 <div class="section-title">🚛 ثالثاً: تحديات اليوم (5 دقائق) — Today's Priorities</div>
                 <div class="fields-grid two">
-                    <div class="field-group"><label>عدد الشاحنات المتوقعة (Expected Trucks)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>عدد طلبات الفروع المعلقة (Pending Orders)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>الطلبات العاجلة (Urgent Requests)</label><div class="field-line" style="min-height:44px;"></div></div>
-                    <div class="field-group"><label>متطلبات العمالة الإضافية (OT Required?)</label><div class="field-line"></div></div>
+                    <div class="field-group"><label>عدد الشاحنات المتوقعة (Expected Trucks)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>عدد طلبات الفروع المعلقة (Pending Orders)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>الطلبات العاجلة (Urgent Requests)</label><input type="text" class="field-line" style="min-height:44px;"></div>
+                    <div class="field-group"><label>متطلبات العمالة الإضافية (OT Required?)</label><input type="text" class="field-line"></div>
                 </div>
                 <div class="field-group"><label>الأولويات التشغيلية للوردية (Top 3 Priorities)</label>
                     <div style="padding: 6px 0;">
-                        <div style="display:flex; gap:10px; align-items:center; margin-bottom:8px;"><strong>1.</strong><div class="field-line" style="flex:1;"></div></div>
-                        <div style="display:flex; gap:10px; align-items:center; margin-bottom:8px;"><strong>2.</strong><div class="field-line" style="flex:1;"></div></div>
-                        <div style="display:flex; gap:10px; align-items:center;"><strong>3.</strong><div class="field-line" style="flex:1;"></div></div>
+                        <div style="display:flex; gap:10px; align-items:center; margin-bottom:8px;"><strong>1.</strong><input type="text" class="field-line" style="flex:1;"></div>
+                        <div style="display:flex; gap:10px; align-items:center; margin-bottom:8px;"><strong>2.</strong><input type="text" class="field-line" style="flex:1;"></div>
+                        <div style="display:flex; gap:10px; align-items:center;"><strong>3.</strong><input type="text" class="field-line" style="flex:1;"></div>
                     </div>
                 </div>
 
                 <div class="section-title">🏆 رابعاً: التقدير (دقيقتان) — Recognition & Closing</div>
                 <div class="fields-grid two">
-                    <div class="field-group"><label>🌟 موظف الوردية (Star of the Shift)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>سبب التكريم</label><div class="field-line"></div></div>
+                    <div class="field-group"><label>🌟 موظف الوردية (Star of the Shift)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>سبب التكريم</label><input type="text" class="field-line"></div>
                 </div>
                 <div class="field-group" style="margin-top: 12px;"><label>السؤال الختامي: "هل من أحد لديه ما يمنعه من بدء العمل بأمان وكفاءة اليوم؟" — الردود / الملاحظات</label>
-                    <div class="field-line" style="min-height:44px;"></div>
+                    <input type="text" class="field-line" style="min-height:44px;">
                 </div>
 
                 <div class="sign-row">
@@ -569,7 +584,7 @@
         </div>
 
         <!-- Print Button (Bottom) -->
-        <button class="print-btn" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+        <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
 
         <!-- Footer -->
         <footer class="brand-footer">

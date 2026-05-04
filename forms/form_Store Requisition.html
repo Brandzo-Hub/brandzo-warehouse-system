@@ -80,8 +80,23 @@
         .brand-footer p { font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 1.1rem; color: #FFD700; text-shadow: 0 0 12px rgba(255,215,0,0.35); }
         @media print { .print-btn { display: none !important; } body { background: #fff !important; } .form-wrap { box-shadow: none; } }
     </style>
+
+    <style>
+        @media print { .no-print { display: none !important; } }
+        .form-input { width: 100%; border: none; border-bottom: 1px solid #eee; font-family: inherit; font-size: inherit; background: transparent; }
+        .form-input:focus { outline: none; background: #f9f9f9; }
+        input.field-line, textarea.field-line { border: none; border-bottom: 1.5px solid #333; width: 100%; font-family: inherit; font-size: inherit; background: transparent; }
+        textarea.field-line { height: 100px; resize: vertical; }
+    </style>
+
 </head>
 <body>
+
+    <div style="text-align: center; margin-bottom: 20px;" class="no-print">
+        <a href="../index.html" style="padding: 10px 20px; background: #c0392b; color: white; text-decoration: none; border-radius: 5px; margin: 0 10px;">🏠 Dashboard</a>
+        <a href="../Brandzo_Operational_Guide.html" style="padding: 10px 20px; background: #1B3A6B; color: white; text-decoration: none; border-radius: 5px; margin: 0 10px;">📘 Guide</a>
+    </div>
+
 <div class="page-wrapper">
     <header class="luxury-header">
         <div class="glass-circle">BFP</div>
@@ -93,7 +108,7 @@
         <span class="main-arabic-title">أمر الصرف الداخلي — Store Requisition</span>
         <span class="emoji-badge">📦</span><span class="emoji-badge">📋</span>
     </div>
-    <button class="print-btn" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+    <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
     <div class="form-wrap">
         <div class="form-header">
             <div class="logo">⚡ BRANDZO FRANCHISE PARTNERS</div>
@@ -103,13 +118,13 @@
         <div class="form-body">
             <div class="section-title">📋 بيانات الطلب — Requisition Header</div>
             <div class="fields-grid two">
-                <div class="field-group"><label>رقم الطلب (Requisition No.)</label><div class="field-line"></div></div>
-                <div class="field-group"><label>تاريخ الطلب (Request Date)</label><div class="field-line"></div></div>
-                <div class="field-group"><label>الفرع الطالب (Requesting Branch)</label><div class="field-line"></div></div>
-                <div class="field-group"><label>المستودع المورد (Supplying WH)</label><div class="field-line"></div></div>
-                <div class="field-group"><label>القسم الطالب (Department)</label><div class="field-line"></div></div>
-                <div class="field-group"><label>تاريخ التسليم المطلوب (Required Delivery)</label><div class="field-line"></div></div>
-                <div class="field-group" style="grid-column: span 2;"><label>سبب الطلب / الغرض (Purpose)</label><div class="field-line" style="min-height:36px;"></div></div>
+                <div class="field-group"><label>رقم الطلب (Requisition No.)</label><input type="text" class="field-line"></div>
+                <div class="field-group"><label>تاريخ الطلب (Request Date)</label><input type="text" class="field-line"></div>
+                <div class="field-group"><label>الفرع الطالب (Requesting Branch)</label><input type="text" class="field-line"></div>
+                <div class="field-group"><label>المستودع المورد (Supplying WH)</label><input type="text" class="field-line"></div>
+                <div class="field-group"><label>القسم الطالب (Department)</label><input type="text" class="field-line"></div>
+                <div class="field-group"><label>تاريخ التسليم المطلوب (Required Delivery)</label><input type="text" class="field-line"></div>
+                <div class="field-group" style="grid-column: span 2;"><label>سبب الطلب / الغرض (Purpose)</label><input type="text" class="field-line" style="min-height:36px;"></div>
             </div>
 
             <div class="section-title">📦 بنود الطلب — Requisition Lines</div>
@@ -130,8 +145,8 @@
             </table>
 
             <div class="fields-grid two" style="margin-top:12px;">
-                <div class="field-group"><label>القيمة الإجمالية للطلب (Total Value) (د.ل)</label><div class="field-line" style="border-bottom: 3px solid #FF4500;"></div></div>
-                <div class="field-group"><label>رقم الصرف المرجعي (Issue Ref.)</label><div class="field-line"></div></div>
+                <div class="field-group"><label>القيمة الإجمالية للطلب (Total Value) (د.ل)</label><input type="text" class="field-line" style="border-bottom: 3px solid #FF4500;"></div>
+                <div class="field-group"><label>رقم الصرف المرجعي (Issue Ref.)</label><input type="text" class="field-line"></div>
             </div>
 
             <div class="sign-row">
@@ -141,7 +156,7 @@
             </div>
         </div>
     </div>
-    <button class="print-btn" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+    <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
     <footer class="brand-footer"><p>إعداد محمد البرشي</p></footer>
 </div>
 </body>
