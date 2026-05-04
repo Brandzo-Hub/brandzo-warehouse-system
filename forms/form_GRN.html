@@ -468,8 +468,23 @@
             print-color-adjust: exact !important;
         }
     </style>
+
+    <style>
+        @media print { .no-print { display: none !important; } }
+        .form-input { width: 100%; border: none; border-bottom: 1px solid #eee; font-family: inherit; font-size: inherit; }
+        .form-input:focus { outline: none; background: #f9f9f9; }
+        input.field-line, textarea.field-line { border: none; border-bottom: 1.5px solid #333; width: 100%; font-family: inherit; font-size: inherit; background: transparent; }
+        textarea.field-line { height: 100px; resize: vertical; }
+    </style>
+
 </head>
 <body>
+
+    <div style="text-align: center; margin-bottom: 20px;" class="no-print">
+        <a href="../index.html" style="padding: 10px 20px; background: #c0392b; color: white; text-decoration: none; border-radius: 5px; margin: 0 10px;">🏠 Dashboard</a>
+        <a href="../Brandzo_Operational_Guide.html" style="padding: 10px 20px; background: #1B3A6B; color: white; text-decoration: none; border-radius: 5px; margin: 0 10px;">📘 Guide</a>
+    </div>
+
 
     <!-- ========== PAGE WRAPPER ========== -->
     <div class="page-wrapper">
@@ -495,7 +510,7 @@
         </div>
 
         <!-- Print Button (Top) -->
-        <button class="print-btn" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+        <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
 
         <!-- ========== FORM ========== -->
         <div class="form-wrap">
@@ -508,23 +523,23 @@
 
                 <div class="section-title">📋 بيانات سند الاستلام — GRN Header</div>
                 <div class="fields-grid">
-                    <div class="field-group"><label>رقم GRN (GRN Number)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>تاريخ ووقت الاستلام (Date & Time)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>رقم أمر الشراء المرجعي (PO Ref.)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>اسم المورد (Supplier)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>رقم اللوحة / الشاحنة (Truck Plate)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>رقم الرصيف (Dock No.)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>اسم مشرف الاستلام (Receiver)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>اسم فاحص الجودة (QC Inspector)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>رقم إشعار الشحن ASN (ASN No.)</label><div class="field-line"></div></div>
+                    <div class="field-group"><label>رقم GRN (GRN Number)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>تاريخ ووقت الاستلام (Date & Time)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>رقم أمر الشراء المرجعي (PO Ref.)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>اسم المورد (Supplier)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>رقم اللوحة / الشاحنة (Truck Plate)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>رقم الرصيف (Dock No.)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>اسم مشرف الاستلام (Receiver)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>اسم فاحص الجودة (QC Inspector)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>رقم إشعار الشحن ASN (ASN No.)</label><input type="text" class="field-line"></div>
                 </div>
 
                 <div class="section-title">🌡️ فحص درجة الحرارة (CCP 1) — Temperature Check</div>
                 <div class="fields-grid four">
-                    <div class="field-group"><label>درجة حرارة شاحنة التبريد (°م)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>درجة حرارة المنتجات المبردة (°م)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>درجة حرارة المجمدات (°م)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>النتيجة (مقبول / مرفوض)</label><div class="field-line"></div></div>
+                    <div class="field-group"><label>درجة حرارة شاحنة التبريد (°م)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>درجة حرارة المنتجات المبردة (°م)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>درجة حرارة المجمدات (°م)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>النتيجة (مقبول / مرفوض)</label><input type="text" class="field-line"></div>
                 </div>
                 <div class="note-box"><strong>⚠️ حد حرج CCP1:</strong> المبردات ≤ 4°م | المجمدات ≤ -18°م — أي تجاوز = رفض كامل الشحنة</div>
 
@@ -545,35 +560,99 @@
                     <tbody>
                         <tr>
                             <td>1</td>
-                            <td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="date" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
                         </tr>
                         <tr>
                             <td>2</td>
-                            <td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="date" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
                         </tr>
                         <tr>
                             <td>3</td>
-                            <td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="date" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
                         </tr>
                         <tr>
                             <td>4</td>
-                            <td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="date" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
                         </tr>
                         <tr>
                             <td>5</td>
-                            <td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="date" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
                         </tr>
                         <tr>
                             <td>6</td>
-                            <td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="date" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
                         </tr>
                         <tr>
                             <td>7</td>
-                            <td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="date" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
                         </tr>
                         <tr>
                             <td>8</td>
-                            <td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="number" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="date" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -598,14 +677,14 @@
 
                 <div class="section-title">📊 ملخص الاستلام — Receipt Summary</div>
                 <div class="fields-grid four">
-                    <div class="field-group"><label>إجمالي الكميات المطلوبة</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>إجمالي الكميات المستلمة</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>إجمالي الكميات المرفوضة</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>قرار القسم الفاحص (مقبول/مرفوض/جزئي)</label><div class="field-line"></div></div>
+                    <div class="field-group"><label>إجمالي الكميات المطلوبة</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>إجمالي الكميات المستلمة</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>إجمالي الكميات المرفوضة</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>قرار القسم الفاحص (مقبول/مرفوض/جزئي)</label><input type="text" class="field-line"></div>
                 </div>
                 <div class="fields-grid two">
-                    <div class="field-group"><label>سبب الرفض (إن وجد)</label><div class="field-line" style="min-height:44px;"></div></div>
-                    <div class="field-group"><label>الإجراء المتخذ للكميات المرفوضة</label><div class="field-line" style="min-height:44px;"></div></div>
+                    <div class="field-group"><label>سبب الرفض (إن وجد)</label><textarea class="field-line"></textarea></div>
+                    <div class="field-group"><label>الإجراء المتخذ للكميات المرفوضة</label><textarea class="field-line"></textarea></div>
                 </div>
 
                 <div class="sign-row">
@@ -627,7 +706,7 @@
         </div>
 
         <!-- Print Button (Bottom) -->
-        <button class="print-btn" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+        <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
 
         <!-- Footer -->
         <footer class="brand-footer">

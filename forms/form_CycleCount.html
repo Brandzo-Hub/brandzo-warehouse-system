@@ -456,8 +456,23 @@
             print-color-adjust: exact !important;
         }
     </style>
+
+    <style>
+        @media print { .no-print { display: none !important; } }
+        .form-input { width: 100%; border: none; border-bottom: 1px solid #eee; font-family: inherit; font-size: inherit; background: transparent; }
+        .form-input:focus { outline: none; background: #f9f9f9; }
+        input.field-line, textarea.field-line { border: none; border-bottom: 1.5px solid #333; width: 100%; font-family: inherit; font-size: inherit; background: transparent; }
+        textarea.field-line { height: 100px; resize: vertical; }
+    </style>
+
 </head>
 <body>
+
+    <div style="text-align: center; margin-bottom: 20px;" class="no-print">
+        <a href="../index.html" style="padding: 10px 20px; background: #c0392b; color: white; text-decoration: none; border-radius: 5px; margin: 0 10px;">🏠 Dashboard</a>
+        <a href="../Brandzo_Operational_Guide.html" style="padding: 10px 20px; background: #1B3A6B; color: white; text-decoration: none; border-radius: 5px; margin: 0 10px;">📘 Guide</a>
+    </div>
+
 
     <!-- ========== PAGE WRAPPER ========== -->
     <div class="page-wrapper">
@@ -483,7 +498,7 @@
         </div>
 
         <!-- Print Button (Top) -->
-        <button class="print-btn" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+        <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
 
         <!-- ========== FORM ========== -->
         <div class="form-wrap">
@@ -496,12 +511,12 @@
 
                 <div class="section-title">📋 بيانات الجرد — Count Header</div>
                 <div class="fields-grid">
-                    <div class="field-group"><label>تاريخ الجرد (Count Date)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>فترة الجرد (Shift/Period)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>المنطقة / الرف (Zone / Rack)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>فئة ABC المجردة (ABC Category)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>اسم عداد الجرد (Counter)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>اسم مراجع الجرد (Verifier)</label><div class="field-line"></div></div>
+                    <div class="field-group"><label>تاريخ الجرد (Count Date)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>فترة الجرد (Shift/Period)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>المنطقة / الرف (Zone / Rack)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>فئة ABC المجردة (ABC Category)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>اسم عداد الجرد (Counter)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>اسم مراجع الجرد (Verifier)</label><input type="text" class="field-line"></div>
                 </div>
 
                 <div class="note-box">
@@ -732,14 +747,14 @@
 
                 <div class="section-title">📊 ملخص نتائج الجرد — Count Results Summary</div>
                 <div class="fields-grid four">
-                    <div class="field-group"><label>إجمالي الأصناف المجردة</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>أصناف مطابقة (100%)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>أصناف بفرق (Variance Items)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>% دقة المخزون الكلي</label><div class="field-line" style="border-bottom: 3px solid #FF4500;"></div></div>
+                    <div class="field-group"><label>إجمالي الأصناف المجردة</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>أصناف مطابقة (100%)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>أصناف بفرق (Variance Items)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>% دقة المخزون الكلي</label><input type="text" class="field-line" style="border-bottom: 3px solid #FF4500;"></div>
                 </div>
                 <div class="fields-grid two">
-                    <div class="field-group"><label>قيمة الفوارق الإجمالية (د.ل)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>الإجراء المتخذ (Corrective Action)</label><div class="field-line"></div></div>
+                    <div class="field-group"><label>قيمة الفوارق الإجمالية (د.ل)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>الإجراء المتخذ (Corrective Action)</label><input type="text" class="field-line"></div>
                 </div>
 
                 <div class="sign-row">
@@ -752,7 +767,7 @@
         </div>
 
         <!-- Print Button (Bottom) -->
-        <button class="print-btn" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+        <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
 
         <!-- Footer -->
         <footer class="brand-footer">

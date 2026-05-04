@@ -474,8 +474,23 @@
             print-color-adjust: exact !important;
         }
     </style>
+
+    <style>
+        @media print { .no-print { display: none !important; } }
+        .form-input { width: 100%; border: none; border-bottom: 1px solid #eee; font-family: inherit; font-size: inherit; }
+        .form-input:focus { outline: none; background: #f9f9f9; }
+        input.field-line, textarea.field-line { border: none; border-bottom: 1.5px solid #333; width: 100%; font-family: inherit; font-size: inherit; background: transparent; }
+        textarea.field-line { height: 100px; resize: vertical; }
+    </style>
+
 </head>
 <body>
+
+    <div style="text-align: center; margin-bottom: 20px;" class="no-print">
+        <a href="../index.html" style="padding: 10px 20px; background: #c0392b; color: white; text-decoration: none; border-radius: 5px; margin: 0 10px;">🏠 Dashboard</a>
+        <a href="../Brandzo_Operational_Guide.html" style="padding: 10px 20px; background: #1B3A6B; color: white; text-decoration: none; border-radius: 5px; margin: 0 10px;">📘 Guide</a>
+    </div>
+
 
     <!-- ========== PAGE WRAPPER ========== -->
     <div class="page-wrapper">
@@ -501,7 +516,7 @@
         </div>
 
         <!-- Print Button (Top) -->
-        <button class="print-btn" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+        <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
 
         <!-- ========== FORM ========== -->
         <div class="form-wrap">
@@ -514,21 +529,21 @@
 
                 <div class="section-title">📋 بيانات أمر الشراء — Purchase Order Header</div>
                 <div class="fields-grid">
-                    <div class="field-group"><label>رقم أمر الشراء (PO No.)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>تاريخ الإصدار (Issue Date)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>تاريخ التسليم المطلوب (Required Delivery)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>رقم طلب الشراء المرجعي (PR Ref.)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>الفرع / المستودع (Branch/Warehouse)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>شروط التسليم (Incoterms)</label><div class="field-line"></div></div>
+                    <div class="field-group"><label>رقم أمر الشراء (PO No.)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>تاريخ الإصدار (Issue Date)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>تاريخ التسليم المطلوب (Required Delivery)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>رقم طلب الشراء المرجعي (PR Ref.)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>الفرع / المستودع (Branch/Warehouse)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>شروط التسليم (Incoterms)</label><input type="text" class="field-line"></div>
                 </div>
 
                 <div class="section-title">🏢 بيانات المورد — Supplier Information</div>
                 <div class="fields-grid">
-                    <div class="field-group"><label>اسم المورد (Supplier Name)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>رمز المورد (Supplier Code)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>رقم العقد / الاتفاقية (Contract No.)</label><div class="field-line"></div></div>
-                    <div class="field-group" style="grid-column: span 2;"><label>عنوان المورد (Supplier Address)</label><div class="field-line"></div></div>
-                    <div class="field-group"><label>جهة التواصل (Contact Person)</label><div class="field-line"></div></div>
+                    <div class="field-group"><label>اسم المورد (Supplier Name)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>رمز المورد (Supplier Code)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>رقم العقد / الاتفاقية (Contract No.)</label><input type="text" class="field-line"></div>
+                    <div class="field-group" style="grid-column: span 2;"><label>عنوان المورد (Supplier Address)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>جهة التواصل (Contact Person)</label><input type="text" class="field-line"></div>
                 </div>
 
                 <div class="section-title">📦 بنود أمر الشراء — Line Items</div>
@@ -547,54 +562,104 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>1</td><td class="empty-row"></td><td class="empty-row"></td>
-                            <td class="empty-row"></td><td class="empty-row"></td>
-                            <td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td>
+                            <td>1</td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="number" class="form-input item-qty"></td>
+                            <td><input type="number" class="form-input item-price"></td>
+                            <td><input type="number" class="form-input item-total" readonly></td>
+                            <td><input type="text" class="form-input"></td>
                         </tr>
                         <tr>
-                            <td>2</td><td class="empty-row"></td><td class="empty-row"></td>
-                            <td class="empty-row"></td><td class="empty-row"></td>
-                            <td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td>
+                            <td>2</td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="number" class="form-input item-qty"></td>
+                            <td><input type="number" class="form-input item-price"></td>
+                            <td><input type="number" class="form-input item-total" readonly></td>
+                            <td><input type="text" class="form-input"></td>
                         </tr>
                         <tr>
-                            <td>3</td><td class="empty-row"></td><td class="empty-row"></td>
-                            <td class="empty-row"></td><td class="empty-row"></td>
-                            <td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td>
+                            <td>3</td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="number" class="form-input item-qty"></td>
+                            <td><input type="number" class="form-input item-price"></td>
+                            <td><input type="number" class="form-input item-total" readonly></td>
+                            <td><input type="text" class="form-input"></td>
                         </tr>
                         <tr>
-                            <td>4</td><td class="empty-row"></td><td class="empty-row"></td>
-                            <td class="empty-row"></td><td class="empty-row"></td>
-                            <td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td>
+                            <td>4</td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="number" class="form-input item-qty"></td>
+                            <td><input type="number" class="form-input item-price"></td>
+                            <td><input type="number" class="form-input item-total" readonly></td>
+                            <td><input type="text" class="form-input"></td>
                         </tr>
                         <tr>
-                            <td>5</td><td class="empty-row"></td><td class="empty-row"></td>
-                            <td class="empty-row"></td><td class="empty-row"></td>
-                            <td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td>
+                            <td>5</td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="number" class="form-input item-qty"></td>
+                            <td><input type="number" class="form-input item-price"></td>
+                            <td><input type="number" class="form-input item-total" readonly></td>
+                            <td><input type="text" class="form-input"></td>
                         </tr>
                         <tr>
-                            <td>6</td><td class="empty-row"></td><td class="empty-row"></td>
-                            <td class="empty-row"></td><td class="empty-row"></td>
-                            <td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td>
+                            <td>6</td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="number" class="form-input item-qty"></td>
+                            <td><input type="number" class="form-input item-price"></td>
+                            <td><input type="number" class="form-input item-total" readonly></td>
+                            <td><input type="text" class="form-input"></td>
                         </tr>
                         <tr>
-                            <td>7</td><td class="empty-row"></td><td class="empty-row"></td>
-                            <td class="empty-row"></td><td class="empty-row"></td>
-                            <td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td>
+                            <td>7</td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="number" class="form-input item-qty"></td>
+                            <td><input type="number" class="form-input item-price"></td>
+                            <td><input type="number" class="form-input item-total" readonly></td>
+                            <td><input type="text" class="form-input"></td>
                         </tr>
                         <tr>
-                            <td>8</td><td class="empty-row"></td><td class="empty-row"></td>
-                            <td class="empty-row"></td><td class="empty-row"></td>
-                            <td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td>
+                            <td>8</td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="number" class="form-input item-qty"></td>
+                            <td><input type="number" class="form-input item-price"></td>
+                            <td><input type="number" class="form-input item-total" readonly></td>
+                            <td><input type="text" class="form-input"></td>
                         </tr>
                         <tr>
-                            <td>9</td><td class="empty-row"></td><td class="empty-row"></td>
-                            <td class="empty-row"></td><td class="empty-row"></td>
-                            <td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td>
+                            <td>9</td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="number" class="form-input item-qty"></td>
+                            <td><input type="number" class="form-input item-price"></td>
+                            <td><input type="number" class="form-input item-total" readonly></td>
+                            <td><input type="text" class="form-input"></td>
                         </tr>
                         <tr>
-                            <td>10</td><td class="empty-row"></td><td class="empty-row"></td>
-                            <td class="empty-row"></td><td class="empty-row"></td>
-                            <td class="empty-row"></td><td class="empty-row"></td><td class="empty-row"></td>
+                            <td>10</td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><input type="number" class="form-input item-qty"></td>
+                            <td><input type="number" class="form-input item-price"></td>
+                            <td><input type="number" class="form-input item-total" readonly></td>
+                            <td><input type="text" class="form-input"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -609,14 +674,14 @@
                             <label><input type="radio" name="discount" value="no"> لا يوجد</label>
                         </div>
                         <div class="discount-details">
-                            <div class="field-line" style="width:80px;" placeholder="النسبة %"></div>
-                            <div class="field-line" style="width:120px;" placeholder="إجمالي القيمة (د.ل)"></div>
+                            <input type="text" class="field-line" style="width:80px;" placeholder="النسبة %">
+                            <input type="text" class="field-line" style="width:120px;" placeholder="إجمالي القيمة (د.ل)">
                         </div>
                     </div>
                     <!-- Grand Total field -->
                     <div class="field-group">
                         <label><strong>القيمة الإجمالية النهائية (GRAND TOTAL)</strong></label>
-                        <div class="field-line" style="border-bottom: 3px solid #FF4500;"></div>
+                        <input type="text" class="field-line" style="border-bottom: 3px solid #FF4500;">
                     </div>
                 </div>
 
@@ -633,8 +698,8 @@
                 </div>
 
                 <div class="fields-grid two">
-                    <div class="field-group"><label>ملاحظات إضافية (Additional Notes)</label><div class="field-line" style="min-height:50px;"></div></div>
-                    <div class="field-group"><label>معلومات نافذة التسليم (Delivery Window)</label><div class="field-line" style="min-height:50px;"></div></div>
+                    <div class="field-group"><label>ملاحظات إضافية (Additional Notes)</label><textarea class="field-line"></textarea></div>
+                    <div class="field-group"><label>معلومات نافذة التسليم (Delivery Window)</label><textarea class="field-line"></textarea></div>
                 </div>
 
                 <div class="sign-row">
@@ -659,7 +724,7 @@
         </div>
 
         <!-- Print Button (Bottom) -->
-        <button class="print-btn" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+        <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
 
         <!-- Footer -->
         <footer class="brand-footer">
@@ -667,6 +732,33 @@
         </footer>
 
     </div>
+
+
+        <script>
+            document.addEventListener('input', function(e) {
+                if (e.target.classList.contains('item-qty') || e.target.classList.contains('item-price')) {
+                    const row = e.target.closest('tr');
+                    const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+                    const price = parseFloat(row.querySelector('.item-price').value) || 0;
+                    const totalField = row.querySelector('.item-total');
+                    const total = qty * price;
+                    totalField.value = total.toFixed(2);
+
+                    let grandTotal = 0;
+                    document.querySelectorAll('.item-total').forEach(f => {
+                        grandTotal += parseFloat(f.value) || 0;
+                    });
+
+                    const labels = document.querySelectorAll('label');
+                    labels.forEach(l => {
+                        if (l.textContent.includes('GRAND TOTAL')) {
+                            const targetInput = l.parentElement.querySelector('.field-line');
+                            if (targetInput) targetInput.value = grandTotal.toFixed(2);
+                        }
+                    });
+                }
+            });
+        </script>
 
 </body>
 </html>
