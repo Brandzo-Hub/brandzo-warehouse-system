@@ -36,23 +36,25 @@ const WarehouseManager = () => {
       setFormData({ code: '', name: '', manager: '' });
 
     } catch (error) {
-      // التقاط الخطأ وعرضه على الشاشة فوراً
       alert("❌ حدث خطأ يمنع الحفظ: " + error.message);
     }
   };
 
   return (
-    <div className="p-6 font-['Cairo'] text-right" dir="rtl">
-      <h2 className="text-2xl font-bold mb-6 text-[#1a1a2e]">إدارة المستودعات (Warehouses)</h2>
+    <div className="text-right" dir="rtl">
+      <header className="mb-8">
+        <h2 className="text-3xl font-bold text-[#1a1a2e]">إدارة المستودعات (Warehouses)</h2>
+        <p className="text-gray-500 mt-1">إضافة وإدارة مستودعات العلامة التجارية</p>
+      </header>
 
       {/* Add Warehouse Form */}
-      <form onSubmit={handleAdd} className="mb-8 bg-white p-6 rounded-lg shadow-md border-t-4 border-[#c0392b]">
+      <form onSubmit={handleAdd} className="mb-8 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
         <h3 className="text-lg font-bold mb-4 text-[#c0392b]">إضافة مستودع جديد</h3>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <input
             type="text"
             placeholder="كود المستودع (مثلاً WH001)"
-            className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-[#c0392b]"
+            className="border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c0392b] bg-gray-50"
             value={formData.code}
             onChange={(e) => setFormData({ ...formData, code: e.target.value })}
             required
@@ -60,7 +62,7 @@ const WarehouseManager = () => {
           <input
             type="text"
             placeholder="اسم المستودع"
-            className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-[#c0392b]"
+            className="border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c0392b] bg-gray-50"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
@@ -68,25 +70,25 @@ const WarehouseManager = () => {
           <input
             type="text"
             placeholder="المدير المسئول"
-            className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-[#c0392b]"
+            className="border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c0392b] bg-gray-50"
             value={formData.manager}
             onChange={(e) => setFormData({ ...formData, manager: e.target.value })}
           />
-          <button type="submit" className="bg-[#c0392b] text-white px-4 py-2 rounded font-bold hover:bg-[#8b1a1a] transition-colors shadow">
+          <button type="submit" className="bg-[#c0392b] text-white px-4 py-2 rounded-lg font-bold hover:bg-[#8b1a1a] transition-colors shadow-md">
             إضافة مستودع
           </button>
         </div>
       </form>
 
       {/* Warehouse List */}
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <table className="w-full text-right border-collapse">
-          <thead className="bg-gray-100 border-b">
+          <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
               <th className="p-4 font-bold text-gray-700">الكود</th>
               <th className="p-4 font-bold text-gray-700">الاسم</th>
               <th className="p-4 font-bold text-gray-700">المدير</th>
-              <th className="p-4 font-bold text-gray-700">الحالة</th>
+              <th className="p-4 font-bold text-gray-700 text-center">الحالة</th>
             </tr>
           </thead>
           <tbody>
@@ -96,11 +98,11 @@ const WarehouseManager = () => {
               <tr><td colSpan="4" className="p-8 text-center text-gray-500">لا توجد مستودعات مسجلة</td></tr>
             ) : (
               warehouses.map((wh) => (
-                <tr key={wh.id} className="border-b hover:bg-gray-50 transition-colors">
+                <tr key={wh.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                   <td className="p-4 font-mono text-[#c0392b] font-bold">{wh.code}</td>
                   <td className="p-4 font-medium">{wh.name}</td>
                   <td className="p-4">{wh.manager || '—'}</td>
-                  <td className="p-4">
+                  <td className="p-4 text-center">
                     <span className={`px-3 py-1 rounded-full text-xs font-bold ${
                       wh.status === 'نشط' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                     }`}>
