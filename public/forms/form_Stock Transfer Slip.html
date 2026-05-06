@@ -79,23 +79,19 @@
         .brand-footer { text-align: center; padding: 20px 16px 8px; margin-top: 14px; width: 100%; }
         .brand-footer p { font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 1.1rem; color: #FFD700; text-shadow: 0 0 12px rgba(255,215,0,0.35); }
         @media print { .print-btn { display: none !important; } body { background: #fff !important; } .form-wrap { box-shadow: none; } }
-    </style>
-
-    <style>
-        @media print { .no-print { display: none !important; } }
         .form-input { width: 100%; border: none; border-bottom: 1px solid #eee; font-family: inherit; font-size: inherit; background: transparent; }
         .form-input:focus { outline: none; background: #f9f9f9; }
         input.field-line, textarea.field-line { border: none; border-bottom: 1.5px solid #333; width: 100%; font-family: inherit; font-size: inherit; background: transparent; }
         textarea.field-line { height: 100px; resize: vertical; }
+        @media print { .no-print { display: none !important; } }
     </style>
-
 </head>
 <body>
 
-    <div style="text-align: center; margin-bottom: 20px;" class="no-print">
-        <a href="../index.html" style="padding: 10px 20px; background: #c0392b; color: white; text-decoration: none; border-radius: 5px; margin: 0 10px;">🏠 Dashboard</a>
-        <a href="../Brandzo_Operational_Guide.html" style="padding: 10px 20px; background: #1B3A6B; color: white; text-decoration: none; border-radius: 5px; margin: 0 10px;">📘 Guide</a>
-    </div>
+<div style="text-align: center; margin-bottom: 20px;" class="no-print">
+    <a href="../index.html" style="padding: 10px 20px; background: #c0392b; color: white; text-decoration: none; border-radius: 5px; margin: 0 10px;">🏠 Dashboard</a>
+    <a href="../Brandzo_Operational_Guide.html" style="padding: 10px 20px; background: #1B3A6B; color: white; text-decoration: none; border-radius: 5px; margin: 0 10px;">📘 Guide</a>
+</div>
 
 <div class="page-wrapper">
     <header class="luxury-header">
@@ -131,19 +127,22 @@
             <div class="attachment-note">
                 (يتم تعبئة الجدول في حالة عدم وجود مرفق. لو يوجد، يتم شطب الجدول بشكل متوازي وتحديد علامة صح على "يوجد مرفق مدبس مع النموذج")
             </div>
-            <table class="form-table">
+            <table class="form-table" id="transferTable">
                 <thead>
-                    <tr><th>#</th><th>رمز SKU</th><th>اسم الصنف</th><th>الكمية</th><th>وحدة القياس</th><th>الموقع المصدر</th><th>الموقع الهدف</th><th>ملاحظات</th></tr>
+                    <tr><th>#</th><th>رمز SKU</th><th>اسم الصنف</th><th>الكمية</th><th>وحدة القياس</th><th>سعر الوحدة (د.ل)</th><th>الموقع المصدر</th><th>الموقع الهدف</th><th>الإجمالي (د.ل)</th><th>ملاحظات</th></tr>
                 </thead>
                 <tbody>
-                    <tr><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                    <tr><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                    <tr><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                    <tr><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                    <tr><td>5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>1</td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="number" class="form-input item-qty" step="any" value="0"></td><td><input type="text" class="form-input"></td><td><input type="number" class="form-input item-price" step="any" value="0"></td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="number" class="form-input item-total" readonly></td><td><input type="text" class="form-input"></td></tr>
+                    <tr><td>2</td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="number" class="form-input item-qty" step="any" value="0"></td><td><input type="text" class="form-input"></td><td><input type="number" class="form-input item-price" step="any" value="0"></td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="number" class="form-input item-total" readonly></td><td><input type="text" class="form-input"></td></tr>
+                    <tr><td>3</td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="number" class="form-input item-qty" step="any" value="0"></td><td><input type="text" class="form-input"></td><td><input type="number" class="form-input item-price" step="any" value="0"></td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="number" class="form-input item-total" readonly></td><td><input type="text" class="form-input"></td></tr>
+                    <tr><td>4</td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="number" class="form-input item-qty" step="any" value="0"></td><td><input type="text" class="form-input"></td><td><input type="number" class="form-input item-price" step="any" value="0"></td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="number" class="form-input item-total" readonly></td><td><input type="text" class="form-input"></td></tr>
+                    <tr><td>5</td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="number" class="form-input item-qty" step="any" value="0"></td><td><input type="text" class="form-input"></td><td><input type="number" class="form-input item-price" step="any" value="0"></td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="number" class="form-input item-total" readonly></td><td><input type="text" class="form-input"></td></tr>
                 </tbody>
             </table>
-
+            <div class="fields-grid two" style="margin-top:12px;">
+                <div class="field-group"><label>القيمة الإجمالية للتحويل (Grand Total) (د.ل)</label><input type="text" class="field-line" id="transferGrandTotal" style="border-bottom: 3px solid #FF4500;" readonly></div>
+                <div class="field-group"><label>اعتماد مدير المستودع (WH Manager Approval)</label><input type="text" class="field-line"></div>
+            </div>
             <div class="sign-row">
                 <div class="sign-box"><div class="sign-line"></div><div class="sign-label">طالب التحويل (Requested By)</div></div>
                 <div class="sign-box"><div class="sign-line"></div><div class="sign-label">مشرف المستودع المُحول (From WH Supervisor)</div></div>
@@ -154,5 +153,27 @@
     <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
     <footer class="brand-footer"><p>إعداد محمد البرشي</p></footer>
 </div>
+
+<script>
+    function updateTransferTotal() {
+        let total = 0;
+        document.querySelectorAll('#transferTable .item-total').forEach(t => { total += parseFloat(t.value) || 0; });
+        document.getElementById('transferGrandTotal').value = total.toFixed(2);
+    }
+    function computeTransferRow(row) {
+        const qty = parseFloat(row.querySelector('.item-qty')?.value) || 0;
+        const price = parseFloat(row.querySelector('.item-price')?.value) || 0;
+        const totalField = row.querySelector('.item-total');
+        if (totalField) totalField.value = (qty * price).toFixed(2);
+        updateTransferTotal();
+    }
+    document.querySelectorAll('#transferTable tbody tr').forEach(row => {
+        const qty = row.querySelector('.item-qty');
+        const price = row.querySelector('.item-price');
+        if (qty) qty.addEventListener('input', () => computeTransferRow(row));
+        if (price) price.addEventListener('input', () => computeTransferRow(row));
+        computeTransferRow(row);
+    });
+</script>
 </body>
 </html>
