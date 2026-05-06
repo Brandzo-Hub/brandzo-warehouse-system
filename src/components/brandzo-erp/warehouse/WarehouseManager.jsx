@@ -4,7 +4,7 @@ import { db } from '../../../config/firebase.js';
 
 const WarehouseManager = () => {
   const [warehouses, setWarehouses] = useState([]);
-  const [newWarehouse, setNewWarehouse] = useState({ code: '', name: '', manager: '' });
+  const [formData, setFormData] = useState({ code: '', name: '', manager: '' });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -23,18 +23,21 @@ const WarehouseManager = () => {
 
   const handleAdd = async (e) => {
     e.preventDefault();
-    if (!newWarehouse.code || !newWarehouse.name) return;
+    if (!formData.code || !formData.name) return alert("يرجى ملء البيانات الأساسية");
 
     try {
-      const formData = {
-        ...newWarehouse,
+      await addDoc(collection(db, "warehouses"), {
+        ...formData,
         status: "نشط",
         createdAt: new Date()
-      };
-      await addDoc(collection(db, "warehouses"), formData);
-      setNewWarehouse({ code: '', name: '', manager: '' });
+      });
+
+      alert("✅ تم الحفظ في قاعدة البيانات بنجاح!");
+      setFormData({ code: '', name: '', manager: '' });
+
     } catch (error) {
-      console.error("Error adding warehouse: ", error);
+      // التقاط الخطأ وعرضه على الشاشة فوراً
+      alert("❌ حدث خطأ يمنع الحفظ: " + error.message);
     }
   };
 
@@ -50,24 +53,24 @@ const WarehouseManager = () => {
             type="text"
             placeholder="كود المستودع (مثلاً WH001)"
             className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-[#c0392b]"
-            value={newWarehouse.code}
-            onChange={(e) => setNewWarehouse({ ...newWarehouse, code: e.target.value })}
+            value={formData.code}
+            onChange={(e) => setFormData({ ...formData, code: e.target.value })}
             required
           />
           <input
             type="text"
             placeholder="اسم المستودع"
             className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-[#c0392b]"
-            value={newWarehouse.name}
-            onChange={(e) => setNewWarehouse({ ...newWarehouse, name: e.target.value })}
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
           />
           <input
             type="text"
             placeholder="المدير المسئول"
             className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-[#c0392b]"
-            value={newWarehouse.manager}
-            onChange={(e) => setNewWarehouse({ ...newWarehouse, manager: e.target.value })}
+            value={formData.manager}
+            onChange={(e) => setFormData({ ...formData, manager: e.target.value })}
           />
           <button type="submit" className="bg-[#c0392b] text-white px-4 py-2 rounded font-bold hover:bg-[#8b1a1a] transition-colors shadow">
             إضافة مستودع
