@@ -47,10 +47,10 @@ jobs:
             exit 1
           fi
 
-      - name: Setup Node
+      - - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"  # قمنا بترقيته للإصدار 22 ليتوافق مع Astro 6
           cache: ${{ steps.detect-package-manager.outputs.manager }}
           cache-dependency-path: ${{ env.BUILD_PATH }}/${{ steps.detect-package-manager.outputs.lockfile }}
 
