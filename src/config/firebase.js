@@ -1,20 +1,31 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getFirestore, initializeFirestore } from "firebase/firestore";
 
-// Firebase configuration for Brandzo ERP
 const firebaseConfig = {
   apiKey: "AIzaSyAWhqQVdhODZT0bdXnbyYzcmpnv11s9qoU",
-  authDomain: "brandzo-erp-2026.firebaseapp.com",
-  projectId: "brandzo-erp-2026",
-  storageBucket: "brandzo-erp-2026.firebasestorage.app",
-  messagingSenderId: "991460523040",
-  appId: "1:991460523040:web:d3c6f76b1ff13a1ab8d045"
-};
+    authDomain: "brandzo-erp-2026.firebaseapp.com",
+      projectId: "brandzo-erp-2026",
+        storageBucket: "brandzo-erp-2026.firebasestorage.app",
+          messagingSenderId: "991460523040",
+            appId: "1:991460523040:web:d3c6f76b1ff13a1ab8d045"
+            };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+            // 1. تأكد من تهيئة التطبيق مرة واحدة فقط
+            const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
-// Initialize Cloud Firestore and get a reference to the service
-export const db = getFirestore(app);
+            // 2. تأكد من تهيئة قاعدة البيانات مرة واحدة فقط مع وضع الاتصال المستقر
+            let db;
+            if (getApps().length > 0) {
+                try {
+                        db = initializeFirestore(app, {
+                                    experimentalForceLongPolling: true, // ضروري جداً لبيئة Codespaces
+                                            });
+                                                } catch (e) {
+                                                        // إذا كان تم تهيئتها مسبقاً، استخدم النسخة الموجودة
+                                                                db = getFirestore(app);
+                                                                    }
+                                                                    } else {
+                                                                        db = getFirestore(app);
+                                                                        }
 
-export default db;
+                                                                        export { db };

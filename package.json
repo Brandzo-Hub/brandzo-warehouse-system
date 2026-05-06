@@ -1,0 +1,31 @@
+{
+  "name": "brandzo-warehouse-system",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/albarshi996/brandzo-warehouse-system.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/albarshi996/brandzo-warehouse-system/issues"
+  },
+  "homepage": "https://github.com/albarshi996/brandzo-warehouse-system#readme",
+  "dependencies": {
+    "@astrojs/react": "^5.0.4",
+    "@astrojs/tailwind": "^6.0.2",
+    "@tailwindcss/postcss": "^4.2.4",
+    "astro": "^6.2.2",
+    "firebase": "^12.12.1",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "tailwindcss": "^3.4.19"
+  }
+}
