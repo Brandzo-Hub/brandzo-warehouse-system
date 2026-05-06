@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مذكرة الخصم — Credit Note — Brandzo Franchise Partners</title>
+    <title>نموذج مرتجع مخزني — Goods Return Note (GRN-R) — Brandzo Franchise Partners</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
@@ -100,64 +100,133 @@
     </header>
     <div class="gold-separator"></div>
     <div class="arabic-title-section">
-        <span class="emoji-badge">💳</span><span class="emoji-badge">📉</span><span class="emoji-badge">🏢</span>
-        <span class="main-arabic-title">مذكرة الخصم — Credit Note</span>
-        <span class="emoji-badge">📦</span><span class="emoji-badge">📋</span>
+        <span class="emoji-badge">🏷️</span>
+        <span class="emoji-badge">📍</span>
+        <span class="emoji-badge">🏢</span>
+        <span class="main-arabic-title">نموذج مرتجع مخزني — Goods Return Note (GRN-R)</span>
+        <span class="emoji-badge">📦</span>
+        <span class="emoji-badge">🔍</span>
+        <span class="emoji-badge">📋</span>
     </div>
     <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
     <div class="form-wrap">
         <div class="form-header">
             <div class="logo">⚡ BRANDZO FRANCHISE PARTNERS</div>
-            <div class="form-title">مذكرة الخصم — Credit Note</div>
-            <div class="form-meta">النموذج رقم: <span class="doc-id">BFP-CN-013</span> &nbsp;|&nbsp; التاريخ: &nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </div>
+            <div class="form-title">نموذج مرتجع مخزني — Goods Return Note (GRN-R)</div>
+            <div class="form-meta">النموذج رقم: <span class="doc-id">BFP-RT-008</span> &nbsp;|&nbsp; التاريخ: &nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </div>
         </div>
         <div class="form-body">
-            <div class="section-title">📋 بيانات مذكرة الخصم — Credit Note Header</div>
-            <div class="fields-grid two">
-                <div class="field-group"><label>رقم مذكرة الخصم (Credit Note No.)</label><input type="text" class="field-line"></div>
-                <div class="field-group"><label>تاريخ الإصدار (Issue Date)</label><input type="text" class="field-line"></div>
-                <div class="field-group"><label>اسم المورد (Supplier Name)</label><input type="text" class="field-line"></div>
-                <div class="field-group"><label>رمز المورد (Supplier Code)</label><input type="text" class="field-line"></div>
-                <div class="field-group"><label>رقم GRN المرجعي (GRN Ref.)</label><input type="text" class="field-line"></div>
-                <div class="field-group"><label>رقم أمر الشراء المرجعي (PO Ref.)</label><input type="text" class="field-line"></div>
-                <div class="field-group"><label>سبب الخصم (Debit Reason)</label>
-                    <div style="display:flex; gap:10px; padding:6px 0; flex-wrap:wrap;">
-                        <label style="font-weight:400;"><input type="checkbox"> مرتجع</label>
-                        <label style="font-weight:400;"><input type="checkbox"> نقص كميات</label>
-                        <label style="font-weight:400;"><input type="checkbox"> مخالفة جودة</label>
-                        <label style="font-weight:400;"><input type="checkbox"> خطأ فاتورة</label>
-                    </div>
-                </div>
-                <div class="field-group"><label>تفاصيل الخصم (Details)</label><input type="text" class="field-line"></div>
+            <div class="section-title">📋 بيانات مذكرة المرتجعات — Return Header</div>
+            <div class="fields-grid">
+                <div class="field-group"><label>رقم مذكرة المرتجع (GRN-R No.)</label><input type="text" class="field-line"></div>
+                <div class="field-group"><label>تاريخ الإرجاع (Return Date)</label><input type="text" class="field-line"></div>
+                <div class="field-group"><label>اسم الفرع المُرجِع (Returning Branch)</label><input type="text" class="field-line"></div>
+                <div class="field-group"><label>نوع المرتجع (Type)</label><input type="text" class="field-line"></div>
+                <div class="field-group"><label>رقم أمر الصرف المرجعي (Dispatch Ref.)</label><input type="text" class="field-line"></div>
+                <div class="field-group"><label>اسم مستلم المرتجع (Return Receiver)</label><input type="text" class="field-line"></div>
             </div>
 
-            <div class="section-title">📦 بنود الخصم — Credit Note Lines</div>
+            <div class="section-title">📦 بنود المرتجعات — Return Line Items</div>
             <div class="attachment-note">
                 (يتم تعبئة الجدول في حالة عدم وجود مرفق. لو يوجد، يتم شطب الجدول بشكل متوازي وتحديد علامة صح على "يوجد مرفق مدبس مع النموذج")
             </div>
-            <table class="form-table" id="creditNoteTable">
+            <table class="form-table" id="returnTable">
                 <thead>
-                    <tr><th>#</th><th>رمز SKU</th><th>اسم الصنف</th><th>الكمية</th><th>سعر الوحدة (د.ل)</th><th>قيمة الخصم (د.ل)</th><th>سبب الخصم</th><th>ملاحظات</th></tr>
+                    <tr>
+                        <th>#</th><th>رمز SKU</th><th>اسم الصنف</th>
+                        <th>الكمية المُرجعة</th><th>سعر الوحدة (د.ل)</th><th>قيمة المرتجع (د.ل)</th>
+                        <th>سبب الإرجاع</th><th>حالة الصنف</th><th>الإجراء المقرر</th><th>تاريخ الصلاحية</th>
+                    </tr>
                 </thead>
                 <tbody>
-                    <tr><td>1</td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="number" class="form-input item-qty" value="0" step="any"></td><td><input type="number" class="form-input item-price" value="0" step="any"></td><td><input type="number" class="form-input item-total" readonly></td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td></tr>
-                    <tr><td>2</td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="number" class="form-input item-qty" value="0" step="any"></td><td><input type="number" class="form-input item-price" value="0" step="any"></td><td><input type="number" class="form-input item-total" readonly></td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td></tr>
-                    <tr><td>3</td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="number" class="form-input item-qty" value="0" step="any"></td><td><input type="number" class="form-input item-price" value="0" step="any"></td><td><input type="number" class="form-input item-total" readonly></td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td></tr>
-                    <tr><td>4</td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="number" class="form-input item-qty" value="0" step="any"></td><td><input type="number" class="form-input item-price" value="0" step="any"></td><td><input type="number" class="form-input item-total" readonly></td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td></tr>
+                    <tr><td>1</td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                        <td><input type="number" class="form-input item-qty" step="any" value="0"></td>
+                        <td><input type="number" class="form-input item-price" step="any" value="0"></td>
+                        <td><input type="number" class="form-input item-total" readonly></td>
+                        <td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                        <td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                    </tr>
+                    <tr><td>2</td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                        <td><input type="number" class="form-input item-qty" step="any" value="0"></td>
+                        <td><input type="number" class="form-input item-price" step="any" value="0"></td>
+                        <td><input type="number" class="form-input item-total" readonly></td>
+                        <td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                        <td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                    </tr>
+                    <tr><td>3</td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                        <td><input type="number" class="form-input item-qty" step="any" value="0"></td>
+                        <td><input type="number" class="form-input item-price" step="any" value="0"></td>
+                        <td><input type="number" class="form-input item-total" readonly></td>
+                        <td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                        <td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                    </tr>
+                    <tr><td>4</td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                        <td><input type="number" class="form-input item-qty" step="any" value="0"></td>
+                        <td><input type="number" class="form-input item-price" step="any" value="0"></td>
+                        <td><input type="number" class="form-input item-total" readonly></td>
+                        <td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                        <td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                    </tr>
+                    <tr><td>5</td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                        <td><input type="number" class="form-input item-qty" step="any" value="0"></td>
+                        <td><input type="number" class="form-input item-price" step="any" value="0"></td>
+                        <td><input type="number" class="form-input item-total" readonly></td>
+                        <td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                        <td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                    </tr>
+                    <tr><td>6</td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                        <td><input type="number" class="form-input item-qty" step="any" value="0"></td>
+                        <td><input type="number" class="form-input item-price" step="any" value="0"></td>
+                        <td><input type="number" class="form-input item-total" readonly></td>
+                        <td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                        <td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                    </tr>
+                    <tr><td>7</td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                        <td><input type="number" class="form-input item-qty" step="any" value="0"></td>
+                        <td><input type="number" class="form-input item-price" step="any" value="0"></td>
+                        <td><input type="number" class="form-input item-total" readonly></td>
+                        <td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                        <td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                    </tr>
+                    <tr><td>8</td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                        <td><input type="number" class="form-input item-qty" step="any" value="0"></td>
+                        <td><input type="number" class="form-input item-price" step="any" value="0"></td>
+                        <td><input type="number" class="form-input item-total" readonly></td>
+                        <td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                        <td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td>
+                    </tr>
                 </tbody>
             </table>
 
+            <div class="section-title">🔍 تصنيف حالة المرتجعات — Return Disposition</div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <div>
+                    <div class="note-box"><strong>أنواع الإجراءات المتاحة:</strong>
+                        <ul style="margin-top:6px; padding-right:16px;">
+                            <li>إعادة للمخزون (Return to Stock)</li>
+                            <li>نقل لمنطقة الحجر الصحي (Quarantine)</li>
+                            <li>إرجاع للمورد (Return to Supplier)</li>
+                            <li>إتلاف رسمي (Disposal — يتطلب اعتماد المدير)</li>
+                            <li>تخفيض السعر وبيع مع إشعار (Markdown)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="fields-grid" style="grid-template-columns:1fr; gap:8px; align-content:start;">
+                    <div class="field-group"><label>القيمة الإجمالية النهائية (GRAND TOTAL) (د.ل)</label><input type="text" class="field-line" id="returnGrandTotal" style="border-bottom: 3px solid #FF4500;" readonly></div>
+                    <div class="field-group"><label>رقم مذكرة الخصم (Credit Note No.)</label><input type="text" class="field-line"></div>
+                    <div class="field-group"><label>هل أُبلغ المورد؟ (نعم/لا)</label><input type="text" class="field-line"></div>
+                </div>
+            </div>
+
             <div class="fields-grid two" style="margin-top:12px;">
-                <div class="field-group"><label>إجمالي قيمة الخصم (Total Credit Value) (د.ل)</label><input type="text" class="field-line" id="totalCreditValue" style="border-bottom: 3px solid #FF4500;" readonly></div>
-                <div class="field-group"><label>طريقة التسوية (Settlement Method)</label><input type="text" class="field-line"></div>
-                <div class="field-group"><label>تاريخ التسوية (Settlement Date)</label><input type="text" class="field-line"></div>
-                <div class="field-group"><label>رقم الفاتورة الائتمانية (Credit Invoice No.)</label><input type="text" class="field-line"></div>
+                <div class="field-group"><label>ملاحظات إضافية</label><input type="text" class="field-line" style="min-height:50px;"></div>
+                <div class="field-group"><label>الإجراءات التصحيحية لمنع التكرار</label><input type="text" class="field-line" style="min-height:50px;"></div>
             </div>
 
             <div class="sign-row">
-                <div class="sign-box"><div class="sign-line"></div><div class="sign-label">معد المذكرة (Prepared By)</div></div>
-                <div class="sign-box"><div class="sign-line"></div><div class="sign-label">مدير المشتريات (Purchasing Manager)</div></div>
-                <div class="sign-box"><div class="sign-line"></div><div class="sign-label">المدير المالي (Finance Manager)</div></div>
+                <div class="sign-box"><div class="sign-line"></div><div class="sign-label">مشرف المرتجعات (Returns Supervisor)</div></div>
+                <div class="sign-box"><div class="sign-line"></div><div class="sign-label">فاحص الجودة (QC Inspector)</div></div>
+                <div class="sign-box"><div class="sign-line"></div><div class="sign-label">مدير المستودع (WH Manager)</div></div>
             </div>
         </div>
     </div>
@@ -166,30 +235,24 @@
 </div>
 
 <script>
-    function updateCreditTotals() {
-        let grand = 0;
-        document.querySelectorAll('#creditNoteTable .item-total').forEach(totalField => {
-            let val = parseFloat(totalField.value) || 0;
-            grand += val;
-        });
-        const totalCreditField = document.getElementById('totalCreditValue');
-        if (totalCreditField) totalCreditField.value = grand.toFixed(2);
+    function updateReturnTotal() {
+        let total = 0;
+        document.querySelectorAll('#returnTable .item-total').forEach(t => { total += parseFloat(t.value) || 0; });
+        document.getElementById('returnGrandTotal').value = total.toFixed(2);
     }
-
-    function computeRowTotal(row) {
+    function computeReturnRow(row) {
         const qty = parseFloat(row.querySelector('.item-qty')?.value) || 0;
         const price = parseFloat(row.querySelector('.item-price')?.value) || 0;
         const totalField = row.querySelector('.item-total');
         if (totalField) totalField.value = (qty * price).toFixed(2);
-        updateCreditTotals();
+        updateReturnTotal();
     }
-
-    document.querySelectorAll('#creditNoteTable tbody tr').forEach(row => {
-        const qtyInput = row.querySelector('.item-qty');
-        const priceInput = row.querySelector('.item-price');
-        if (qtyInput) qtyInput.addEventListener('input', () => computeRowTotal(row));
-        if (priceInput) priceInput.addEventListener('input', () => computeRowTotal(row));
-        computeRowTotal(row);
+    document.querySelectorAll('#returnTable tbody tr').forEach(row => {
+        const qty = row.querySelector('.item-qty');
+        const price = row.querySelector('.item-price');
+        if (qty) qty.addEventListener('input', () => computeReturnRow(row));
+        if (price) price.addEventListener('input', () => computeReturnRow(row));
+        computeReturnRow(row);
     });
 </script>
 </body>
