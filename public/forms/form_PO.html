@@ -473,6 +473,51 @@
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
         }
+    
+        /* ---- Responsive (mobile / tablet) ---- */
+        @media (max-width: 768px) {
+            body { padding: 12px 8px 24px !important; font-size: 12px !important; }
+            .page-wrapper { padding: 0 !important; }
+            .brand-name { font-size: 1.9rem !important; letter-spacing: 1px !important; }
+            .glass-circle { width: 64px !important; height: 64px !important; font-size: 1.5rem !important; }
+            .luxury-header { padding: 14px 8px 10px !important; gap: 10px !important; }
+            .arabic-title-section { padding: 4px 8px 12px !important; gap: 6px !important; }
+            .arabic-title-section .main-arabic-title { font-size: 0.95rem !important; line-height: 1.4 !important; }
+            .arabic-title-section .emoji-badge { width: 32px !important; height: 32px !important; font-size: 1.05rem !important; }
+            .gold-separator { width: 90% !important; }
+            .form-wrap { margin: 6px auto !important; border-radius: 4px !important; }
+            .form-header { padding: 12px 14px !important; }
+            .form-header .logo { font-size: 1rem !important; }
+            .form-header .form-title { font-size: 0.92rem !important; }
+            .form-header .form-meta { font-size: 0.7rem !important; }
+            .form-body { padding: 12px 14px !important; }
+            .section-title { font-size: 0.8rem !important; padding: 6px 10px !important; }
+            .fields-grid, .fields-grid.two, .fields-grid.three, .fields-grid.four { grid-template-columns: 1fr !important; gap: 8px !important; }
+            .field-group label { font-size: 0.7rem !important; }
+            .field-group .field-line { min-height: 28px !important; }
+            /* Tables become horizontally scrollable instead of overflowing the screen. */
+            table.form-table { display: block !important; width: 100% !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; white-space: nowrap !important; }
+            table.form-table thead, table.form-table tbody, table.form-table tr { width: max-content !important; min-width: 100% !important; }
+            .sign-row { grid-template-columns: 1fr !important; gap: 14px !important; padding-top: 12px !important; }
+            .sign-box .sign-line { margin: 22px 0 4px !important; }
+            .print-btn { width: calc(100% - 16px) !important; margin: 10px 8px !important; padding: 10px 14px !important; font-size: 0.95rem !important; }
+            .brand-footer { padding: 14px 8px 4px !important; }
+            .brand-footer p { font-size: 0.95rem !important; }
+            .note-box { font-size: 0.75rem !important; padding: 8px 10px !important; }
+        }
+        @media (max-width: 480px) {
+            .brand-name { font-size: 1.55rem !important; }
+            .glass-circle { width: 52px !important; height: 52px !important; font-size: 1.2rem !important; }
+            .arabic-title-section .emoji-badge { width: 28px !important; height: 28px !important; font-size: 0.95rem !important; }
+            .form-header .logo { font-size: 0.92rem !important; }
+            .arabic-title-section .main-arabic-title { font-size: 0.85rem !important; }
+        }
+        /* Top dashboard/guide nav: stack on phones so buttons don't overflow. */
+        @media (max-width: 480px) {
+            .form-top-nav { flex-direction: column !important; gap: 8px !important; padding: 0 12px !important; }
+            .form-top-nav a { width: 100% !important; text-align: center !important; margin: 0 !important; }
+        }
+
     </style>
 
     <style>
@@ -486,10 +531,10 @@
 </head>
 <body>
 
-    <div style="text-align: center; margin-bottom: 20px;" class="no-print">
-        <a href="../index.html" style="padding: 10px 20px; background: #c0392b; color: white; text-decoration: none; border-radius: 5px; margin: 0 10px;">🏠 Dashboard</a>
-        <a href="../Brandzo_Operational_Guide.html" style="padding: 10px 20px; background: #1B3A6B; color: white; text-decoration: none; border-radius: 5px; margin: 0 10px;">📘 Guide</a>
-    </div>
+    <div class="no-print form-top-nav" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; padding: 0 16px; margin-bottom: 16px;">
+    <a href="../dashboard/forms/" style="padding: 10px 20px; background: #c0392b; color: white; text-decoration: none; border-radius: 6px; font-weight: 700;">🏠 لوحة التحكم</a>
+    <a href="../Brandzo_Operational_Guide.html" style="padding: 10px 20px; background: #1B3A6B; color: white; text-decoration: none; border-radius: 6px; font-weight: 700;">📘 الدليل التشغيلي</a>
+</div>
 
 
     <!-- ========== PAGE WRAPPER ========== -->

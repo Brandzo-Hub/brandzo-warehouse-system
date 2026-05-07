@@ -13,6 +13,7 @@ const navItems = [
   { href: `${base}/dashboard/warehouses`, label: 'إدارة المستودعات', icon: 'warehouse' },
   { href: `${base}/dashboard/products`, label: 'إدارة الأصناف', icon: 'package' },
   { href: `${base}/dashboard/grn`, label: 'المشتريات والاستلام', icon: 'fileUp' },
+  { href: `${base}/dashboard/forms`, label: 'النماذج التشغيلية', icon: 'clipboardList' },
 ];
 ---
 
@@ -110,8 +111,16 @@ const navItems = [
         </ul>
       </nav>
 
-      <div class="mt-auto border-t border-gray-700">
-        <p class="text-xs text-gray-500 text-center font-bold py-4">Brandzo ERP 2026 &copy;</p>
+      <!--
+        Footer: pinned to the bottom via the surrounding flex column.
+        The credit line stays visible whether the nav has 4 items or 40,
+        and never scrolls away with the content.
+      -->
+      <div class="mt-auto border-t border-gray-700 px-4 py-3 text-center">
+        <p class="text-[11px] leading-snug text-gray-300 font-medium" dir="rtl">
+          برمجة وتطوير: محمد إبراهيم البرشي
+        </p>
+        <p class="text-[10px] text-gray-500 mt-1">Brandzo ERP 2026 &copy;</p>
       </div>
     </aside>
 

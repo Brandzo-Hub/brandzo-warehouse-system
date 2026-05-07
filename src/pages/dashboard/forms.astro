@@ -1,0 +1,163 @@
+---
+import DashboardLayout from '../../layouts/DashboardLayout.astro';
+import Icon from '../../components/ui/Icon.astro';
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL.slice(0, -1)
+  : import.meta.env.BASE_URL;
+
+/**
+ * The 13 operational forms shipped under public/forms/. They are static HTML
+ * pages, fully self-contained, edited in place by the user, and printed via
+ * window.print(). This page is just the launcher.
+ */
+const forms = [
+  {
+    file: 'form_BinCard.html',
+    titleAr: 'بطاقة مراقبة المخزون',
+    titleEn: 'Bin / Pallet Card',
+    description: 'تتبع حركة الصنف داخل الموقع التخزيني (FEFO).',
+    icon: 'package',
+  },
+  {
+    file: 'form_PO.html',
+    titleAr: 'أمر الشراء',
+    titleEn: 'Purchase Order',
+    description: 'إصدار أوامر الشراء للمورّدين والاعتمادات.',
+    icon: 'fileUp',
+  },
+  {
+    file: 'form_GRN.html',
+    titleAr: 'إشعار استلام البضاعة',
+    titleEn: 'Goods Received Note',
+    description: 'تسجيل استلام الأصناف وربطها بأمر الشراء.',
+    icon: 'arrowDownTray',
+  },
+  {
+    file: 'form_ReturnNote.html',
+    titleAr: 'إشعار الإرجاع',
+    titleEn: 'Return Note',
+    description: 'إرجاع البضاعة للمورد مع التوثيق الكامل.',
+    icon: 'arrowUpTray',
+  },
+  {
+    file: 'form_Credit Note.html',
+    titleAr: 'مرتجع مخزني',
+    titleEn: 'Credit / Goods Return Note',
+    description: 'إثبات قيمة الأصناف المرتجعة على المورد.',
+    icon: 'fileUp',
+  },
+  {
+    file: 'form_Picking.html',
+    titleAr: 'قائمة السحب',
+    titleEn: 'Picking List',
+    description: 'تجهيز الطلبات وسحب الأصناف من المواقع.',
+    icon: 'clipboardList',
+  },
+  {
+    file: 'form_Store Requisition.html',
+    titleAr: 'طلب صرف من المخزن',
+    titleEn: 'Store Requisition',
+    description: 'طلب الأقسام لصرف أصناف من المستودع.',
+    icon: 'clipboardList',
+  },
+  {
+    file: 'form_Stock Transfer Slip.html',
+    titleAr: 'إذن نقل مخزني',
+    titleEn: 'Stock Transfer Slip',
+    description: 'نقل الأصناف بين المستودعات أو المواقع.',
+    icon: 'arrowUpTray',
+  },
+  {
+    file: 'form_Stock Adjustment Voucher.html',
+    titleAr: 'سند تسوية مخزون',
+    titleEn: 'Stock Adjustment Voucher',
+    description: 'تسوية الفروقات المخزنية برمز سبب موثّق.',
+    icon: 'alertTriangle',
+  },
+  {
+    file: 'form_CycleCount.html',
+    titleAr: 'محضر الجرد الدوري',
+    titleEn: 'Cycle Count Sheet',
+    description: 'الجرد الدوري للأصناف في موقع محدد.',
+    icon: 'clipboardList',
+  },
+  {
+    file: 'form_Damaged Goods Report.html',
+    titleAr: 'تقرير البضاعة التالفة',
+    titleEn: 'Damaged Goods Report',
+    description: 'حصر التلفيات وتوثيق المسؤولية.',
+    icon: 'alertTriangle',
+  },
+  {
+    file: 'form_DailyHuddle.html',
+    titleAr: 'محضر الاجتماع اليومي',
+    titleEn: 'Daily Huddle',
+    description: 'لوحة الأداء اليومية لفريق المستودع.',
+    icon: 'grid',
+  },
+  {
+    file: 'form_WeeklyCheck.html',
+    titleAr: 'القائمة الأسبوعية',
+    titleEn: 'Weekly Check',
+    description: 'الفحص الأسبوعي للممارسات والمخزون.',
+    icon: 'grid',
+  },
+];
+---
+
+<DashboardLayout title="النماذج التشغيلية">
+  <div class="text-right" dir="rtl">
+    <header class="mb-6 sm:mb-8">
+      <h1 class="text-2xl sm:text-3xl font-bold text-brand-navy">
+        النماذج التشغيلية (Operational Forms)
+      </h1>
+      <p class="text-gray-500 mt-2 text-sm sm:text-base leading-relaxed">
+        مكتبة النماذج الجاهزة للتعبئة والطباعة. كل نموذج مسؤول عن دورة عمل محددة (شراء، استلام، صرف،
+        جرد، تسوية، إلخ). افتح النموذج، عبّئ بياناتك، ثم اضغط "طباعة / حفظ PDF" داخل النموذج.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      {
+        forms.map((form) => (
+          <article class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col">
+            <div class="p-5 sm:p-6 flex-1">
+              <div class="flex items-start gap-3 mb-3">
+                <div class="w-11 h-11 shrink-0 bg-red-50 text-brand-red rounded-xl flex items-center justify-center">
+                  <Icon name={form.icon} size={22} />
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h2 class="text-lg sm:text-xl font-bold text-brand-navy leading-tight">
+                    {form.titleAr}
+                  </h2>
+                  <p class="text-xs text-gray-400 font-medium tracking-wide">{form.titleEn}</p>
+                </div>
+              </div>
+              <p class="text-sm text-gray-600 leading-relaxed">{form.description}</p>
+            </div>
+            <div class="border-t border-gray-100 bg-gray-50 px-5 sm:px-6 py-3 flex items-center justify-between gap-3">
+              <a
+                href={`${base}/forms/${form.file}`}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 text-sm font-bold text-brand-red hover:text-brand-red-dark transition-colors"
+              >
+                <Icon name="externalLink" size={16} />
+                <span>افتح النموذج</span>
+              </a>
+              <span class="text-[11px] text-gray-400 font-mono truncate" title={form.file}>
+                {form.file}
+              </span>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <p class="text-xs text-gray-400 mt-8 text-center leading-relaxed">
+      ملاحظة: النماذج تُفتح في تبويب جديد، وتُطبع عبر زر "طباعة / حفظ PDF" داخل كل نموذج. التغييرات
+      التي تكتبها في الحقول لا تُحفظ تلقائياً — احرص على الطباعة أو حفظ PDF قبل إغلاق التبويب.
+    </p>
+  </div>
+</DashboardLayout>
