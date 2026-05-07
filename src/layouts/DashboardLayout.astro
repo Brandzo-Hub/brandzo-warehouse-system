@@ -1,9 +1,19 @@
 ---
 import '../styles/global.css';
-import AuthGuard from '../components/auth/AuthGuard.jsx';
-import SidebarUser from '../components/auth/SidebarUser.jsx';
+import Icon from '../components/ui/Icon.astro';
 
 const { title } = Astro.props;
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL.slice(0, -1)
+  : import.meta.env.BASE_URL;
+
+const navItems = [
+  { href: `${base}/dashboard`, label: 'الرئيسية', icon: 'grid' },
+  { href: `${base}/dashboard/warehouses`, label: 'إدارة المستودعات', icon: 'warehouse' },
+  { href: `${base}/dashboard/products`, label: 'إدارة الأصناف', icon: 'package' },
+  { href: `${base}/dashboard/grn`, label: 'المشتريات والاستلام', icon: 'fileUp' },
+];
 ---
 
 <html lang="ar" dir="rtl">
@@ -25,14 +35,13 @@ const { title } = Astro.props;
     </style>
   </head>
   <body class="flex min-h-screen">
-    <AuthGuard client:load />
     <!-- Sidebar -->
     <aside
-      class="fixed inset-y-0 right-0 w-64 bg-[#1a1a2e] text-white shadow-xl z-20 flex flex-col"
+      class="fixed inset-y-0 right-0 w-64 bg-brand-navy text-white shadow-xl z-20 flex flex-col"
     >
       <div class="p-6 border-b border-gray-700 flex items-center gap-3">
         <div
-          class="w-10 h-10 bg-[#c0392b] rounded-lg flex items-center justify-center font-bold text-xl shadow-lg"
+          class="w-10 h-10 bg-brand-red rounded-lg flex items-center justify-center font-bold text-xl shadow-lg"
         >
           B
         </div>
@@ -41,116 +50,23 @@ const { title } = Astro.props;
 
       <nav class="mt-8 px-4">
         <ul class="space-y-2">
-          <li>
-            <a
-              href="/dashboard"
-              class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors group"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="text-[#c0392b]"
-                ><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect
-                  width="7"
-                  height="5"
-                  x="14"
-                  y="3"
-                  rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect
-                  width="7"
-                  height="5"
-                  x="3"
-                  y="16"
-                  rx="1"></rect></svg
-              >
-              <span class="font-medium">الرئيسية</span>
-            </a>
-          </li>
-          <li>
-            <a
-              href="/dashboard/warehouses"
-              class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors group"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="text-[#c0392b]"
-                ><path d="M3 21h18"></path><path
-                  d="M3 7v1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7H3l2-4h14l2 4"
-                ></path><path d="M5 21V10.85"></path><path d="M19 21V10.85"></path><path
-                  d="M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4"></path></svg
-              >
-              <span class="font-medium">إدارة المستودعات</span>
-            </a>
-          </li>
-          <li>
-            <a
-              href="/dashboard/products"
-              class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors group"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="text-[#c0392b]"
-                ><path d="m7.5 4.27 9 5.15"></path><path
-                  d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"
-                ></path><path d="m3.27 6.96 8.73 5.05 8.73-5.05"></path><path d="M12 22.08V12"
-                ></path></svg
-              >
-              <span class="font-medium">إدارة الأصناف</span>
-            </a>
-          </li>
-          <li>
-            <a
-              href="/dashboard/grn"
-              class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors group"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="text-[#c0392b]"
-                ><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
-                ></path><polyline points="14 2 14 8 20 8"></polyline><line
-                  x1="12"
-                  y1="18"
-                  x2="12"
-                  y2="12"></line><polyline points="9 15 12 12 15 15"></polyline></svg
-              >
-              <span class="font-medium">المشتريات والاستلام</span>
-            </a>
-          </li>
+          {
+            navItems.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors group"
+                >
+                  <Icon name={item.icon} class="text-brand-red" />
+                  <span class="font-medium">{item.label}</span>
+                </a>
+              </li>
+            ))
+          }
         </ul>
       </nav>
 
       <div class="mt-auto border-t border-gray-700">
-        <SidebarUser client:load />
         <p class="text-xs text-gray-500 text-center font-bold py-4">Brandzo ERP 2026 &copy;</p>
       </div>
     </aside>

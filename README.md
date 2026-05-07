@@ -39,20 +39,21 @@ This project follows a specific structure to separate source code from static as
 - **Static Asset Organization**: Resolved 404 errors for static forms and the operational guide by correctly placing them in the `public/` directory.
 - **Firebase Integration (Initial Phase)**: Firebase configuration and basic inventory service logic are in place.
 - **Toolchain Stabilised (Phase 0)**: Astro/Tailwind/ESLint setup cleaned up; clean `npm ci` install, `npm run build/lint/format` scripts, Tailwind 4 via PostCSS, ESLint flat config + Prettier.
-- **Authentication & Security Rules (Phase 1)**: Firebase config moved behind `PUBLIC_FIREBASE_*` env vars; Firebase Auth (email/password) added; `/login` page; AuthGuard redirects unauthenticated users; `firestore.rules` enforces auth-only reads/writes and append-only logs.
+- **Firebase Config via Env Vars**: Firebase web config moved behind `PUBLIC_FIREBASE_*` env vars (with safe fallbacks); GitHub Actions wired to inject matching secrets at build time. _Authentication and Firestore Security Rules are intentionally deferred to a later phase — the dashboard is currently open access._
+- **Navigation & Shared UI (Phase 2)**: Sidebar links honour `import.meta.env.BASE_URL` so they work on GitHub Pages; brand palette moved to Tailwind 4 `@theme` (`bg-brand-red`, `text-brand-navy`, …); shared `<Icon>` component (Astro + React mirrors) replaces the duplicated inline SVGs; shared `<ComingSoon>` placeholder replaces copy-pasted markup in `products`/`grn` pages.
 
 ---
 
 ## 4. Roadmap (What Remains to be Done)
 
-- **Navigation Fix (Phase 2)**: Make sidebar links honour `import.meta.env.BASE_URL` so internal navigation works on GitHub Pages.
 - **Item Master CRUD (Phase 3)**: Build the items page with create/edit/archive and SKU-as-document-id semantics.
 - **Real-Time Dashboard (Phase 4)**: Replace the static `brandzoSchema` mock with live Firestore subscriptions.
 - **GRN / Inbound Module (Phase 5)**: Header + line items form with batched atomic writes.
 - **Outbound + Stock Adjustments (Phase 6)**: Same atomic pattern with reason codes.
 - **Bin Card + Reports (Phase 7)**: Per-item ledger, CSV/Excel exports; dynamic React versions of the static `public/forms/` HTML templates.
 - **Quality & CI (Phase 8)**: Vitest + Playwright smoke tests, Sentry, lint/build PR gates.
-- **Production Readiness (Phase 9)**: dev/prod Firebase split, custom domain, user guide.
+- **Auth & Security Rules (Phase 9)**: Re-introduce Firebase Auth + Firestore Security Rules once the operational forms are stable.
+- **Production Readiness (Phase 10)**: dev/prod Firebase split, custom domain, user guide.
 
 ---
 
@@ -88,29 +89,11 @@ npm run format:check  # Prettier check (used by CI / pre-commit later)
 
 ### Firebase configuration
 
-The Firebase web config is read from `import.meta.env.PUBLIC_FIREBASE_*`. The variables are listed in `.env.example`. They are NOT secrets — Firebase web keys are designed to be shipped to the browser. Real protection comes from Firebase Auth (every dashboard route is gated) and the Firestore Security Rules in `firestore.rules`.
+The Firebase web config is read from `import.meta.env.PUBLIC_FIREBASE_*`. The variables are listed in `.env.example`. They are NOT secrets — Firebase web keys are designed to be shipped to the browser.
 
 For the deployed GitHub Pages build, the workflow reads matching `secrets.PUBLIC_FIREBASE_*` values. If you don't set them, the fallbacks in `src/config/firebase.js` kick in (the existing demo project).
 
-### Firebase Auth
-
-The dashboard is locked behind Firebase Auth (email + password). To create the first administrator user:
-
-1. Open the [Firebase console](https://console.firebase.google.com/) → your project → **Authentication** → **Sign-in method** and enable **Email/Password**.
-2. Switch to the **Users** tab and click **Add user**. Enter an email + password.
-3. Visit `/brandzo-warehouse-system/login` and sign in with that user.
-
-Anyone hitting `/dashboard` without a valid session is redirected to `/login`.
-
-### Firestore Security Rules
-
-The rules live in `firestore.rules`. To deploy them, install the Firebase CLI once (`npm install -g firebase-tools`), log in (`firebase login`), then run:
-
-```bash
-firebase deploy --only firestore:rules --project <your-project-id>
-```
-
-Until you deploy these rules, your Firestore database may still be in "test mode" (open to the world). Deploy them as part of the Phase 1 rollout.
+> **Open access notice:** the dashboard is currently NOT gated by Firebase Auth, and no Firestore Security Rules are enforced from this repo. Real protection (auth + rules) will be re-introduced in a later phase — see the Roadmap.
 
 ---
 

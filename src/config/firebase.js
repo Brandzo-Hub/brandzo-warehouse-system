@@ -1,6 +1,5 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getFirestore, initializeFirestore } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
 
 /**
  * Firebase configuration.
@@ -12,8 +11,8 @@ import { getAuth } from 'firebase/auth';
  * (e.g. local clones before the developer creates a `.env` file).
  *
  * NOTE: Firebase web API keys are NOT secrets — they are designed to be
- * shipped to browsers. Real protection comes from Firebase Auth + the
- * Firestore Security Rules in `firestore.rules`.
+ * shipped to browsers. The dashboard is currently open access; auth and
+ * Firestore Security Rules will be revisited in a later phase.
  */
 const firebaseConfig = {
   apiKey: import.meta.env.PUBLIC_FIREBASE_API_KEY ?? 'AIzaSyAWhqQVdhODZT0bdXnbyYzcmpnv11s9qoU',
@@ -45,4 +44,3 @@ function createDb() {
 }
 
 export const db = createDb();
-export const auth = getAuth(app);
