@@ -63,11 +63,11 @@ When converting any static checkbox-like UI in `public/forms/*.html` to an inter
      else input.removeAttribute('checked');
    }
    ```
-   Browsers/PDF engines render the printed snapshot from the *attribute*, not the property — without this step, the marks evaporate when printing.
+   Browsers/PDF engines render the printed snapshot from the _attribute_, not the property — without this step, the marks evaporate when printing.
 3. Add a print stylesheet that forces native checkbox rendering:
    ```css
    @media print {
-     input[type="checkbox"] {
+     input[type='checkbox'] {
        -webkit-appearance: checkbox !important;
        appearance: checkbox !important;
        -webkit-print-color-adjust: exact !important;

@@ -103,6 +103,51 @@ const forms = [
     description: 'الفحص الأسبوعي للممارسات والمخزون.',
     icon: 'grid',
   },
+  // ── Outbound documents ──────────────────────────────────────────────
+  {
+    file: 'form_DeliveryNote.html',
+    titleAr: 'إذن تسليم',
+    titleEn: 'Delivery Note',
+    description: 'إثبات تسليم البضاعة للعميل مع توقيع المُستلم.',
+    icon: 'arrowUpTray',
+  },
+  {
+    file: 'form_PackingList.html',
+    titleAr: 'قائمة التعبئة',
+    titleEn: 'Packing List',
+    description: 'تفصيل محتويات الطرود والكراتين قبل الشحن.',
+    icon: 'package',
+  },
+  {
+    file: 'form_GatePass.html',
+    titleAr: 'تصريح خروج من البوابة',
+    titleEn: 'Gate Pass',
+    description: 'توثيق خروج المركبات والأصناف عبر بوابة الأمن.',
+    icon: 'externalLink',
+  },
+  // ── Inbound documents ───────────────────────────────────────────────
+  {
+    file: 'form_QCReport.html',
+    titleAr: 'تقرير فحص الجودة',
+    titleEn: 'QC Inspection Report',
+    description: 'فحص جودة الأصناف الواردة وقرار القبول/الرفض.',
+    icon: 'alertTriangle',
+  },
+  {
+    file: 'form_PutawayList.html',
+    titleAr: 'أمر التخزين',
+    titleEn: 'Putaway List',
+    description: 'توجيه الأصناف من منطقة الاستلام إلى مواقع التخزين.',
+    icon: 'arrowDownTray',
+  },
+  // ── General ─────────────────────────────────────────────────────────
+  {
+    file: 'form_PurchaseRequisition.html',
+    titleAr: 'طلب شراء داخلي',
+    titleEn: 'Purchase Requisition',
+    description: 'طلب الشراء الداخلي قبل إصدار أمر الشراء للمورّد.',
+    icon: 'fileUp',
+  },
 ];
 ---
 

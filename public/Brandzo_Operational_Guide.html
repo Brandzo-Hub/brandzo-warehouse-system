@@ -1759,40 +1759,81 @@
             border-color: rgba(241, 196, 15, 0.25);
         }
 
-        /* Top nav bar — match the dashboard sidebar buttons (filled brand-red
-           primary + outline secondary) so the guide feels like an extension
-           of the dashboard rather than a separate product. */
+        /* Top nav bar — compact, sleek, single-line.
+           Slimmer chrome, smaller buttons, icons-first layout that
+           stays inline on every screen size including ≤360px. */
         .guide-topnav {
             background: linear-gradient(135deg, #1a1a2e 0%, #232a4d 100%);
-            border-bottom: 2px solid var(--orange-aggressive);
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
-            padding: 12px 18px;
+            border-bottom: 1px solid rgba(192, 57, 43, 0.5);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            padding: 6px 12px !important;
+            gap: 6px !important;
+            min-height: 40px;
+            margin: -12px -12px 12px !important;
+            flex-wrap: nowrap !important;
         }
         .guide-topnav__btn {
-            border-radius: 8px;
-            font-family: 'Cairo', sans-serif;
+            border-radius: 6px !important;
+            font-family: 'Cairo', sans-serif !important;
+            padding: 5px 10px !important;
+            font-size: 0.78rem !important;
+            font-weight: 600 !important;
+            gap: 6px !important;
+            letter-spacing: 0 !important;
+            white-space: nowrap;
+            line-height: 1.2;
         }
+        .guide-topnav__btn i { font-size: 0.85rem !important; }
         .guide-topnav__btn--primary {
-            background: var(--orange-aggressive);
-            box-shadow: 0 3px 8px rgba(192, 57, 43, 0.35);
+            background: var(--orange-aggressive) !important;
+            box-shadow: 0 1px 3px rgba(192, 57, 43, 0.3) !important;
+            border: 1px solid transparent;
         }
         .guide-topnav__btn--primary:hover {
-            background: var(--red-alert);
-            box-shadow: 0 5px 14px rgba(192, 57, 43, 0.5);
+            background: var(--red-alert) !important;
+            box-shadow: 0 2px 6px rgba(192, 57, 43, 0.45) !important;
+            transform: none !important;
         }
         .guide-topnav__btn--secondary {
-            border-color: rgba(244, 244, 248, 0.4);
-            color: var(--text-primary);
+            border: 1px solid rgba(244, 244, 248, 0.25) !important;
+            color: var(--text-primary) !important;
+            background: rgba(255, 255, 255, 0.02);
         }
         .guide-topnav__btn--secondary:hover {
-            border-color: var(--orange-aggressive);
-            color: #fff;
-            background: rgba(192, 57, 43, 0.1);
+            border-color: var(--orange-aggressive) !important;
+            color: #fff !important;
+            background: rgba(192, 57, 43, 0.12) !important;
         }
         .guide-topnav__title {
-            color: var(--yellow-bright);
-            text-shadow: none;
-            font-family: 'Cairo', sans-serif;
+            color: var(--yellow-bright) !important;
+            text-shadow: none !important;
+            font-family: 'Cairo', sans-serif !important;
+            font-size: 0.78rem !important;
+            font-weight: 600 !important;
+            letter-spacing: 0 !important;
+            margin-inline-start: auto !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
+        }
+        @media (max-width: 680px) {
+            .guide-topnav { padding: 5px 8px !important; gap: 5px !important; min-height: 36px; }
+            .guide-topnav__btn { padding: 4px 8px !important; font-size: 0.72rem !important; }
+            .guide-topnav__btn i { font-size: 0.78rem !important; }
+            .guide-topnav__title {
+                width: auto !important;
+                margin-top: 0 !important;
+                font-size: 0.68rem !important;
+                text-align: end !important;
+                max-width: 50%;
+            }
+        }
+        @media (max-width: 420px) {
+            /* Hide button labels on very small screens, keep icons */
+            .guide-topnav__btn span { display: none; }
+            .guide-topnav__btn { padding: 6px 8px !important; }
+            .guide-topnav__title { font-size: 0.66rem !important; max-width: 60%; }
         }
 
         /* Sticky chapter index — brand-navy with brand-red accents,
@@ -2952,28 +2993,46 @@
     </div>
 
     <script>
-    // ── SEARCH & HIGHLIGHT ENGINE ─────────────────────────────────────────────
-    (function() {
-      const input = document.getElementById('searchInput');
-      const countEl = document.getElementById('searchCount');
-      const clearBtn = document.getElementById('clearSearch');
-      let originalMap = new Map();
-      let highlights = [];
-      let currentIdx = -1;
+    // ── SEARCH, FILTER & HIGHLIGHT ENGINE ────────────────────────────────────
+    // Lightweight client-side search:
+    //   • Highlights every match across the guide.
+    //   • Hides chapters/sections that contain zero matches so the user
+    //     sees a filtered view of just the relevant content.
+    //   • Enter / Shift+Enter to navigate, Esc to clear.
+    (function () {
+      var input = document.getElementById('searchInput');
+      var countEl = document.getElementById('searchCount');
+      var clearBtn = document.getElementById('clearSearch');
+      if (!input || !countEl || !clearBtn) return;
+
+      var highlights = [];
+      var currentIdx = -1;
+      var hiddenChapters = [];
 
       function getTextNodes(root) {
-        const walker = document.createTreeWalker(
-          root, NodeFilter.SHOW_TEXT,
-          { acceptNode: n => n.parentNode.nodeName !== 'SCRIPT' && n.parentNode.nodeName !== 'STYLE' && n.data.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT }
+        var walker = document.createTreeWalker(
+          root,
+          NodeFilter.SHOW_TEXT,
+          {
+            acceptNode: function (n) {
+              if (!n.data || !n.data.trim()) return NodeFilter.FILTER_REJECT;
+              var p = n.parentNode;
+              if (!p) return NodeFilter.FILTER_REJECT;
+              var name = p.nodeName;
+              if (name === 'SCRIPT' || name === 'STYLE' || name === 'NOSCRIPT') return NodeFilter.FILTER_REJECT;
+              return NodeFilter.FILTER_ACCEPT;
+            }
+          }
         );
-        const nodes = [];
+        var nodes = [];
         while (walker.nextNode()) nodes.push(walker.currentNode);
         return nodes;
       }
 
       function clearHighlights() {
-        document.querySelectorAll('mark.search-highlight').forEach(m => {
-          const parent = m.parentNode;
+        document.querySelectorAll('mark.search-highlight').forEach(function (m) {
+          var parent = m.parentNode;
+          if (!parent) return;
           parent.replaceChild(document.createTextNode(m.textContent), m);
           parent.normalize();
         });
@@ -2982,25 +3041,38 @@
         countEl.textContent = '';
       }
 
+      function showAllChapters() {
+        hiddenChapters.forEach(function (el) {
+          el.style.display = '';
+          el.removeAttribute('data-search-hidden');
+        });
+        hiddenChapters = [];
+      }
+
+      // Standard regex special-character escape — replaces the previous
+      // broken character class that prevented the search from running.
       function escapeRegex(str) {
-        return str.replace(/[.*+?^${}()|[\]\]/g, '\$&');
+        return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       }
 
       function doSearch(term) {
         clearHighlights();
+        showAllChapters();
         if (!term || term.length < 2) return;
-        const regex = new RegExp('(' + escapeRegex(term) + ')', 'gi');
-        const content = document.querySelector('.content');
-        const textNodes = getTextNodes(content);
 
-        textNodes.forEach(node => {
+        var safe = escapeRegex(term);
+        var regex = new RegExp('(' + safe + ')', 'gi');
+        var content = document.querySelector('.content') || document.body;
+        var textNodes = getTextNodes(content);
+
+        textNodes.forEach(function (node) {
           if (!regex.test(node.data)) return;
           regex.lastIndex = 0;
-          const frag = document.createDocumentFragment();
-          let last = 0, m;
+          var frag = document.createDocumentFragment();
+          var last = 0, m;
           while ((m = regex.exec(node.data)) !== null) {
             if (m.index > last) frag.appendChild(document.createTextNode(node.data.slice(last, m.index)));
-            const mark = document.createElement('mark');
+            var mark = document.createElement('mark');
             mark.className = 'search-highlight';
             mark.textContent = m[0];
             highlights.push(mark);
@@ -3008,14 +3080,25 @@
             last = regex.lastIndex;
           }
           if (last < node.data.length) frag.appendChild(document.createTextNode(node.data.slice(last)));
-          node.parentNode.replaceChild(frag, node);
+          if (node.parentNode) node.parentNode.replaceChild(frag, node);
+        });
+
+        // Filter chapters: hide anything that has no highlight inside it.
+        var chapters = content.querySelectorAll('.chapter, section.chapter, [id^="bab"]');
+        chapters.forEach(function (ch) {
+          if (!ch.querySelector('mark.search-highlight')) {
+            ch.style.display = 'none';
+            ch.setAttribute('data-search-hidden', '1');
+            hiddenChapters.push(ch);
+          }
         });
 
         if (highlights.length > 0) {
           currentIdx = 0;
           highlights[0].classList.add('current');
           highlights[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
-          countEl.textContent = '1 / ' + highlights.length + ' نتيجة';
+          var visibleChapters = chapters.length - hiddenChapters.length;
+          countEl.textContent = '1 / ' + highlights.length + ' نتيجة (' + visibleChapters + ' باب)';
         } else {
           countEl.textContent = 'لا توجد نتائج';
         }
@@ -3030,20 +3113,23 @@
         countEl.textContent = (currentIdx + 1) + ' / ' + highlights.length + ' نتيجة';
       }
 
-      let debounce;
-      input.addEventListener('input', function() {
+      var debounce;
+      input.addEventListener('input', function () {
         clearTimeout(debounce);
-        debounce = setTimeout(() => doSearch(this.value.trim()), 300);
+        var v = this.value.trim();
+        debounce = setTimeout(function () { doSearch(v); }, 200);
       });
 
-      input.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') { e.shiftKey ? navigate(-1) : navigate(1); }
-        if (e.key === 'Escape') { clearBtn.click(); }
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); e.shiftKey ? navigate(-1) : navigate(1); }
+        if (e.key === 'Escape') { e.preventDefault(); clearBtn.click(); }
       });
 
-      clearBtn.addEventListener('click', function() {
+      clearBtn.addEventListener('click', function () {
         input.value = '';
         clearHighlights();
+        showAllChapters();
+        input.focus();
       });
     })();
     </script>
