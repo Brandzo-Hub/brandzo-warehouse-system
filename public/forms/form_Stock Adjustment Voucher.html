@@ -281,5 +281,181 @@
         computeVarianceAndValue(row);
     });
 </script>
+
+    <!-- ============================================================
+         BRANDZO SMART-PRINT LAYER (auto-injected, do not edit by hand)
+         - Editable inputs auto-grow vertically when text wraps.
+         - On print: every input/textarea is replaced visually by a
+           dark-gray text mirror so values render readably on paper
+           and never get clipped.
+         ============================================================ -->
+    <style id="brandzo-smart-print-style">
+        /* On-screen: roomier touch targets, soft focus ring, brand-aligned. */
+        .form-input,
+        input.form-input,
+        input.field-line,
+        textarea.form-input,
+        textarea.field-line,
+        td input[type="text"],
+        td input[type="number"],
+        td input[type="date"] {
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 32px;
+            padding: 6px 8px;
+            font-family: 'Cairo', inherit;
+            font-size: inherit;
+            line-height: 1.5;
+            background: transparent;
+            color: #1a1a1a;
+            border: none;
+            border-bottom: 1px solid transparent;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+        .form-input:focus,
+        input.form-input:focus,
+        input.field-line:focus,
+        textarea.form-input:focus,
+        textarea.field-line:focus,
+        td input[type="text"]:focus,
+        td input[type="number"]:focus,
+        td input[type="date"]:focus {
+            outline: none;
+            background: rgba(192, 57, 43, 0.06);
+            border-bottom-color: #c0392b;
+        }
+        textarea.form-input,
+        textarea.field-line,
+        textarea.brandzo-auto-grow {
+            resize: vertical;
+            overflow: hidden;
+            min-height: 32px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            word-break: break-word;
+        }
+        td { vertical-align: top; }
+        td .form-input { word-wrap: break-word; word-break: break-word; }
+
+        /* The print mirror is hidden on screen; the JS keeps it in sync
+           with the live input value and the print stylesheet swaps the
+           visibility on @media print. */
+        .brandzo-print-mirror {
+            display: none;
+            color: #1a1a1a;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            font-weight: 500;
+            line-height: 1.55;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            word-break: break-word;
+        }
+
+        @media print {
+            /* Hide all editable controls and reveal the value mirrors so
+               long values wrap and the cell auto-expands vertically. */
+            input,
+            textarea,
+            select,
+            button {
+                display: none !important;
+            }
+            .brandzo-print-mirror {
+                display: block !important;
+                color: #1a1a1a !important;
+                font-family: 'Cairo', 'Tajawal', sans-serif !important;
+                font-weight: 600 !important;
+                font-size: 0.95rem !important;
+                line-height: 1.55 !important;
+                white-space: pre-wrap !important;
+                word-wrap: break-word !important;
+                word-break: break-word !important;
+                min-height: 1.4em !important;
+                padding: 4px 6px !important;
+                background: transparent !important;
+                border: none !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            /* Checkboxes survive print (already handled per-form, but
+               keep the rule here for forms that don't define their own). */
+            input[type="checkbox"] {
+                display: inline-block !important;
+                -webkit-appearance: checkbox !important;
+                appearance: checkbox !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .no-print, .qc-controls { display: none !important; }
+            td { vertical-align: top !important; page-break-inside: avoid !important; }
+            tr { page-break-inside: avoid !important; }
+            table { page-break-inside: auto !important; }
+            body { color: #1a1a1a !important; }
+        }
+    </style>
+
+    <script id="brandzo-smart-print-script">
+        (function () {
+            'use strict';
+
+            /** Mirror the live value of an input/textarea into a sibling
+                .brandzo-print-mirror span so it can render on the printed
+                page even when the editable control is hidden. */
+            function ensureMirror(el) {
+                if (!el || el.type === 'checkbox' || el.type === 'radio' || el.type === 'hidden' || el.type === 'submit' || el.type === 'button') return;
+                if (el.tagName !== 'INPUT' && el.tagName !== 'TEXTAREA') return;
+
+                var mirror = el.nextElementSibling;
+                if (!mirror || !mirror.classList || !mirror.classList.contains('brandzo-print-mirror')) {
+                    mirror = document.createElement('span');
+                    mirror.className = 'brandzo-print-mirror';
+                    mirror.setAttribute('aria-hidden', 'true');
+                    el.insertAdjacentElement('afterend', mirror);
+                }
+                mirror.textContent = el.value || '';
+            }
+
+            /** Auto-grow a textarea vertically as content wraps. */
+            function autoGrow(el) {
+                if (!el || el.tagName !== 'TEXTAREA') return;
+                el.style.height = 'auto';
+                el.style.height = (el.scrollHeight + 2) + 'px';
+            }
+
+            function refreshAll() {
+                var nodes = document.querySelectorAll('input, textarea');
+                for (var i = 0; i < nodes.length; i++) {
+                    ensureMirror(nodes[i]);
+                    autoGrow(nodes[i]);
+                }
+            }
+
+            function bind() {
+                document.body.addEventListener('input', function (e) {
+                    var t = e.target;
+                    if (!t) return;
+                    if (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA') {
+                        ensureMirror(t);
+                        autoGrow(t);
+                    }
+                });
+                document.body.addEventListener('change', function (e) {
+                    var t = e.target;
+                    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA')) {
+                        ensureMirror(t);
+                    }
+                });
+                window.addEventListener('beforeprint', refreshAll);
+                refreshAll();
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', bind);
+            } else {
+                bind();
+            }
+        })();
+    </script>
+
 </body>
 </html>

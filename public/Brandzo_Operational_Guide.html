@@ -1641,6 +1641,333 @@
                 text-align: center;
             }
         }
+
+        /* ============================================================
+           BRAND-ALIGNED OVERRIDE LAYER
+           Re-colors the original "industrial" palette to match the
+           Brandzo ERP dashboard (brand-navy + brand-red on a clean
+           Cairo-only typographic system). Sits at the END of the
+           stylesheet so the new :root variables win the cascade.
+           ============================================================ */
+        :root {
+            /* Backgrounds — quiet brand-navy gradient instead of pitch-black mesh */
+            --bg-deep: #0f1424;
+            --bg-panel: #161b30;
+            --bg-surface: #1c2240;
+            --bg-elevated: #232a4d;
+
+            /* Accents — brand-red replaces the aggressive orange */
+            --orange-aggressive: #c0392b;
+            --orange-glow: #e74c3c;
+            --red-industrial: #8b1a1a;
+            --red-alert: #a82424;
+
+            /* Highlights — soft warm gold instead of the loud yellow-hazard */
+            --yellow-hazard: #f1c40f;
+            --yellow-bright: #f5d76e;
+
+            /* Text — keeps strong contrast on the navy backgrounds */
+            --text-primary: #f4f4f8;
+            --text-secondary: #c8cad8;
+            --text-muted: #8e94aa;
+
+            /* Borders — softer, brand-aligned */
+            --border-thick: #c0392b;
+            --border-panel: #2a325a;
+            --border-subtle: #1f2546;
+
+            /* Mesh grid — almost invisible so it stops fighting the content */
+            --mesh-color: rgba(192, 57, 43, 0.012);
+
+            /* Gauges — keep semantic colors but desaturate the green so it sits
+               next to the brand palette quietly */
+            --gauge-green: #27ae60;
+            --gauge-yellow: #f1c40f;
+            --gauge-orange: #c0392b;
+            --gauge-red: #8b1a1a;
+        }
+
+        /* Quiet down the body background — drop the radial blobs and
+           shrink the mesh opacity. Keeps a subtle brand-navy gradient. */
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background:
+                radial-gradient(ellipse at 25% 0%, rgba(192, 57, 43, 0.05) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 100%, rgba(26, 26, 46, 0.45) 0%, transparent 60%),
+                linear-gradient(180deg, #0c1020 0%, #0f1424 60%, #0a0e1c 100%);
+            background-attachment: fixed;
+        }
+
+        /* Tone down the main container shell — trade aggressive glow
+           for a cleaner shadow that reads as "card", not "alarm". */
+        .main-container {
+            border: 1px solid var(--border-panel);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.55), 0 2px 6px rgba(192, 57, 43, 0.18);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .main-container::before { display: none; }
+
+        /* Header — calmer, brand-navy gradient with a brand-red accent
+           bar instead of the animated scanline. */
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #232a4d 60%, #2a1a35 100%);
+            border-bottom: 4px solid var(--orange-aggressive);
+            padding: 1.75rem 2rem;
+        }
+        .header::before {
+            background: linear-gradient(90deg, var(--orange-aggressive) 0%, var(--yellow-hazard) 50%, var(--orange-aggressive) 100%);
+            animation: none;
+            height: 2px;
+        }
+        .header h1 {
+            font-family: 'Cairo', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            text-shadow: none;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+        .header h1 i {
+            filter: none;
+            color: var(--orange-glow);
+            font-size: 2.2rem;
+        }
+        .header .system-badge {
+            font-family: 'Cairo', sans-serif;
+            background: rgba(192, 57, 43, 0.12);
+            border: 1.5px solid var(--orange-aggressive);
+            color: var(--orange-glow);
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            font-size: 0.78rem;
+            animation: none;
+        }
+        .header .system-badge .blink-dot { animation: brand-blink 1.6s ease-in-out infinite; box-shadow: none; }
+        @keyframes brand-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+        .meta { font-family: 'Cairo', sans-serif; border-top: 1px solid rgba(192, 57, 43, 0.25); }
+        .badge {
+            font-family: 'Cairo', sans-serif;
+            background: rgba(192, 57, 43, 0.15);
+            border: 1.5px solid var(--orange-aggressive);
+            color: var(--orange-glow);
+        }
+        .header .sub-meta {
+            font-family: 'Cairo', sans-serif;
+            background: rgba(241, 196, 15, 0.06);
+            color: var(--yellow-bright);
+            border-color: rgba(241, 196, 15, 0.25);
+        }
+
+        /* Top nav bar — match the dashboard sidebar buttons (filled brand-red
+           primary + outline secondary) so the guide feels like an extension
+           of the dashboard rather than a separate product. */
+        .guide-topnav {
+            background: linear-gradient(135deg, #1a1a2e 0%, #232a4d 100%);
+            border-bottom: 2px solid var(--orange-aggressive);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+            padding: 12px 18px;
+        }
+        .guide-topnav__btn {
+            border-radius: 8px;
+            font-family: 'Cairo', sans-serif;
+        }
+        .guide-topnav__btn--primary {
+            background: var(--orange-aggressive);
+            box-shadow: 0 3px 8px rgba(192, 57, 43, 0.35);
+        }
+        .guide-topnav__btn--primary:hover {
+            background: var(--red-alert);
+            box-shadow: 0 5px 14px rgba(192, 57, 43, 0.5);
+        }
+        .guide-topnav__btn--secondary {
+            border-color: rgba(244, 244, 248, 0.4);
+            color: var(--text-primary);
+        }
+        .guide-topnav__btn--secondary:hover {
+            border-color: var(--orange-aggressive);
+            color: #fff;
+            background: rgba(192, 57, 43, 0.1);
+        }
+        .guide-topnav__title {
+            color: var(--yellow-bright);
+            text-shadow: none;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* Sticky chapter index — brand-navy with brand-red accents,
+           remove the existing orange blanket. */
+        .sticky-nav { background: linear-gradient(180deg, #161b30 0%, #1c2240 100%); border-bottom: 1px solid var(--border-panel); }
+        .sticky-nav .toc-pill, .sticky-nav .index-chip, .sticky-nav .nav-link, .sticky-nav a {
+            font-family: 'Cairo', sans-serif !important;
+        }
+
+        /* Tables — readable on every chapter, with brand-red headers
+           and zebra rows that don't fight the navy background. */
+        .chapter table, table.heatmap, table {
+            border: 1px solid var(--border-panel);
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .chapter table th, table th {
+            background: linear-gradient(135deg, var(--orange-aggressive), var(--red-alert)) !important;
+            color: #fff !important;
+            font-family: 'Cairo', sans-serif !important;
+            font-weight: 700 !important;
+            text-shadow: none !important;
+            border-color: var(--red-industrial) !important;
+        }
+        .chapter table td, table td {
+            border-color: var(--border-subtle) !important;
+            color: var(--text-primary);
+            font-family: 'Cairo', sans-serif !important;
+        }
+        .chapter table tbody tr:nth-child(even),
+        table tbody tr:nth-child(even) {
+            background: rgba(192, 57, 43, 0.04);
+        }
+
+        /* Section / chapter headings — Cairo-first, calmer shadows */
+        .chapter h2, .chapter h3, .chapter h4, h2, h3, h4 {
+            font-family: 'Cairo', 'Tajawal', sans-serif !important;
+            text-shadow: none !important;
+            letter-spacing: 0 !important;
+            text-transform: none !important;
+        }
+        .chapter h2 { color: var(--orange-glow) !important; }
+        .chapter h3 { color: var(--yellow-bright) !important; }
+        .chapter h4 { color: var(--text-primary) !important; }
+        .chapter p, .chapter li, p, li { font-family: 'Cairo', 'Tajawal', sans-serif !important; }
+        .chapter strong, strong { color: var(--orange-glow); font-weight: 700; }
+
+        /* Boxes (integration-sync, callouts) — soft brand-aligned borders */
+        .box, .integration-sync {
+            background: rgba(192, 57, 43, 0.06) !important;
+            border: 1px solid rgba(192, 57, 43, 0.35) !important;
+            border-radius: 8px !important;
+        }
+
+        /* Form launcher cards inside Chapter 5 — softer brand look */
+        .form-card {
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            border: 1px solid var(--border-panel);
+        }
+        .form-card:hover { border-color: var(--orange-aggressive); box-shadow: 0 4px 14px rgba(192, 57, 43, 0.25); }
+        .form-card a {
+            background: var(--orange-aggressive);
+            color: #fff;
+            border-radius: 5px;
+            font-family: 'Cairo', sans-serif;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+        .form-card a:hover { background: var(--red-alert); color: #fff; }
+        .form-card .fc-name { font-family: 'Cairo', sans-serif; }
+        .form-card .fc-code { font-family: 'Cairo', sans-serif; color: var(--text-muted); letter-spacing: 0.3px; }
+
+        /* Code blocks — readable, brand-aligned */
+        code, pre {
+            font-family: 'Cairo', monospace !important;
+            background: rgba(0, 0, 0, 0.35) !important;
+            color: var(--yellow-bright) !important;
+            border: 1px solid var(--border-subtle) !important;
+            border-radius: 4px;
+            padding: 1px 6px;
+        }
+        pre { padding: 12px 14px; line-height: 1.6; }
+
+        /* Drop the scanline animation everywhere — it was distracting */
+        .scanline, .ticker { animation: none !important; }
+
+        /* Search bar (chapter index) — brand input styling */
+        .search-bar-wrap input {
+            background: rgba(255, 255, 255, 0.04) !important;
+            border: 1px solid var(--border-panel) !important;
+            color: var(--text-primary) !important;
+            font-family: 'Cairo', sans-serif !important;
+            border-radius: 6px !important;
+        }
+        .search-bar-wrap input:focus {
+            border-color: var(--orange-aggressive) !important;
+            outline: none !important;
+            box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.18) !important;
+        }
+        .search-bar-wrap button {
+            background: var(--orange-aggressive) !important;
+            color: #fff !important;
+            border: none !important;
+            font-family: 'Cairo', sans-serif !important;
+            border-radius: 6px !important;
+        }
+
+        /* ---- Responsive polish ----
+           Mobile-first refinements: roomier touch targets, full-bleed
+           tables that scroll horizontally instead of overflowing the
+           viewport, smaller hero typography. */
+        @media (max-width: 768px) {
+            body { padding: 8px 8px; }
+            .main-container { border-radius: 6px; }
+            .header { padding: 1.25rem 1rem; }
+            .header h1 { font-size: 1.4rem; gap: 8px; }
+            .header h1 i { font-size: 1.6rem; }
+            .header .system-badge { font-size: 0.68rem; padding: 5px 12px; letter-spacing: 1px; }
+            .meta { flex-direction: column; align-items: flex-start; font-size: 0.78rem; }
+            .badge { padding: 4px 12px; font-size: 0.7rem; }
+            .chapter { padding: 1rem 0.75rem !important; }
+            .chapter h2 { font-size: 1.2rem !important; }
+            .chapter h3 { font-size: 1.05rem !important; }
+            .chapter h4 { font-size: 0.95rem !important; }
+            .chapter p, .chapter li { font-size: 0.88rem !important; line-height: 1.7 !important; }
+
+            /* Tables become horizontally scrollable instead of overflowing */
+            .chapter table, table.heatmap, table {
+                display: block !important;
+                overflow-x: auto !important;
+                white-space: nowrap !important;
+                -webkit-overflow-scrolling: touch !important;
+                max-width: 100% !important;
+            }
+            .chapter table th, .chapter table td, table th, table td {
+                white-space: normal !important;
+                font-size: 0.82rem !important;
+                padding: 8px 10px !important;
+            }
+
+            /* Form launcher cards stack to a single column */
+            .forms-download-section, .forms-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        @media (max-width: 480px) {
+            .header h1 { font-size: 1.15rem; }
+            .guide-topnav__btn { padding: 7px 10px; font-size: 0.78rem; }
+            .guide-topnav__btn span { font-size: 0.78rem; }
+            code, pre { font-size: 0.78rem !important; }
+        }
+
+        /* PRINT — keep the brand alignment on paper too. White background,
+           dark text, no shadows or gradients. */
+        @media print {
+            body {
+                background: #ffffff !important;
+                color: #1a1a1a !important;
+                font-family: 'Cairo', 'Tajawal', sans-serif !important;
+            }
+            .main-container { background: #ffffff !important; border: none !important; box-shadow: none !important; }
+            .header { background: #1a1a2e !important; color: #fff !important; }
+            .chapter h2 { color: #c0392b !important; }
+            .chapter h3 { color: #1a1a2e !important; }
+            .chapter table th, table th {
+                background: #c0392b !important;
+                color: #fff !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .chapter table td, table td { color: #1a1a1a !important; background: #fff !important; }
+            .chapter p, .chapter li, p, li { color: #1a1a1a !important; }
+            code, pre { background: #f5f5f5 !important; color: #1a1a1a !important; border: 1px solid #ddd !important; }
+            .guide-topnav, .sticky-nav, .search-bar-wrap { display: none !important; }
+        }
     </style>
 </head>
 <body>
