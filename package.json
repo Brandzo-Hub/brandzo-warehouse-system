@@ -1,31 +1,54 @@
 {
   "name": "brandzo-warehouse-system",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Warehouse Management System for Brandzo (Astro + React + Tailwind + Firebase).",
+  "type": "module",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/albarshi996/brandzo-warehouse-system.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "astro",
+    "react",
+    "tailwindcss",
+    "firebase",
+    "warehouse",
+    "wms",
+    "erp"
+  ],
+  "author": "Mohammed AlBarshi",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/albarshi996/brandzo-warehouse-system/issues"
   },
   "homepage": "https://github.com/albarshi996/brandzo-warehouse-system#readme",
   "dependencies": {
     "@astrojs/react": "^5.0.4",
-    "@astrojs/tailwind": "^6.0.2",
     "@tailwindcss/postcss": "^4.2.4",
     "astro": "^6.2.2",
     "firebase": "^12.12.1",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "tailwindcss": "^3.4.19"
+    "tailwindcss": "^4.2.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "eslint": "^9.39.4",
+    "eslint-plugin-astro": "^1.7.0",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^17.6.0",
+    "prettier": "^3.8.3",
+    "prettier-plugin-astro": "^0.14.1"
   }
 }

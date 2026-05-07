@@ -1,12 +1,5 @@
-import {
-  collection,
-  addDoc,
-  updateDoc,
-  doc,
-  increment,
-  serverTimestamp
-} from "firebase/firestore";
-import { db } from "../config/firebase";
+import { collection, addDoc, updateDoc, doc, increment, serverTimestamp } from 'firebase/firestore';
+import { db } from '../config/firebase';
 
 /**
  * INVENTORY LOGIC OVERVIEW (Excel Methodology):
@@ -28,9 +21,9 @@ import { db } from "../config/firebase";
 export const addInboundRecord = async (data) => {
   try {
     // 1. Add record to Inbound_Log
-    const docRef = await addDoc(collection(db, "Inbound_Log"), {
+    const docRef = await addDoc(collection(db, 'Inbound_Log'), {
       ...data,
-      timestamp: serverTimestamp()
+      timestamp: serverTimestamp(),
     });
 
     // 2. Update Balance in Items_Master (Balance = Balance + Quantity)
@@ -38,7 +31,7 @@ export const addInboundRecord = async (data) => {
 
     return docRef.id;
   } catch (error) {
-    console.error("Error adding inbound record: ", error);
+    console.error('Error adding inbound record: ', error);
     throw error;
   }
 };
@@ -50,9 +43,9 @@ export const addInboundRecord = async (data) => {
 export const addOutboundRecord = async (data) => {
   try {
     // 1. Add record to Outbound_Log
-    const docRef = await addDoc(collection(db, "Outbound_Log"), {
+    const docRef = await addDoc(collection(db, 'Outbound_Log'), {
       ...data,
-      timestamp: serverTimestamp()
+      timestamp: serverTimestamp(),
     });
 
     // 2. Update Balance in Items_Master (Balance = Balance - Quantity)
@@ -61,7 +54,7 @@ export const addOutboundRecord = async (data) => {
 
     return docRef.id;
   } catch (error) {
-    console.error("Error adding outbound record: ", error);
+    console.error('Error adding outbound record: ', error);
     throw error;
   }
 };
@@ -77,19 +70,18 @@ export const addOutboundRecord = async (data) => {
  */
 export const updateItemBalance = async (itemCode, quantityChange) => {
   try {
-    const itemRef = doc(db, "Items_Master", itemCode);
+    const itemRef = doc(db, 'Items_Master', itemCode);
 
     await updateDoc(itemRef, {
       balance: increment(quantityChange),
       // Also update aggregate fields for historical tracking if needed
       ...(quantityChange > 0
-          ? { inbound: increment(quantityChange) }
-          : { outbound: increment(Math.abs(quantityChange)) }
-      ),
-      lastUpdated: serverTimestamp()
+        ? { inbound: increment(quantityChange) }
+        : { outbound: increment(Math.abs(quantityChange)) }),
+      lastUpdated: serverTimestamp(),
     });
   } catch (error) {
-    console.error("Error updating item balance: ", error);
+    console.error('Error updating item balance: ', error);
     throw error;
   }
 };

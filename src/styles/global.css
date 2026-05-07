@@ -1,0 +1,4 @@
+@import 'tailwindcss';
+
+/* Tell Tailwind v4 explicitly where to look for class names. */
+@source "../**/*.{astro,html,js,jsx,ts,tsx,md,mdx}";

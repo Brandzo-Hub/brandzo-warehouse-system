@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  onSnapshot,
+  query,
+  orderBy,
+  serverTimestamp,
+} from 'firebase/firestore';
 import { db } from '../../../config/firebase.js';
 
 const WarehouseManager = () => {
@@ -10,17 +17,21 @@ const WarehouseManager = () => {
 
   // 1. جلب البيانات في الوقت الحقيقي
   useEffect(() => {
-    const q = query(collection(db, "warehouses"), orderBy("code"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const docs = [];
-      querySnapshot.forEach((doc) => {
-        docs.push({ id: doc.id, ...doc.data() });
-      });
-      setWarehouses(docs);
-      setLoading(false);
-    }, (err) => {
-      setStatusMsg({ type: 'error', text: "خطأ في الاتصال: " + err.message });
-    });
+    const q = query(collection(db, 'warehouses'), orderBy('code'));
+    const unsubscribe = onSnapshot(
+      q,
+      (querySnapshot) => {
+        const docs = [];
+        querySnapshot.forEach((doc) => {
+          docs.push({ id: doc.id, ...doc.data() });
+        });
+        setWarehouses(docs);
+        setLoading(false);
+      },
+      (err) => {
+        setStatusMsg({ type: 'error', text: 'خطأ في الاتصال: ' + err.message });
+      }
+    );
     return () => unsubscribe();
   }, []);
 
@@ -31,22 +42,22 @@ const WarehouseManager = () => {
 
     try {
       setStatusMsg({ type: 'info', text: 'جاري الحفظ...' });
-      
-      await addDoc(collection(db, "warehouses"), {
+
+      await addDoc(collection(db, 'warehouses'), {
         code: formData.code,
         name: formData.name,
         manager: formData.manager,
-        status: "نشط",
-        createdAt: serverTimestamp() // استخدام وقت السيرفر أفضل دقة
+        status: 'نشط',
+        createdAt: serverTimestamp(), // استخدام وقت السيرفر أفضل دقة
       });
 
       setFormData({ code: '', name: '', manager: '' });
       setStatusMsg({ type: 'success', text: 'تمت إضافة المستودع بنجاح ✅' });
-      
+
       // إخفاء رسالة النجاح بعد 3 ثوانٍ
       setTimeout(() => setStatusMsg({ type: '', text: '' }), 3000);
     } catch (error) {
-      setStatusMsg({ type: 'error', text: "فشل الحفظ: " + error.message });
+      setStatusMsg({ type: 'error', text: 'فشل الحفظ: ' + error.message });
     }
   };
 
@@ -56,17 +67,24 @@ const WarehouseManager = () => {
 
       {/* منطقة التنبيهات */}
       {statusMsg.text && (
-        <div className={`mb-4 p-4 rounded-lg font-bold shadow-sm ${
-          statusMsg.type === 'error' ? 'bg-red-100 text-red-700 border border-red-200' : 
-          statusMsg.type === 'success' ? 'bg-green-100 text-green-700 border border-green-200' : 
-          'bg-blue-100 text-blue-700'
-        }`}>
+        <div
+          className={`mb-4 p-4 rounded-lg font-bold shadow-sm ${
+            statusMsg.type === 'error'
+              ? 'bg-red-100 text-red-700 border border-red-200'
+              : statusMsg.type === 'success'
+                ? 'bg-green-100 text-green-700 border border-green-200'
+                : 'bg-blue-100 text-blue-700'
+          }`}
+        >
           {statusMsg.text}
         </div>
       )}
 
       {/* نموذج الإضافة */}
-      <form onSubmit={handleAdd} className="mb-8 bg-white p-6 rounded-xl shadow-sm border border-gray-200 transition-all">
+      <form
+        onSubmit={handleAdd}
+        className="mb-8 bg-white p-6 rounded-xl shadow-sm border border-gray-200 transition-all"
+      >
         <h3 className="text-lg font-bold mb-4 text-[#c0392b]">إضافة مستودع جديد</h3>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <input
@@ -92,7 +110,10 @@ const WarehouseManager = () => {
             value={formData.manager}
             onChange={(e) => setFormData({ ...formData, manager: e.target.value })}
           />
-          <button type="submit" className="bg-[#c0392b] text-white px-4 py-2 rounded font-bold hover:bg-[#8b1a1a] transition-all shadow-md active:scale-95">
+          <button
+            type="submit"
+            className="bg-[#c0392b] text-white px-4 py-2 rounded font-bold hover:bg-[#8b1a1a] transition-all shadow-md active:scale-95"
+          >
             إضافة مستودع
           </button>
         </div>
@@ -111,9 +132,17 @@ const WarehouseManager = () => {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan="4" className="p-8 text-center text-gray-500 italic">جاري جلب البيانات من السحابة...</td></tr>
+              <tr>
+                <td colSpan="4" className="p-8 text-center text-gray-500 italic">
+                  جاري جلب البيانات من السحابة...
+                </td>
+              </tr>
             ) : warehouses.length === 0 ? (
-              <tr><td colSpan="4" className="p-8 text-center text-gray-500 font-bold">لا توجد مستودعات مسجلة حالياً</td></tr>
+              <tr>
+                <td colSpan="4" className="p-8 text-center text-gray-500 font-bold">
+                  لا توجد مستودعات مسجلة حالياً
+                </td>
+              </tr>
             ) : (
               warehouses.map((wh) => (
                 <tr key={wh.id} className="border-b hover:bg-gray-50 transition-colors">
@@ -121,9 +150,13 @@ const WarehouseManager = () => {
                   <td className="p-4 font-semibold">{wh.name}</td>
                   <td className="p-4">{wh.manager || '—'}</td>
                   <td className="p-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                      wh.status === 'نشط' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800'
-                    }`}>
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-bold ${
+                        wh.status === 'نشط'
+                          ? 'bg-green-100 text-green-800 border border-green-200'
+                          : 'bg-red-100 text-red-800'
+                      }`}
+                    >
                       {wh.status || 'نشط'}
                     </span>
                   </td>
