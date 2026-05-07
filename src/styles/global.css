@@ -1,4 +1,13 @@
 @import 'tailwindcss';
 
+/* Brand palette — Tailwind 4 picks these up and emits utilities like
+   `bg-brand-red`, `text-brand-navy`, `hover:bg-brand-red-dark`, etc. */
+@theme {
+  --color-brand-red: #c0392b;
+  --color-brand-red-dark: #8b1a1a;
+  --color-brand-navy: #1a1a2e;
+  --color-brand-yellow: #e8b830;
+}
+
 /* Tell Tailwind v4 explicitly where to look for class names. */
 @source "../**/*.{astro,html,js,jsx,ts,tsx,md,mdx}";

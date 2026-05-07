@@ -63,7 +63,7 @@ const WarehouseManager = () => {
 
   return (
     <div className="p-6 font-['Cairo'] text-right" dir="rtl">
-      <h2 className="text-2xl font-bold mb-6 text-[#1a1a2e]">إدارة المستودعات (Warehouses)</h2>
+      <h2 className="text-2xl font-bold mb-6 text-brand-navy">إدارة المستودعات (Warehouses)</h2>
 
       {/* منطقة التنبيهات */}
       {statusMsg.text && (
@@ -85,12 +85,12 @@ const WarehouseManager = () => {
         onSubmit={handleAdd}
         className="mb-8 bg-white p-6 rounded-xl shadow-sm border border-gray-200 transition-all"
       >
-        <h3 className="text-lg font-bold mb-4 text-[#c0392b]">إضافة مستودع جديد</h3>
+        <h3 className="text-lg font-bold mb-4 text-brand-red">إضافة مستودع جديد</h3>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <input
             type="text"
             placeholder="كود المستودع (WH001)"
-            className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-[#c0392b]"
+            className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-brand-red"
             value={formData.code}
             onChange={(e) => setFormData({ ...formData, code: e.target.value })}
             required
@@ -98,7 +98,7 @@ const WarehouseManager = () => {
           <input
             type="text"
             placeholder="اسم المستودع"
-            className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-[#c0392b]"
+            className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-brand-red"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
@@ -106,13 +106,13 @@ const WarehouseManager = () => {
           <input
             type="text"
             placeholder="المدير المسئول"
-            className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-[#c0392b]"
+            className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-brand-red"
             value={formData.manager}
             onChange={(e) => setFormData({ ...formData, manager: e.target.value })}
           />
           <button
             type="submit"
-            className="bg-[#c0392b] text-white px-4 py-2 rounded font-bold hover:bg-[#8b1a1a] transition-all shadow-md active:scale-95"
+            className="bg-brand-red text-white px-4 py-2 rounded font-bold hover:bg-brand-red-dark transition-all shadow-md active:scale-95"
           >
             إضافة مستودع
           </button>
@@ -146,7 +146,7 @@ const WarehouseManager = () => {
             ) : (
               warehouses.map((wh) => (
                 <tr key={wh.id} className="border-b hover:bg-gray-50 transition-colors">
-                  <td className="p-4 font-mono text-[#c0392b] font-bold">{wh.code}</td>
+                  <td className="p-4 font-mono text-brand-red font-bold">{wh.code}</td>
                   <td className="p-4 font-semibold">{wh.name}</td>
                   <td className="p-4">{wh.manager || '—'}</td>
                   <td className="p-4">
