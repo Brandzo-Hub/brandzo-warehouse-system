@@ -38,17 +38,21 @@ This project follows a specific structure to separate source code from static as
 - **GitHub Pages Deployment**: Fixed the deployment configuration by setting the correct `base` path (`/brandzo-warehouse-system/`) in `astro.config.mjs`.
 - **Static Asset Organization**: Resolved 404 errors for static forms and the operational guide by correctly placing them in the `public/` directory.
 - **Firebase Integration (Initial Phase)**: Firebase configuration and basic inventory service logic are in place.
+- **Toolchain Stabilised (Phase 0)**: Astro/Tailwind/ESLint setup cleaned up; clean `npm ci` install, `npm run build/lint/format` scripts, Tailwind 4 via PostCSS, ESLint flat config + Prettier.
+- **Authentication & Security Rules (Phase 1)**: Firebase config moved behind `PUBLIC_FIREBASE_*` env vars; Firebase Auth (email/password) added; `/login` page; AuthGuard redirects unauthenticated users; `firestore.rules` enforces auth-only reads/writes and append-only logs.
 
 ---
 
 ## 4. Roadmap (What Remains to be Done)
 
-- **Database Integration**: Complete the integration of Firebase for all modules to support real-time inventory and warehouse management.
-- **Core Features**: Build functional React components and logic for:
-  - Add New Warehouse
-  - Add Item / Item Master
-  - Stock Adjustments and Real-time Balance tracking.
-- **Digital Transformation**: Gradually convert the static HTML operational forms (GRN, PO, Bin Cards) currently in the `public/forms/` directory into dynamic, interactive React components connected to the Firestore database.
+- **Navigation Fix (Phase 2)**: Make sidebar links honour `import.meta.env.BASE_URL` so internal navigation works on GitHub Pages.
+- **Item Master CRUD (Phase 3)**: Build the items page with create/edit/archive and SKU-as-document-id semantics.
+- **Real-Time Dashboard (Phase 4)**: Replace the static `brandzoSchema` mock with live Firestore subscriptions.
+- **GRN / Inbound Module (Phase 5)**: Header + line items form with batched atomic writes.
+- **Outbound + Stock Adjustments (Phase 6)**: Same atomic pattern with reason codes.
+- **Bin Card + Reports (Phase 7)**: Per-item ledger, CSV/Excel exports; dynamic React versions of the static `public/forms/` HTML templates.
+- **Quality & CI (Phase 8)**: Vitest + Playwright smoke tests, Sentry, lint/build PR gates.
+- **Production Readiness (Phase 9)**: dev/prod Firebase split, custom domain, user guide.
 
 ---
 
@@ -60,13 +64,17 @@ This project follows a specific structure to separate source code from static as
 # 1. Install dependencies (no special flags needed)
 npm install
 
-# 2. Start the dev server (http://localhost:4321/brandzo-warehouse-system)
+# 2. (Optional) Override the Firebase project — see "Firebase configuration"
+#    below. Without this step the bundled fallback project is used.
+cp .env.example .env
+
+# 3. Start the dev server (http://localhost:4321/brandzo-warehouse-system)
 npm run dev
 
-# 3. Build the static site to ./dist
+# 4. Build the static site to ./dist
 npm run build
 
-# 4. Preview the production build locally
+# 5. Preview the production build locally
 npm run preview
 ```
 
@@ -78,7 +86,31 @@ npm run format        # Prettier write
 npm run format:check  # Prettier check (used by CI / pre-commit later)
 ```
 
-The Firebase web config currently lives in `src/config/firebase.js`. A future phase will move it behind `import.meta.env.PUBLIC_FIREBASE_*` env vars so dev/prod can be split cleanly.
+### Firebase configuration
+
+The Firebase web config is read from `import.meta.env.PUBLIC_FIREBASE_*`. The variables are listed in `.env.example`. They are NOT secrets — Firebase web keys are designed to be shipped to the browser. Real protection comes from Firebase Auth (every dashboard route is gated) and the Firestore Security Rules in `firestore.rules`.
+
+For the deployed GitHub Pages build, the workflow reads matching `secrets.PUBLIC_FIREBASE_*` values. If you don't set them, the fallbacks in `src/config/firebase.js` kick in (the existing demo project).
+
+### Firebase Auth
+
+The dashboard is locked behind Firebase Auth (email + password). To create the first administrator user:
+
+1. Open the [Firebase console](https://console.firebase.google.com/) → your project → **Authentication** → **Sign-in method** and enable **Email/Password**.
+2. Switch to the **Users** tab and click **Add user**. Enter an email + password.
+3. Visit `/brandzo-warehouse-system/login` and sign in with that user.
+
+Anyone hitting `/dashboard` without a valid session is redirected to `/login`.
+
+### Firestore Security Rules
+
+The rules live in `firestore.rules`. To deploy them, install the Firebase CLI once (`npm install -g firebase-tools`), log in (`firebase login`), then run:
+
+```bash
+firebase deploy --only firestore:rules --project <your-project-id>
+```
+
+Until you deploy these rules, your Firestore database may still be in "test mode" (open to the world). Deploy them as part of the Phase 1 rollout.
 
 ---
 

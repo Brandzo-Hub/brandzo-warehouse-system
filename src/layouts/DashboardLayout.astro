@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import AuthGuard from '../components/auth/AuthGuard.jsx';
+import SidebarUser from '../components/auth/SidebarUser.jsx';
 
 const { title } = Astro.props;
 ---
@@ -23,8 +25,11 @@ const { title } = Astro.props;
     </style>
   </head>
   <body class="flex min-h-screen">
+    <AuthGuard client:load />
     <!-- Sidebar -->
-    <aside class="fixed inset-y-0 right-0 w-64 bg-[#1a1a2e] text-white shadow-xl z-20">
+    <aside
+      class="fixed inset-y-0 right-0 w-64 bg-[#1a1a2e] text-white shadow-xl z-20 flex flex-col"
+    >
       <div class="p-6 border-b border-gray-700 flex items-center gap-3">
         <div
           class="w-10 h-10 bg-[#c0392b] rounded-lg flex items-center justify-center font-bold text-xl shadow-lg"
@@ -144,8 +149,9 @@ const { title } = Astro.props;
         </ul>
       </nav>
 
-      <div class="absolute bottom-0 w-full p-6 border-t border-gray-700">
-        <p class="text-xs text-gray-500 text-center font-bold">Brandzo ERP 2026 &copy;</p>
+      <div class="mt-auto border-t border-gray-700">
+        <SidebarUser client:load />
+        <p class="text-xs text-gray-500 text-center font-bold py-4">Brandzo ERP 2026 &copy;</p>
       </div>
     </aside>
 
