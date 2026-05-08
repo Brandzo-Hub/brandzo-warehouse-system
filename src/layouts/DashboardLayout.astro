@@ -110,7 +110,7 @@ const navItems = [
     -->
     <aside
       id="brandzo-sidebar"
-      class="fixed top-0 right-0 h-full min-h-screen overflow-y-auto w-[85vw] max-w-sm bg-brand-navy text-white shadow-xl z-[70] flex flex-col transform translate-x-full md:translate-x-0 transition-transform duration-200 ease-out"
+      class="fixed inset-y-0 right-0 w-[280px] md:w-64 md:h-screen min-h-[100dvh] overflow-y-auto bg-brand-navy text-white shadow-xl z-[100] flex flex-col transform translate-x-full md:translate-x-0 transition-transform duration-200 ease-out"
     >
       <div class="p-6 border-b border-gray-700 flex items-center justify-between gap-3 sticky top-0 bg-brand-navy z-[80]">
         <div class="flex items-center gap-3">
@@ -197,16 +197,16 @@ const navItems = [
     <!-- Mobile backdrop. Click anywhere to close the sidebar. -->
     <div
       id="brandzo-backdrop"
-      class="md:hidden fixed inset-0 w-full h-full bg-black/50 z-[60] hidden"
+      class="md:hidden fixed inset-0 w-full h-full bg-black/50 z-[90] hidden"
       aria-hidden="true"
     >
     </div>
 
     <!--
       Main content. No right margin on mobile (sidebar is off-canvas);
-      mr-64 at md+ to leave room for the always-visible sidebar.
+      md:mr-64 at md+ to leave room for the always-visible sidebar and prevent overlap.
     -->
-    <main class="md:mr-64 px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 pt-20 md:pt-8">
+    <main class="md:mr-64 px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 pt-20 md:pt-8 relative z-0">
       <div class="max-w-7xl mx-auto">
         <slot />
       </div>
@@ -250,14 +250,14 @@ const navItems = [
         /**
          * Global Scroll Management
          * Sets overflow: hidden on the body only when overlays are active.
-         * The sidebar only locks scroll on mobile viewports (< 768px).
+         * Rule: ONLY apply overflow = 'hidden' if (isSidebarOpen && window.innerWidth < 768) OR isGuideOpen.
          */
         const updateBodyScroll = () => {
-          const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+          const isMobile = window.innerWidth < 768;
           const sidebarActive = sidebar && !sidebar.classList.contains('translate-x-full');
           const guideActive = guideDrawer && guideDrawer.hasAttribute('open');
 
-          if ((!isDesktop && sidebarActive) || guideActive) {
+          if ((isMobile && sidebarActive) || guideActive) {
             document.body.style.overflow = 'hidden';
           } else {
             document.body.style.overflow = '';
@@ -307,12 +307,14 @@ const navItems = [
           closeSidebarBtn && closeSidebarBtn.addEventListener('click', dismissSidebar);
           backdrop.addEventListener('click', dismissSidebar);
 
-          // Auto-close sidebar on ANY link or button click inside
+          // Auto-close sidebar on ANY link or button click inside (MOBILE ONLY)
           const sidebarActions = sidebar.querySelectorAll('a, button');
           sidebarActions.forEach(action => {
             action.addEventListener('click', () => {
-              // Small delay to allow navigation/drawer logic to trigger first
-              setTimeout(dismissSidebar, 50);
+              if (window.innerWidth < 768) {
+                // Small delay to allow navigation/drawer logic to trigger first
+                setTimeout(dismissSidebar, 50);
+              }
             });
           });
 
