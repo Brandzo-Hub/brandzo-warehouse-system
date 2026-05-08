@@ -177,6 +177,10 @@ const navItems = [
     >
     </div>
 
+    <!--
+      Main content. No right margin on mobile (sidebar is off-canvas);
+      md:mr-64 at md+ to leave room for the always-visible sidebar and prevent overlap.
+    -->
     <main class="md:mr-64 px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 pt-20 md:pt-8">
       <div class="max-w-7xl mx-auto">
         <slot />
@@ -226,6 +230,7 @@ const navItems = [
           toggle.setAttribute('aria-expanded', 'true');
           document.body.classList.add('overflow-hidden', 'md:overflow-auto');
         };
+
         const dismiss = () => {
           sidebar.classList.add('translate-x-full');
           backdrop.classList.add('hidden');
@@ -233,12 +238,25 @@ const navItems = [
           document.body.classList.remove('overflow-hidden', 'md:overflow-auto');
         };
 
+        // إعدادات فتح وإغلاق القائمة
         toggle.addEventListener('click', () => {
           if (sidebar.classList.contains('translate-x-full')) open();
           else dismiss();
         });
         close && close.addEventListener('click', dismiss);
         backdrop.addEventListener('click', dismiss);
+        
+        // إغلاق ذكي عند الضغط على الروابط في الموبايل
+        const sidebarActions = sidebar.querySelectorAll('a, button:not(#brandzo-menu-toggle):not(#brandzo-menu-close)');
+        sidebarActions.forEach(action => {
+          action.addEventListener('click', () => {
+            if (window.innerWidth < 768) {
+              setTimeout(dismiss, 50);
+            }
+          });
+        });
+
+        // زر الهروب (Escape)
         document.addEventListener('keydown', (e) => {
           if (e.key === 'Escape') {
             dismiss();
@@ -249,6 +267,7 @@ const navItems = [
           }
         });
 
+        // مزامنة حجم الشاشة للكمبيوتر والموبايل
         const mql = window.matchMedia('(min-width: 768px)');
         const sync = () => {
           if (mql.matches) {
@@ -260,7 +279,9 @@ const navItems = [
           }
         };
         mql.addEventListener('change', sync);
+        sync(); // تشغيل فوري للمزامنة
         
+        // إعدادات الدليل التشغيلي
         if (guideDrawer && openGuideBtn && closeGuideBtn) {
           openGuideBtn.addEventListener('click', () => {
             dismiss(); 
