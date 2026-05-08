@@ -41,8 +41,6 @@ const navItems = [
         margin-left: 0;
         height: 100vh;
         max-height: 100vh;
-        width: 100%;
-        max-width: 500px;
         border: none;
         background: rgba(26, 26, 46, 0.8);
         backdrop-filter: blur(12px);
@@ -83,7 +81,7 @@ const navItems = [
     -->
     <header
       id="brandzo-mobile-header"
-      class="md:hidden fixed top-0 inset-x-0 z-30 flex items-center justify-between bg-brand-navy text-white px-4 py-3 shadow-lg"
+      class="md:hidden fixed top-0 inset-x-0 z-50 flex items-center justify-between bg-brand-navy text-white px-4 py-3 shadow-lg"
     >
       <div class="flex items-center gap-3">
         <div
@@ -215,7 +213,7 @@ const navItems = [
     </main>
 
     <!-- Pillar 1: The Guide Drawer -->
-    <dialog id="guide-drawer">
+    <dialog id="guide-drawer" class="w-full max-w-[90vw] md:max-w-md">
       <div class="flex items-center justify-between p-4 border-b border-brand-gold/30 bg-brand-navy/50">
         <div class="flex items-center gap-2">
           <div class="w-8 h-8 bg-brand-gold rounded flex items-center justify-center text-brand-navy shadow-lg neon-glow-gold">

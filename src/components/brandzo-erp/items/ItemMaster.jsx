@@ -145,7 +145,7 @@ export default function ItemMaster() {
           </label>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto w-full">
           <table className="w-full text-right text-sm">
             <thead className="bg-gray-50 text-gray-700">
               <tr>

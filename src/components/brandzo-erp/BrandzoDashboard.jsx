@@ -202,8 +202,8 @@ const BrandzoDashboard = () => {
     <div className="text-right" dir="rtl">
       <header className="mb-6 sm:mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-brand-navy">نظرة عامة على النظام</h1>
-          <p className="text-gray-500 mt-1 text-sm sm:text-base">
+          <h1 className="text-2xl sm:text-3xl font-bold text-brand-navy text-center md:text-right">نظرة عامة على النظام</h1>
+          <p className="text-gray-500 mt-1 text-sm sm:text-base text-center md:text-right">
             مؤشرات الأداء الرئيسية وحالة المخزون — تحديث لحظي عبر Firestore
           </p>
         </div>
@@ -225,7 +225,7 @@ const BrandzoDashboard = () => {
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
         <KpiCard
           icon="package"
           badgeClass="bg-red-50 text-brand-red"
@@ -282,12 +282,12 @@ const BrandzoDashboard = () => {
 
       <main className="mt-10">
         <section className="rounded-xl bg-white shadow-sm border border-gray-200 overflow-hidden">
-          <div className="p-4 sm:p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <div className="flex-1">
-              <h2 className="text-lg sm:text-xl font-bold text-brand-navy">
+          <div className="p-4 sm:p-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div className="flex-1 w-full">
+              <h2 className="text-lg sm:text-xl font-bold text-brand-navy text-center md:text-right">
                 نظرة عامة على المخزون
               </h2>
-              <div className="mt-3 relative max-w-md">
+              <div className="mt-3 relative w-full md:max-w-md">
                 <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
                   <Icon name="search" size={16} />
                 </span>
@@ -321,7 +321,7 @@ const BrandzoDashboard = () => {
               </span>
             </div>
           </div>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto w-full">
             <table className="w-full text-right text-sm">
               <thead className="bg-gray-50 text-gray-700">
                 <tr>

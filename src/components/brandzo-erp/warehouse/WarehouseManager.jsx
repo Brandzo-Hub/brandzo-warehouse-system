@@ -123,7 +123,7 @@ const WarehouseManager = () => {
 
       {/* قائمة المستودعات */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto w-full">
           <table className="w-full text-right text-sm border-collapse">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>

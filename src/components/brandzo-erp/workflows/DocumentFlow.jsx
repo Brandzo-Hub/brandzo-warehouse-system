@@ -272,8 +272,8 @@ export default function DocumentFlow({ base = '' }) {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 bg-white/50 p-1.5 rounded-xl border border-gray-200">
-          <span className="text-xs font-bold text-gray-500 px-2">عرض حسب الدور:</span>
+        <div className="flex flex-wrap items-center gap-2 bg-white/50 p-2 rounded-xl border border-gray-200 w-full lg:w-auto justify-center lg:justify-start">
+          <span className="text-xs font-bold text-gray-500 px-2 w-full lg:w-auto text-center lg:text-right mb-1 lg:mb-0">عرض حسب الدور:</span>
           {ROLES.map((role) => (
             <button
               key={role.id}
