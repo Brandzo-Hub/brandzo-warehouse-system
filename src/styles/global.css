@@ -11,3 +11,76 @@
 
 /* Tell Tailwind v4 explicitly where to look for class names. */
 @source "../**/*.{astro,html,js,jsx,ts,tsx,md,mdx}";
+
+/* Pillar 4: Ink-Friendly Print CSS */
+@media print {
+  @page {
+    margin: 1cm;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 10pt;
+    direction: rtl;
+  }
+
+  /* Hide dark gradients and neon glows for printing */
+  .bg-brand-navy,
+  .bg-brand-red,
+  .bg-brand-red-dark,
+  .backdrop-blur-md,
+  .shadow-lg,
+  .shadow-md,
+  .neon-glow-gold,
+  .neon-glow-red {
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    border-color: #ccc !important;
+    color: black !important;
+  }
+
+  /* Hide navigation elements */
+  aside,
+  header,
+  button,
+  nav,
+  #brandzo-mobile-header,
+  #brandzo-sidebar,
+  #brandzo-backdrop,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Ensure main content takes full width */
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Hide inputs when print-span is present to avoid double text */
+  .has-print-text input,
+  .has-print-text textarea {
+    display: none !important;
+  }
+
+  /* Force remaining input values to be visible if no print-span */
+  input, textarea {
+    border: 1px solid #000 !important;
+    background: transparent !important;
+    color: black !important;
+  }
+
+  /* Show the print-only-text synced by formUtils.js */
+  .print-only-text {
+    display: block !important;
+    color: black !important;
+    min-height: 1em;
+  }
+
+  input::placeholder {
+    color: transparent !important;
+  }
+}

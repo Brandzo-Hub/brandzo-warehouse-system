@@ -22,20 +22,31 @@ function KpiCard({
   loading,
   active,
   onClick,
+  neonColor,
 }) {
   const isInteractive = typeof onClick === 'function';
   const Comp = isInteractive ? 'button' : 'div';
+
+  const neonStyles = {
+    red: 'hover:shadow-[0_0_20px_rgba(192,57,43,0.3)] border-brand-red/20',
+    gold: 'hover:shadow-[0_0_20px_rgba(232,184,48,0.3)] border-brand-gold/20',
+    blue: 'hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] border-blue-200',
+    green: 'hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] border-green-200',
+    indigo: 'hover:shadow-[0_0_20px_rgba(79,70,229,0.3)] border-indigo-200',
+  };
+
   return (
     <Comp
       type={isInteractive ? 'button' : undefined}
       onClick={onClick}
       aria-pressed={isInteractive ? Boolean(active) : undefined}
       className={[
-        'rounded-xl border bg-white p-6 shadow-sm text-right transition-all',
+        'rounded-xl border p-6 text-right transition-all backdrop-blur-md bg-white/80',
+        neonStyles[neonColor] || 'border-gray-200 shadow-sm',
         isInteractive
-          ? 'cursor-pointer hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-brand-red'
+          ? 'cursor-pointer hover:-translate-y-1 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-brand-red'
           : '',
-        active ? 'border-brand-red ring-2 ring-brand-red shadow-md' : 'border-gray-200',
+        active ? 'border-brand-red ring-2 ring-brand-red shadow-lg scale-[1.02]' : '',
       ]
         .filter(Boolean)
         .join(' ')}
@@ -104,6 +115,7 @@ const BrandzoDashboard = () => {
   const [error, setError] = useState('');
 
   const [showLowOnly, setShowLowOnly] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const unsubItems = subscribeItems(
@@ -166,13 +178,22 @@ const BrandzoDashboard = () => {
   const totalInboundQty = useMemo(() => sumQuantities(inbound), [inbound]);
   const totalOutboundQty = useMemo(() => sumQuantities(outbound), [outbound]);
 
-  const visibleItems = useMemo(
-    () =>
-      showLowOnly
-        ? items.filter((it) => (Number(it.balance) || 0) <= (Number(it.minStock) || 0))
-        : items,
-    [items, showLowOnly]
-  );
+  const visibleItems = useMemo(() => {
+    let filtered = items;
+    if (showLowOnly) {
+      filtered = filtered.filter((it) => (Number(it.balance) || 0) <= (Number(it.minStock) || 0));
+    }
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      filtered = filtered.filter(
+        (it) =>
+          it.sku?.toLowerCase().includes(term) ||
+          it.nameAr?.toLowerCase().includes(term) ||
+          it.nameEn?.toLowerCase().includes(term)
+      );
+    }
+    return filtered;
+  }, [items, showLowOnly, searchTerm]);
 
   const tableLoading = loadingItems;
   const tableEmpty = !tableLoading && visibleItems.length === 0;
@@ -213,6 +234,7 @@ const BrandzoDashboard = () => {
           labelAr="إجمالي الأصناف"
           value={totalItems}
           loading={loadingItems}
+          neonColor="red"
         />
         <KpiCard
           icon="warehouse"
@@ -222,6 +244,7 @@ const BrandzoDashboard = () => {
           labelAr="المستودعات"
           value={totalWarehouses}
           loading={loadingWarehouses}
+          neonColor="indigo"
         />
         <KpiCard
           icon="alertTriangle"
@@ -233,6 +256,7 @@ const BrandzoDashboard = () => {
           loading={loadingItems}
           active={showLowOnly}
           onClick={() => setShowLowOnly((prev) => !prev)}
+          neonColor="gold"
         />
         <KpiCard
           icon="arrowDownTray"
@@ -242,6 +266,7 @@ const BrandzoDashboard = () => {
           labelAr="إجمالي الوارد"
           value={totalInboundQty}
           loading={loadingInbound}
+          neonColor="green"
         />
         <KpiCard
           icon="arrowUpTray"
@@ -251,18 +276,31 @@ const BrandzoDashboard = () => {
           labelAr="إجمالي الصادر"
           value={totalOutboundQty}
           loading={loadingOutbound}
+          neonColor="blue"
         />
       </div>
 
       <main className="mt-10">
         <section className="rounded-xl bg-white shadow-sm border border-gray-200 overflow-hidden">
           <div className="p-4 sm:p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <div>
+            <div className="flex-1">
               <h2 className="text-lg sm:text-xl font-bold text-brand-navy">
                 نظرة عامة على المخزون
               </h2>
+              <div className="mt-3 relative max-w-md">
+                <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
+                  <Icon name="search" size={16} />
+                </span>
+                <input
+                  type="text"
+                  placeholder="البحث عبر SKU أو اسم الصنف..."
+                  className="block w-full pr-10 pl-3 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-brand-red focus:border-brand-red text-sm"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
               {showLowOnly && (
-                <p className="text-xs text-yellow-700 mt-1 font-semibold">
+                <p className="text-xs text-yellow-700 mt-2 font-semibold">
                   عرض الأصناف ذات المخزون المنخفض فقط
                 </p>
               )}

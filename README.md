@@ -41,6 +41,12 @@ This project follows a specific structure to separate source code from static as
 - **Toolchain Stabilised (Phase 0)**: Astro/Tailwind/ESLint setup cleaned up; clean `npm ci` install, `npm run build/lint/format` scripts, Tailwind 4 via PostCSS, ESLint flat config + Prettier.
 - **Firebase Config via Env Vars**: Firebase web config moved behind `PUBLIC_FIREBASE_*` env vars (with safe fallbacks); GitHub Actions wired to inject matching secrets at build time. _Authentication and Firestore Security Rules are intentionally deferred to a later phase — the dashboard is currently open access._
 - **Navigation & Shared UI (Phase 2)**: Sidebar links honour `import.meta.env.BASE_URL` so they work on GitHub Pages; brand palette moved to Tailwind 4 `@theme` (`bg-brand-red`, `text-brand-navy`, …); shared `<Icon>` component (Astro + React mirrors) replaces the duplicated inline SVGs; shared `<ComingSoon>` placeholder replaces copy-pasted markup in `products`/`grn` pages.
+- **System Optimization (The 4 Pillars)**:
+    - **Operational Guide**: Integrated as a slide-over drawer accessible from the dashboard sidebar.
+    - **Smart Filtering**: Added `useMemo`-based search filtering to the Inventory Dashboard.
+    - **Document Workflows**: Implemented role-based workflow visualization with URL hash routing.
+    - **Smart Forms & Barcode Support**: Integrated `formUtils.js` across all 19 static forms for `localStorage` draft saving and improved barcode scanner compatibility (high-speed input capture).
+    - **Visual Identity**: Standardized Crimson-Gold glassmorphism and neon glow aesthetics across the UI.
 
 ---
 

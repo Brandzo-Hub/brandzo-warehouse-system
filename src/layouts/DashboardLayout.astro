@@ -34,6 +34,45 @@ const navItems = [
         font-family: 'Cairo', sans-serif;
         background-color: #f3f4f6;
       }
+
+      /* Pillar 1: Guide Drawer Styles */
+      #guide-drawer {
+        margin-right: auto;
+        margin-left: 0;
+        height: 100vh;
+        max-height: 100vh;
+        width: 100%;
+        max-width: 500px;
+        border: none;
+        background: rgba(26, 26, 46, 0.8);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        color: white;
+        box-shadow: -10px 0 30px rgba(192, 57, 43, 0.3);
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-out;
+        display: flex;
+        flex-direction: column;
+        border-right: 2px solid #e8b830;
+      }
+
+      #guide-drawer[open] {
+        transform: translateX(0);
+        display: flex;
+      }
+
+      #guide-drawer::backdrop {
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+      }
+
+      .neon-glow-gold {
+        box-shadow: 0 0 10px rgba(232, 184, 48, 0.5), 0 0 20px rgba(232, 184, 48, 0.3);
+      }
+
+      .neon-glow-red {
+        box-shadow: 0 0 10px rgba(192, 57, 43, 0.5), 0 0 20px rgba(192, 57, 43, 0.3);
+      }
     </style>
   </head>
   <body class="min-h-screen">
@@ -131,6 +170,16 @@ const navItems = [
               </li>
             ))
           }
+          <!-- Pillar 1: Guide Trigger -->
+          <li>
+            <button
+              id="open-guide"
+              class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors text-right"
+            >
+              <Icon name="bookOpen" class="text-brand-gold" />
+              <span class="font-medium">الدليل التشغيلي</span>
+            </button>
+          </li>
         </ul>
       </nav>
 
@@ -165,8 +214,51 @@ const navItems = [
       </div>
     </main>
 
+    <!-- Pillar 1: The Guide Drawer -->
+    <dialog id="guide-drawer">
+      <div class="flex items-center justify-between p-4 border-b border-brand-gold/30 bg-brand-navy/50">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 bg-brand-gold rounded flex items-center justify-center text-brand-navy shadow-lg neon-glow-gold">
+            <Icon name="bookOpen" size={18} />
+          </div>
+          <h2 class="text-xl font-bold text-brand-gold">الدليل التشغيلي</h2>
+        </div>
+        <button id="close-guide" class="p-2 hover:bg-white/10 rounded-full transition-colors">
+          <Icon name="close" size={20} />
+        </button>
+      </div>
+      <div class="flex-1 overflow-hidden">
+        <iframe
+          src={`${base}/Brandzo_Operational_Guide.html`}
+          class="w-full h-full border-none"
+          title="Operational Guide"
+        ></iframe>
+      </div>
+      <div class="p-4 border-t border-brand-gold/30 bg-brand-navy/50 text-center text-xs text-gray-400">
+        Brandzo ERP 2026 - Operational Excellence
+      </div>
+    </dialog>
+
     <script is:inline>
       (function () {
+        // Pillar 1: Guide Drawer Logic
+        const guideDrawer = document.getElementById('guide-drawer');
+        const openGuideBtn = document.getElementById('open-guide');
+        const closeGuideBtn = document.getElementById('close-guide');
+
+        if (guideDrawer && openGuideBtn && closeGuideBtn) {
+          openGuideBtn.addEventListener('click', () => {
+            guideDrawer.showModal();
+          });
+          closeGuideBtn.addEventListener('click', () => {
+            guideDrawer.close();
+          });
+          // Close on backdrop click
+          guideDrawer.addEventListener('click', (e) => {
+            if (e.target === guideDrawer) guideDrawer.close();
+          });
+        }
+
         const sidebar = document.getElementById('brandzo-sidebar');
         const backdrop = document.getElementById('brandzo-backdrop');
         const toggle = document.getElementById('brandzo-menu-toggle');

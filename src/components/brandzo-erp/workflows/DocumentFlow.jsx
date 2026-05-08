@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DOCUMENT_STAGES } from './documentFlowData';
 
 /**
@@ -72,7 +72,7 @@ function StageArrow({ direction = 'right', active = false }) {
   );
 }
 
-function StageCard({ stage, index, active, hovered, onSelect, onHover }) {
+function StageCard({ stage, index, active, hovered, dimmed, onSelect, onHover }) {
   const c = ACCENT[stage.accent] || ACCENT.navy;
   const highlight = active || hovered;
   return (
@@ -90,6 +90,7 @@ function StageCard({ stage, index, active, hovered, onSelect, onHover }) {
         highlight
           ? `${c.glow} -translate-y-1 ring-2 ring-offset-2 ring-offset-slate-100 ${c.ring}`
           : 'hover:-translate-y-0.5',
+        dimmed ? 'opacity-40 grayscale-[0.5] scale-[0.95]' : 'opacity-100',
         'cursor-pointer',
       ].join(' ')}
       aria-pressed={active}
@@ -212,30 +213,83 @@ function DetailPanel({ stage, base }) {
   );
 }
 
+const ROLES = [
+  { id: 'all', label: 'الكل', icon: '👥', stages: ['pr', 'po', 'asn', 'grn', 'putaway', 'picking', 'dispatch', 'returns'] },
+  { id: 'procurement', label: 'المشتريات', icon: '💰', stages: ['pr', 'po', 'asn', 'grn', 'returns'] },
+  { id: 'warehouse', label: 'أمين المستودع', icon: '🔑', stages: ['grn', 'putaway', 'picking', 'dispatch', 'returns'] },
+  { id: 'qc', label: 'مراقب الجودة', icon: '🔬', stages: ['grn', 'returns'] },
+  { id: 'finance', label: 'المالية', icon: '📊', stages: ['po', 'grn', 'returns'] },
+];
+
 export default function DocumentFlow({ base = '' }) {
   const [activeId, setActiveId] = useState(DOCUMENT_STAGES[3].id); // start on GRN — the heart of the cycle
   const [hoveredId, setHoveredId] = useState(null);
+  const [activeRole, setActiveRole] = useState('all');
+
+  // Handle Hash Routing
+  useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash && DOCUMENT_STAGES.some((s) => s.id === hash)) {
+        setActiveId(hash);
+        // Scroll the active stage into view if needed
+        const el = document.getElementById(`stage-${hash}`);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    };
+
+    window.addEventListener('hashchange', handleHash);
+    handleHash(); // Initial check
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
+
+  const handleSelect = (id) => {
+    window.location.hash = id;
+    setActiveId(id);
+  };
 
   const activeStage = DOCUMENT_STAGES.find((s) => s.id === activeId) || DOCUMENT_STAGES[0];
+  const roleData = ROLES.find((r) => r.id === activeRole);
 
   return (
     <section
       className="bg-slate-100 rounded-2xl p-4 sm:p-6 lg:p-8 border border-slate-200"
       dir="rtl"
     >
-      <header className="mb-5 sm:mb-6">
-        <div className="flex items-center gap-3 mb-2">
-          <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-brand-red text-white text-lg shadow-md">
-            🔄
-          </span>
-          <h2 className="text-xl sm:text-2xl font-bold text-brand-navy">
-            الدورة المستندية الكاملة
-          </h2>
+      <header className="mb-5 sm:mb-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-3 mb-2">
+            <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-brand-red text-white text-lg shadow-md">
+              🔄
+            </span>
+            <h2 className="text-xl sm:text-2xl font-bold text-brand-navy">
+              الدورة المستندية الكاملة
+            </h2>
+          </div>
+          <p className="text-sm text-gray-600 leading-relaxed">
+            مراحل دورة المستودع الثماني — من طلب الشراء حتى المرتجعات. مرّر أو اضغط على أي مرحلة لعرض
+            وصفها والنماذج التشغيلية المرتبطة بها.
+          </p>
         </div>
-        <p className="text-sm text-gray-600 leading-relaxed">
-          مراحل دورة المستودع الثماني — من طلب الشراء حتى المرتجعات. مرّر أو اضغط على أي مرحلة لعرض
-          وصفها والنماذج التشغيلية المرتبطة بها.
-        </p>
+
+        <div className="flex flex-wrap items-center gap-2 bg-white/50 p-1.5 rounded-xl border border-gray-200">
+          <span className="text-xs font-bold text-gray-500 px-2">عرض حسب الدور:</span>
+          {ROLES.map((role) => (
+            <button
+              key={role.id}
+              onClick={() => setActiveRole(role.id)}
+              className={[
+                'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all',
+                activeRole === role.id
+                  ? 'bg-brand-navy text-white shadow-md'
+                  : 'text-gray-600 hover:bg-gray-200',
+              ].join(' ')}
+            >
+              <span>{role.icon}</span>
+              <span>{role.label}</span>
+            </button>
+          ))}
+        </div>
       </header>
 
       {/* Pipeline. Horizontal scroll on md+, vertical stack on smaller. */}
@@ -246,6 +300,7 @@ export default function DocumentFlow({ base = '' }) {
         {DOCUMENT_STAGES.map((stage, i) => (
           <div
             key={stage.id}
+            id={`stage-${stage.id}`}
             className="md:flex md:items-center"
             style={{ scrollSnapAlign: 'start' }}
           >
@@ -254,7 +309,8 @@ export default function DocumentFlow({ base = '' }) {
               index={i}
               active={activeId === stage.id}
               hovered={hoveredId === stage.id}
-              onSelect={setActiveId}
+              dimmed={!roleData.stages.includes(stage.id)}
+              onSelect={handleSelect}
               onHover={setHoveredId}
             />
             {i < DOCUMENT_STAGES.length - 1 && (
