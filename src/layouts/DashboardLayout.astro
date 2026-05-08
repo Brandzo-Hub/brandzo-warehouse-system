@@ -110,7 +110,7 @@ const navItems = [
     -->
     <aside
       id="brandzo-sidebar"
-      class="fixed top-0 right-0 w-64 max-w-[85vw] h-[100dvh] bg-brand-navy text-white shadow-xl z-[70] flex flex-col transform translate-x-full md:translate-x-0 transition-transform duration-200 ease-out"
+      class="fixed top-0 right-0 bottom-0 w-[85vw] max-w-sm md:w-64 bg-brand-navy text-white shadow-xl z-[110] md:z-40 flex flex-col transform translate-x-full md:translate-x-0 transition-transform duration-200 ease-out overflow-y-auto"
     >
       <div class="p-6 border-b border-gray-700 flex items-center justify-between gap-3 sticky top-0 bg-brand-navy z-[80]">
         <div class="flex items-center gap-3">
@@ -153,7 +153,7 @@ const navItems = [
         </a>
       </div>
 
-      <nav class="mt-4 px-4 flex-1 overflow-y-auto">
+      <nav class="mt-4 px-4 flex-1">
         <ul class="space-y-1">
           {
             navItems.map((item) => (
@@ -197,7 +197,7 @@ const navItems = [
     <!-- Mobile backdrop. Click anywhere to close the sidebar. -->
     <div
       id="brandzo-backdrop"
-      class="md:hidden fixed inset-0 bg-black/50 z-[60] hidden"
+      class="md:hidden fixed inset-0 bg-black/50 z-[100] hidden"
       aria-hidden="true"
     >
     </div>
@@ -239,63 +239,103 @@ const navItems = [
 
     <script is:inline>
       (function () {
-        // Pillar 1: Guide Drawer Logic
         const guideDrawer = document.getElementById('guide-drawer');
         const openGuideBtn = document.getElementById('open-guide');
         const closeGuideBtn = document.getElementById('close-guide');
-
-        if (guideDrawer && openGuideBtn && closeGuideBtn) {
-          openGuideBtn.addEventListener('click', () => {
-            guideDrawer.showModal();
-          });
-          closeGuideBtn.addEventListener('click', () => {
-            guideDrawer.close();
-          });
-          // Close on backdrop click
-          guideDrawer.addEventListener('click', (e) => {
-            if (e.target === guideDrawer) guideDrawer.close();
-          });
-        }
-
         const sidebar = document.getElementById('brandzo-sidebar');
         const backdrop = document.getElementById('brandzo-backdrop');
         const toggle = document.getElementById('brandzo-menu-toggle');
         const close = document.getElementById('brandzo-menu-close');
-        if (!sidebar || !backdrop || !toggle) return;
 
-        const open = () => {
+        const mql = window.matchMedia('(min-width: 768px)');
+
+        const updateBodyScroll = () => {
+          const isMobileSidebarOpen = sidebar && !sidebar.classList.contains('translate-x-full') && !mql.matches;
+          const isGuideOpen = guideDrawer && guideDrawer.hasAttribute('open');
+
+          if (isMobileSidebarOpen || isGuideOpen) {
+            document.body.style.overflow = 'hidden';
+          } else {
+            document.body.style.overflow = '';
+          }
+        };
+
+        const openSidebar = () => {
+          if (!sidebar || !backdrop || !toggle) return;
           sidebar.classList.remove('translate-x-full');
           backdrop.classList.remove('hidden');
           toggle.setAttribute('aria-expanded', 'true');
-          document.body.classList.add('overflow-hidden', 'md:overflow-auto');
+          updateBodyScroll();
         };
-        const dismiss = () => {
+
+        const dismissSidebar = () => {
+          if (!sidebar || !backdrop || !toggle) return;
           sidebar.classList.add('translate-x-full');
           backdrop.classList.add('hidden');
           toggle.setAttribute('aria-expanded', 'false');
-          document.body.classList.remove('overflow-hidden', 'md:overflow-auto');
+          updateBodyScroll();
         };
 
-        toggle.addEventListener('click', () => {
-          if (sidebar.classList.contains('translate-x-full')) open();
-          else dismiss();
-        });
-        close && close.addEventListener('click', dismiss);
-        backdrop.addEventListener('click', dismiss);
+        // Pillar 1: Guide Drawer Logic
+        if (guideDrawer && openGuideBtn && closeGuideBtn) {
+          openGuideBtn.addEventListener('click', () => {
+            guideDrawer.showModal();
+            updateBodyScroll();
+            // Also dismiss sidebar if it's open (mobile)
+            if (window.innerWidth < 768) dismissSidebar();
+          });
+          closeGuideBtn.addEventListener('click', () => {
+            guideDrawer.close();
+            updateBodyScroll();
+          });
+          guideDrawer.addEventListener('click', (e) => {
+            if (e.target === guideDrawer) {
+              guideDrawer.close();
+              updateBodyScroll();
+            }
+          });
+        }
+
+        if (sidebar && backdrop && toggle) {
+          toggle.addEventListener('click', () => {
+            if (sidebar.classList.contains('translate-x-full')) openSidebar();
+            else dismissSidebar();
+          });
+          close && close.addEventListener('click', dismissSidebar);
+          backdrop.addEventListener('click', dismissSidebar);
+
+          // Smart Auto-Close: Select all <a> and <button> tags inside the sidebar
+          const sidebarActions = sidebar.querySelectorAll('a, button');
+          sidebarActions.forEach(action => {
+            // Don't close if it's the menu-close button or the guide trigger (which has its own logic)
+            if (action.id === 'brandzo-menu-close' || action.id === 'open-guide') return;
+
+            action.addEventListener('click', () => {
+              if (window.innerWidth < 768) {
+                dismissSidebar();
+              }
+            });
+          });
+        }
+
         document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape') dismiss();
+          if (e.key === 'Escape') {
+            dismissSidebar();
+            if (guideDrawer && guideDrawer.hasAttribute('open')) {
+              guideDrawer.close();
+              updateBodyScroll();
+            }
+          }
         });
-        // Re-show the sidebar (and clear off-canvas transform) when the user
-        // resizes back up to desktop, so it is always pinned at md+.
-        const mql = window.matchMedia('(min-width: 768px)');
+
         const sync = () => {
           if (mql.matches) {
-            sidebar.classList.remove('translate-x-full');
-            backdrop.classList.add('hidden');
-            document.body.classList.remove('overflow-hidden', 'md:overflow-auto');
+            if (sidebar) sidebar.classList.remove('translate-x-full');
+            if (backdrop) backdrop.classList.add('hidden');
           } else {
-            sidebar.classList.add('translate-x-full');
+            if (sidebar) sidebar.classList.add('translate-x-full');
           }
+          updateBodyScroll();
         };
         mql.addEventListener('change', sync);
       })();
