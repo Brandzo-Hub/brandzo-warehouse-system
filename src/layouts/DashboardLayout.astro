@@ -81,7 +81,7 @@ const navItems = [
     -->
     <header
       id="brandzo-mobile-header"
-      class="md:hidden fixed top-0 inset-x-0 z-50 flex items-center justify-between bg-brand-navy text-white px-4 py-3 shadow-lg"
+      class="md:hidden fixed top-0 inset-x-0 z-30 flex items-center justify-between bg-brand-navy text-white px-4 py-3 shadow-lg"
     >
       <div class="flex items-center gap-3">
         <div
@@ -110,7 +110,7 @@ const navItems = [
     -->
     <aside
       id="brandzo-sidebar"
-      class="fixed inset-y-0 right-0 w-[280px] md:w-64 md:h-screen min-h-[100dvh] overflow-y-auto bg-brand-navy text-white shadow-xl z-[100] flex flex-col transform translate-x-full md:translate-x-0 transition-transform duration-200 ease-out"
+      class="fixed inset-y-0 right-0 w-64 max-w-[85vw] bg-brand-navy text-white shadow-xl z-40 flex flex-col transform translate-x-full md:translate-x-0 transition-transform duration-200 ease-out"
     >
       <div class="p-6 border-b border-gray-700 flex items-center justify-between gap-3 sticky top-0 bg-brand-navy z-[80]">
         <div class="flex items-center gap-3">
@@ -197,7 +197,7 @@ const navItems = [
     <!-- Mobile backdrop. Click anywhere to close the sidebar. -->
     <div
       id="brandzo-backdrop"
-      class="md:hidden fixed inset-0 w-full h-full bg-black/50 z-[90] hidden"
+      class="md:hidden fixed inset-0 bg-black/50 z-30 hidden"
       aria-hidden="true"
     >
     </div>
@@ -206,7 +206,7 @@ const navItems = [
       Main content. No right margin on mobile (sidebar is off-canvas);
       md:mr-64 at md+ to leave room for the always-visible sidebar and prevent overlap.
     -->
-    <main class="md:mr-64 px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 pt-20 md:pt-8 relative z-0">
+    <main class="md:mr-64 px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 pt-20 md:pt-8">
       <div class="max-w-7xl mx-auto">
         <slot />
       </div>
@@ -245,85 +245,65 @@ const navItems = [
         const sidebar = document.getElementById('brandzo-sidebar');
         const backdrop = document.getElementById('brandzo-backdrop');
         const toggle = document.getElementById('brandzo-menu-toggle');
-        const closeSidebarBtn = document.getElementById('brandzo-menu-close');
+        const close = document.getElementById('brandzo-menu-close');
 
-        /**
-         * Global Scroll Management
-         * Sets overflow: hidden on the body only when overlays are active.
-         * Rule: ONLY apply overflow = 'hidden' if (isSidebarOpen && window.innerWidth < 768) OR isGuideOpen.
-         */
-        const updateBodyScroll = () => {
-          const isMobile = window.innerWidth < 768;
-          const sidebarActive = sidebar && !sidebar.classList.contains('translate-x-full');
-          const guideActive = guideDrawer && guideDrawer.hasAttribute('open');
-
-          if ((isMobile && sidebarActive) || guideActive) {
-            document.body.style.overflow = 'hidden';
-          } else {
-            document.body.style.overflow = '';
-          }
-        };
-
-        const openSidebar = () => {
-          if (!sidebar || !backdrop || !toggle) return;
+        const open = () => {
           sidebar.classList.remove('translate-x-full');
           backdrop.classList.remove('hidden');
           toggle.setAttribute('aria-expanded', 'true');
-          updateBodyScroll();
+          document.body.classList.add('overflow-hidden', 'md:overflow-auto');
         };
 
-        const dismissSidebar = () => {
-          if (!sidebar || !backdrop || !toggle) return;
+        const dismiss = () => {
           sidebar.classList.add('translate-x-full');
           backdrop.classList.add('hidden');
           toggle.setAttribute('aria-expanded', 'false');
-          updateBodyScroll();
+          document.body.classList.remove('overflow-hidden', 'md:overflow-auto');
         };
 
         // Pillar 1: Guide Drawer Logic
         if (guideDrawer && openGuideBtn && closeGuideBtn) {
           openGuideBtn.addEventListener('click', () => {
-            dismissSidebar(); // Auto-close sidebar when opening guide
+            dismiss();
             guideDrawer.showModal();
-            updateBodyScroll();
+            document.body.classList.add('overflow-hidden', 'md:overflow-auto');
           });
           closeGuideBtn.addEventListener('click', () => {
             guideDrawer.close();
-            updateBodyScroll();
+            document.body.classList.remove('overflow-hidden', 'md:overflow-auto');
           });
           guideDrawer.addEventListener('click', (e) => {
             if (e.target === guideDrawer) {
               guideDrawer.close();
-              updateBodyScroll();
+              document.body.classList.remove('overflow-hidden', 'md:overflow-auto');
             }
           });
         }
 
         if (sidebar && backdrop && toggle) {
           toggle.addEventListener('click', () => {
-            if (sidebar.classList.contains('translate-x-full')) openSidebar();
-            else dismissSidebar();
+            if (sidebar.classList.contains('translate-x-full')) open();
+            else dismiss();
           });
-          closeSidebarBtn && closeSidebarBtn.addEventListener('click', dismissSidebar);
-          backdrop.addEventListener('click', dismissSidebar);
+          close && close.addEventListener('click', dismiss);
+          backdrop.addEventListener('click', dismiss);
 
           // Auto-close sidebar on ANY link or button click inside (MOBILE ONLY)
           const sidebarActions = sidebar.querySelectorAll('a, button');
           sidebarActions.forEach(action => {
             action.addEventListener('click', () => {
               if (window.innerWidth < 768) {
-                // Small delay to allow navigation/drawer logic to trigger first
-                setTimeout(dismissSidebar, 50);
+                setTimeout(dismiss, 50);
               }
             });
           });
 
           document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-              dismissSidebar();
+              dismiss();
               if (guideDrawer && guideDrawer.hasAttribute('open')) {
                 guideDrawer.close();
-                updateBodyScroll();
+                document.body.classList.remove('overflow-hidden', 'md:overflow-auto');
               }
             }
           });
@@ -333,14 +313,13 @@ const navItems = [
             if (mql.matches) {
               sidebar.classList.remove('translate-x-full');
               backdrop.classList.add('hidden');
-              updateBodyScroll();
+              document.body.classList.remove('overflow-hidden', 'md:overflow-auto');
             } else {
               sidebar.classList.add('translate-x-full');
-              updateBodyScroll();
             }
           };
           mql.addEventListener('change', sync);
-          sync(); // Initial sync
+          sync();
         }
       })();
     </script>
