@@ -76,10 +76,14 @@
         .note-box { background: #fffdf3; border-right: 4px solid var(--gold-light); padding: 10px 14px; margin: 12px 0; font-size: 0.8rem; border-radius: 0 4px 4px 0; }
         .print-btn { display: block; margin: 12px auto; padding: 10px 30px; background: var(--orange); color: #fff; border: none; font-family: 'Cairo', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; border-radius: 6px; box-shadow: 0 3px 12px rgba(200,40,20,0.4); }
         .print-btn:hover { background: #c13518; }
+
+        /* Excel button */
+        .excel-btn { display: block; margin: 12px auto; padding: 10px 30px; background: #16a34a; color: #fff; border: none; font-family: 'Cairo', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; border-radius: 6px; box-shadow: 0 3px 12px rgba(22,163,74,0.4); transition: background 0.25s; }
+        .excel-btn:hover { background: #15803d; }
         .brand-footer { text-align: center; padding: 20px 16px 8px; margin-top: 14px; width: 100%; }
         .brand-footer p { font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 1.1rem; color: #FFD700; text-shadow: 0 0 12px rgba(255,215,0,0.35); }
         @media print { 
-            .print-btn { display: none !important; } 
+            .print-btn, .excel-btn { display: none !important; } 
             body { background: #fff !important; padding: 5px; } 
             .form-wrap { box-shadow: none; border: 2px solid #E84820 !important; }
             .glass-circle { background: rgba(220,40,50,0.25); border: 2px solid #c41e3a; box-shadow: none; }
@@ -159,8 +163,10 @@
         <span class="main-arabic-title">بطاقة مراقبة المخزون — Bin / Pallet Card</span>
         <span class="emoji-badge">📦</span><span class="emoji-badge">🔍</span><span class="emoji-badge">📋</span>
     </div>
-    <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
-    <div class="form-wrap">
+    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+        <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+        <button class="excel-btn no-print" onclick="exportToExcel()">📊 تصدير إلى إكسيل | Export to Excel</button>
+    </div>
         <div class="form-header">
             <div class="logo">⚡ BRANDZO FRANCHISE PARTNERS</div>
             <div class="form-title">بطاقة مراقبة المخزون — Bin / Pallet Card</div>
@@ -234,7 +240,10 @@
 
         </div>
     </div>
-    <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+        <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+        <button class="excel-btn no-print" onclick="exportToExcel()">📊 تصدير إلى إكسيل | Export to Excel</button>
+    </div>
     <footer class="brand-footer"><p>إعداد محمد البرشي</p></footer>
 </div>
 
@@ -782,6 +791,49 @@
                 if (input) openModal(input);
             });
         })();
+    </script>
+    <script>
+        function exportToExcel() {
+            var script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+            script.onload = function () {
+                var date = document.querySelector('.form-meta-date').value || new Date().toISOString().split('T')[0];
+                var fields = document.querySelectorAll('.fields-grid .field-line');
+                var binId = fields[0] ? fields[0].value : '';
+                var location = fields[1] ? fields[1].value : '';
+                var sku = fields[2] ? fields[2].value : '';
+                var itemName = fields[3] ? fields[3].value : '';
+                var qtyOnHand = fields[4] ? fields[4].value : '';
+                var reorderLevel = fields[5] ? fields[5].value : '';
+                var supervisor = fields[6] ? fields[6].value : '';
+                var auditor = fields[7] ? fields[7].value : '';
+                var manager = fields[8] ? fields[8].value : '';
+
+                var data = [
+                    ['النموذج', 'بطاقة مراقبة المخزون — Bin / Pallet Card'],
+                    ['التاريخ', date],
+                    [],
+                    ['الحقل | Field', 'القيمة | Value'],
+                    ['رقم البين / العرف', binId],
+                    ['الموقع', location],
+                    ['رمز SKU', sku],
+                    ['اسم الصنف', itemName],
+                    ['الكمية المتاحة', qtyOnHand],
+                    ['مستوى إعادة الطلب', reorderLevel],
+                    ['مشرف المخزون', supervisor],
+                    ['مراقب الجرد', auditor],
+                    ['مدير المستودع', manager],
+                ];
+
+                var wb = XLSX.utils.book_new();
+                var ws = XLSX.utils.aoa_to_sheet(data);
+                ws['!cols'] = [{ wch: 35 }, { wch: 40 }];
+                XLSX.utils.book_append_sheet(wb, ws, 'BinCard');
+                XLSX.writeFile(wb, 'Brandzo_BinCard_' + date + '.xlsx');
+            };
+            script.onerror = function () { alert('فشل تحميل مكتبة Excel. تحقق من الاتصال بالإنترنت.'); };
+            document.head.appendChild(script);
+        }
     </script>
 <script src="../formUtils.js"></script></body>
 </html>

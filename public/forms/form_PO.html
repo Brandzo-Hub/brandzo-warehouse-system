@@ -382,6 +382,30 @@
             box-shadow: 0 5px 18px rgba(200, 40, 20, 0.55);
         }
 
+        /* Excel export button */
+        .excel-btn {
+            display: block;
+            margin: 12px auto;
+            padding: 10px 30px;
+            background: #28a745;
+            color: #fff;
+            border: none;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 1px;
+            border-radius: 6px;
+            box-shadow: 0 3px 12px rgba(40, 167, 69, 0.4);
+            transition: background 0.25s, box-shadow 0.25s;
+            z-index: 2;
+            position: relative;
+        }
+        .excel-btn:hover {
+            background: #218838;
+            box-shadow: 0 5px 18px rgba(40, 167, 69, 0.55);
+        }
+
         /* ========== FOOTER ========== */
         .brand-footer {
             text-align: center;
@@ -400,7 +424,7 @@
 
         /* ========== PRINT STYLES ========== */
         @media print {
-            .print-btn {
+            .print-btn, .excel-btn {
                 display: none !important;
             }
             body {
@@ -561,7 +585,10 @@
         </div>
 
         <!-- Print Button (Top) -->
-        <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+        <div class="button-container" style="display: flex; gap: 10px; justify-content: center; margin: 12px 0;">
+            <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+            <button class="excel-btn no-print" onclick="exportToExcel()">📊 تصدير إلى إكسيل | Export to Excel</button>
+        </div>
 
         <!-- ========== FORM ========== -->
         <div class="form-wrap">
@@ -769,7 +796,10 @@
         </div>
 
         <!-- Print Button (Bottom) -->
-        <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+        <div class="button-container" style="display: flex; gap: 10px; justify-content: center; margin: 12px 0;">
+            <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+            <button class="excel-btn no-print" onclick="exportToExcel()">📊 تصدير إلى إكسيل | Export to Excel</button>
+        </div>
 
         <!-- Footer -->
         <footer class="brand-footer">
@@ -1293,6 +1323,41 @@
                 if (input) openModal(input);
             });
         })();
+    </script>
+    <script>
+        function exportToExcel() {
+            var script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+            script.onload = function () {
+                var dateEl = document.querySelector('.form-meta input[type="date"], .form-meta-date, input[type="date"][data-autodate="today"]');
+                var date = dateEl ? dateEl.value || new Date().toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
+                var titleEl = document.querySelector('.form-title, .main-arabic-title');
+                var title = titleEl ? titleEl.textContent.trim() : document.title;
+                var rows = [
+                    ['النموذج', title],
+                    ['التاريخ', date],
+                    [],
+                    ['الحقل | Field', 'القيمة | Value']
+                ];
+                document.querySelectorAll('.fields-grid .field-group').forEach(function (group) {
+                    var label = group.querySelector('label');
+                    var input = group.querySelector('input, textarea, select');
+                    if (label && input) {
+                        var labelText = label.textContent.trim();
+                        var value = input.value || '—';
+                        rows.push([labelText, value]);
+                    }
+                });
+                var wb = XLSX.utils.book_new();
+                var ws = XLSX.utils.aoa_to_sheet(rows);
+                ws['!cols'] = [{ wch: 35 }, { wch: 40 }];
+                XLSX.utils.book_append_sheet(wb, ws, 'Export');
+                var safeTitle = title.replace(/[\/:*?"<>|]/g, '').replace(/\s+/g, '_').slice(0, 40);
+                XLSX.writeFile(wb, 'Brandzo_' + safeTitle + '_' + date + '.xlsx');
+            };
+            script.onerror = function () { alert('فشل تحميل مكتبة Excel. تحقق من الاتصال بالإنترنت.'); };
+            document.head.appendChild(script);
+        }
     </script>
 <script src="../formUtils.js"></script></body>
 </html>

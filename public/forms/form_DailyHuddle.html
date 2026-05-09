@@ -77,10 +77,14 @@
         .doc-id { font-family: monospace; color: var(--orange); font-weight: 700; }
         .print-btn { display: block; margin: 12px auto; padding: 10px 30px; background: var(--orange); color: #fff; border: none; font-family: 'Cairo', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; letter-spacing: 1px; border-radius: 6px; box-shadow: 0 3px 12px rgba(200,40,20,0.4); transition: background 0.25s; }
         .print-btn:hover { background: #c13518; }
+
+        /* Excel button */
+        .excel-btn { display: block; margin: 12px auto; padding: 10px 30px; background: #16a34a; color: #fff; border: none; font-family: 'Cairo', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; border-radius: 6px; box-shadow: 0 3px 12px rgba(22,163,74,0.4); transition: background 0.25s; }
+        .excel-btn:hover { background: #15803d; }
         .brand-footer { text-align: center; padding: 20px 16px 8px; margin-top: 14px; width: 100%; }
         .brand-footer p { font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 1.1rem; color: #FFD700; text-shadow: 0 0 12px rgba(255,215,0,0.35); }
         @media print {
-            .print-btn { display: none !important; }
+            .print-btn, .excel-btn { display: none !important; }
             body { background: #fff !important; padding: 5px; }
             .form-wrap { box-shadow: none; border: 2px solid #E84820 !important; }
             .glass-circle { background: rgba(220,40,50,0.25); border: 2px solid #c41e3a; box-shadow: none; }
@@ -161,7 +165,10 @@
         <span class="main-arabic-title">محضر اجتماع الصباح اليومي — Daily Huddle Meeting Template</span>
         <span class="emoji-badge">📦</span><span class="emoji-badge">🔍</span><span class="emoji-badge">📋</span>
     </div>
-    <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+        <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+        <button class="excel-btn no-print" onclick="exportToExcel()">📊 تصدير إلى إكسيل | Export to Excel</button>
+    </div>
     <div class="form-wrap">
         <div class="form-header">
             <div class="logo">⚡ BRANDZO FRANCHISE PARTNERS</div>
@@ -239,7 +246,10 @@
 
         </div>
     </div>
-    <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+        <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+        <button class="excel-btn no-print" onclick="exportToExcel()">📊 تصدير إلى إكسيل | Export to Excel</button>
+    </div>
     <footer class="brand-footer"><p>إعداد محمد البرشي</p></footer>
 </div>
 
@@ -731,6 +741,41 @@
                 if (input) openModal(input);
             });
         })();
+    </script>
+    <script>
+        function exportToExcel() {
+            var script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+            script.onload = function () {
+                var dateEl = document.querySelector('.form-meta input[type="date"], .form-meta-date, input[type="date"][data-autodate="today"]');
+                var date = dateEl ? dateEl.value || new Date().toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
+                var titleEl = document.querySelector('.form-title, .main-arabic-title');
+                var title = titleEl ? titleEl.textContent.trim() : document.title;
+                var rows = [
+                    ['النموذج', title],
+                    ['التاريخ', date],
+                    [],
+                    ['الحقل | Field', 'القيمة | Value']
+                ];
+                document.querySelectorAll('.fields-grid .field-group').forEach(function (group) {
+                    var label = group.querySelector('label');
+                    var input = group.querySelector('input, textarea, select');
+                    if (label && input) {
+                        var labelText = label.textContent.trim();
+                        var value = input.value || '—';
+                        rows.push([labelText, value]);
+                    }
+                });
+                var wb = XLSX.utils.book_new();
+                var ws = XLSX.utils.aoa_to_sheet(rows);
+                ws['!cols'] = [{ wch: 35 }, { wch: 40 }];
+                XLSX.utils.book_append_sheet(wb, ws, 'Export');
+                var safeTitle = title.replace(/[\/:*?"<>|]/g, '').replace(/\s+/g, '_').slice(0, 40);
+                XLSX.writeFile(wb, 'Brandzo_' + safeTitle + '_' + date + '.xlsx');
+            };
+            script.onerror = function () { alert('فشل تحميل مكتبة Excel. تحقق من الاتصال بالإنترنت.'); };
+            document.head.appendChild(script);
+        }
     </script>
 <script src="../formUtils.js"></script></body>
 </html>

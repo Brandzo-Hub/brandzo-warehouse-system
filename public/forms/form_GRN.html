@@ -435,6 +435,26 @@
             box-shadow: 0 5px 18px rgba(200, 40, 20, 0.55);
         }
 
+        /* Excel button */
+        .excel-btn {
+            display: block;
+            margin: 12px auto;
+            padding: 10px 30px;
+            background: #16a34a;
+            color: #fff;
+            border: none;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 6px;
+            box-shadow: 0 3px 12px rgba(22, 163, 74, 0.4);
+            transition: background 0.25s;
+        }
+        .excel-btn:hover {
+            background: #15803d;
+        }
+
         /* ========== FOOTER ========== */
         .brand-footer {
             text-align: center;
@@ -453,7 +473,7 @@
 
         /* ========== PRINT STYLES ========== */
         @media print {
-            .print-btn {
+            .print-btn, .excel-btn {
                 display: none !important;
             }
             body {
@@ -614,7 +634,10 @@
         </div>
 
         <!-- Print Button (Top) -->
-        <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+            <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+            <button class="excel-btn no-print" onclick="exportToExcel()">📊 تصدير إلى إكسيل | Export to Excel</button>
+        </div>
 
         <!-- ========== FORM ========== -->
         <div class="form-wrap">
@@ -1091,7 +1114,10 @@
         </div>
 
         <!-- Print Button (Bottom) -->
-        <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+            <button class="print-btn no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+            <button class="excel-btn no-print" onclick="exportToExcel()">📊 تصدير إلى إكسيل | Export to Excel</button>
+        </div>
 
         <!-- Footer -->
         <footer class="brand-footer">
@@ -1644,6 +1670,50 @@
                 }
             }
         });
+    </script>
+    <script>
+        // Export to Excel
+        function exportToExcel() {
+            var script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+            script.onload = function () {
+                var date = document.querySelector('.form-meta-date').value || new Date().toISOString().split('T')[0];
+                var fields = document.querySelectorAll('.fields-grid .field-line');
+                var grnNumber = fields[0] ? fields[0].value : '';
+                var dateTime = fields[1] ? fields[1].value : '';
+                var poRef = fields[2] ? fields[2].value : '';
+                var supplier = fields[3] ? fields[3].value : '';
+                var truckPlate = fields[4] ? fields[4].value : '';
+                var dockNo = fields[5] ? fields[5].value : '';
+                var receiver = fields[6] ? fields[6].value : '';
+                var qcInspector = fields[7] ? fields[7].value : '';
+                var asnNo = fields[8] ? fields[8].value : '';
+
+                var data = [
+                    ['النموذج', 'مذكرة استلام البضائع وفحص الجودة — GRN & QC Report'],
+                    ['التاريخ', date],
+                    [],
+                    ['الحقل | Field', 'القيمة | Value'],
+                    ['رقم GRN (GRN Number)', grnNumber],
+                    ['تاريخ ووقت الاستلام (Date & Time)', dateTime],
+                    ['رقم أمر الشراء المرجعي (PO Ref.)', poRef],
+                    ['اسم المورد (Supplier)', supplier],
+                    ['رقم اللوحة / الشاحنة (Truck Plate)', truckPlate],
+                    ['رقم الرصيف (Dock No.)', dockNo],
+                    ['اسم مشرف الاستلام (Receiver)', receiver],
+                    ['اسم فاحص الجودة (QC Inspector)', qcInspector],
+                    ['رقم إشعار الشحن ASN (ASN No.)', asnNo],
+                ];
+
+                var wb = XLSX.utils.book_new();
+                var ws = XLSX.utils.aoa_to_sheet(data);
+                ws['!cols'] = [{ wch: 35 }, { wch: 40 }];
+                XLSX.utils.book_append_sheet(wb, ws, 'GRN');
+                XLSX.writeFile(wb, 'Brandzo_GRN_' + date + '.xlsx');
+            };
+            script.onerror = function () { alert('فشل تحميل مكتبة Excel. تحقق من الاتصال بالإنترنت.'); };
+            document.head.appendChild(script);
+        }
     </script>
 <script src="../formUtils.js"></script></body>
 </html>
