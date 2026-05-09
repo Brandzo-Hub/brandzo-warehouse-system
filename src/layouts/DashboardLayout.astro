@@ -150,7 +150,9 @@ const navItems = [
     -->
     <aside
       id="brandzo-sidebar"
-      class="fixed top-0 right-0 w-64 max-w-[85vw] h-[100dvh] bg-brand-navy text-white shadow-xl z-[70] flex flex-col transform translate-x-full md:translate-x-0 transition-transform duration-200 ease-out"
+      class="fixed top-0 right-0 w-64 max-w-[85vw] h-[100dvh] bg-brand-navy text-white shadow-xl z-[70] flex flex-col transform transition-transform duration-200 ease-out"
+      style="transform: translateX(100%);"
+      aria-hidden="true"
     >
       <!-- رأس السايدبار: شعار + زر الإغلاق في الموبايل -->
       <div class="p-6 border-b border-gray-700 flex items-center justify-between gap-3 sticky top-0 bg-brand-navy z-[80]">
@@ -240,7 +242,7 @@ const navItems = [
     -->
     <div
       id="brandzo-backdrop"
-      class="md:hidden fixed inset-0 bg-black/50 z-[60] hidden"
+      class="fixed inset-0 bg-black/50 z-[60] hidden"
       aria-hidden="true"
     ></div>
 
@@ -335,29 +337,45 @@ const navItems = [
 
         if (!sidebar || !backdrop || !toggle) return;
 
-        /** فتح السايدبار */
+        const DESKTOP_BREAKPOINT = 768;
+
+        function isDesktop() {
+          return window.innerWidth >= DESKTOP_BREAKPOINT;
+        }
+
         function openSidebar() {
-          sidebar.classList.remove('translate-x-full');
+          sidebar.style.transform = 'translateX(0)';
+          sidebar.setAttribute('aria-hidden', 'false');
           backdrop.classList.remove('hidden');
           toggle.setAttribute('aria-expanded', 'true');
-          /*
-            نمنع تمرير الصفحة خلف السايدبار عبر style مباشر بدلاً من
-            Tailwind classes الديناميكية (التي لا تُولَّد إلا عند وجودها
-            في HTML وقت البناء).
-          */
           document.body.style.overflow = 'hidden';
         }
 
-        /** إغلاق السايدبار */
         function closeSidebar() {
-          sidebar.classList.add('translate-x-full');
+          if (isDesktop()) return;
+          sidebar.style.transform = 'translateX(100%)';
+          sidebar.setAttribute('aria-hidden', 'true');
           backdrop.classList.add('hidden');
           toggle.setAttribute('aria-expanded', 'false');
           document.body.style.overflow = '';
         }
 
+        function initSidebar() {
+          if (isDesktop()) {
+            sidebar.style.transform = 'translateX(0)';
+            sidebar.setAttribute('aria-hidden', 'false');
+            backdrop.classList.add('hidden');
+            document.body.style.overflow = '';
+          } else {
+            sidebar.style.transform = 'translateX(100%)';
+            sidebar.setAttribute('aria-hidden', 'true');
+          }
+        }
+
+        initSidebar();
+
         toggle.addEventListener('click', () => {
-          const isOpen = !sidebar.classList.contains('translate-x-full');
+          const isOpen = sidebar.style.transform === 'translateX(0px)' || sidebar.style.transform === 'translateX(0)';
           if (isOpen) closeSidebar();
           else openSidebar();
         });
@@ -365,31 +383,19 @@ const navItems = [
         if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
         backdrop.addEventListener('click', closeSidebar);
 
-        /* إغلاق عند ضغط Escape (إلا لو كان الـ guide drawer مفتوحاً) */
         document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && (!showGuide || !guideDrawer?.open)) closeSidebar();
+          if (e.key === 'Escape') closeSidebar();
         });
 
-        /*
-          مزامنة حالة السايدبار عند تغيير حجم النافذة.
-          - سطح مكتب (md+): السايدبار مرئي دائماً → نُزيل translate-x-full
-          - موبايل: نُعيد translate-x-full لو كانت النافذة صغُرت فجأة
-        */
-        const mql = window.matchMedia('(min-width: 768px)');
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(initSidebar, 100);
+        });
 
-        function syncSidebarToBreakpoint(e) {
-          if (e.matches) {
-            /* انتقلنا إلى سطح المكتب */
-            sidebar.classList.remove('translate-x-full');
-            backdrop.classList.add('hidden');
-            document.body.style.overflow = '';
-          } else {
-            /* رجعنا للموبايل: أخفِ السايدبار */
-            sidebar.classList.add('translate-x-full');
-          }
-        }
-
-        mql.addEventListener('change', syncSidebarToBreakpoint);
+        window.addEventListener('orientationchange', () => {
+          setTimeout(initSidebar, 300);
+        });
       })();
     </script>
   </body>

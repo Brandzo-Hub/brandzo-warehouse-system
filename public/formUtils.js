@@ -11,6 +11,7 @@
     loadDraft();
     setupEventListeners();
     setupAutoFill();
+    injectLandscapePrint();
     setupPrintValidation();
   });
 
@@ -175,46 +176,13 @@
 
   // 8. Validation for mandatory fields before print/save
   function validateForm() {
-    const mandatoryFields = document.querySelectorAll('input[required], textarea[required]');
-    const emptyFields = [];
-
-    mandatoryFields.forEach(field => {
-      if (!field.value.trim()) {
-        emptyFields.push(field);
-        field.style.borderBottom = '2px solid #e74c3c';
-      } else {
-        field.style.borderBottom = '';
-      }
-    });
-
-    // Check for at least one filled row in tables with item-qty
-    const tables = document.querySelectorAll('table');
-    tables.forEach(table => {
-      const qtyInputs = table.querySelectorAll('.item-qty');
-      const hasFilledRow = Array.from(qtyInputs).some(input => input.value.trim() !== '');
-
-      if (!hasFilledRow && qtyInputs.length > 0) {
-        // Highlight first qty field if no rows are filled
-        qtyInputs[0].style.borderBottom = '2px solid #e74c3c';
-        emptyFields.push(qtyInputs[0]);
-      }
-    });
-
-    return emptyFields.length === 0;
+    // إلغاء التحقق الإلزامي — الطباعة مفتوحة دائماً
+    return true;
   }
 
   // 9. Setup print validation
   function setupPrintValidation() {
-    const printButtons = document.querySelectorAll('.print-btn, button[onclick*="print"]');
-    printButtons.forEach(button => {
-      button.addEventListener('click', (e) => {
-        if (!validateForm()) {
-          e.preventDefault();
-          alert('يرجى تعبئة جميع الحقول الإلزامية قبل الطباعة أو الحفظ.');
-          return false;
-        }
-      });
-    });
+    // تم إلغاء الشرط الإلزامي — لا يتم منع الطباعة على أي أزرار
   }
 
   // 7. Auto-fill logic
@@ -224,6 +192,16 @@
       dateInput.value = new Date().toISOString().split('T')[0];
       syncToPrint(dateInput);
     }
+  }
+
+  function injectLandscapePrint() {
+    var existingStyle = document.getElementById('brandzo-landscape-print');
+    if (existingStyle) return;
+
+    var style = document.createElement('style');
+    style.id = 'brandzo-landscape-print';
+    style.textContent = '@page { size: A4 landscape; margin: 10mm; }';
+    document.head.appendChild(style);
   }
 
 })();

@@ -720,6 +720,7 @@
                 showLoading();
                 modal.classList.add('is-open');
                 modal.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
                 loadLib()
                     .then(probeCamera)
                     .then(startScanner)
@@ -744,12 +745,14 @@
             }
 
             function closeModal() {
-                modal.classList.remove('is-open');
-                modal.setAttribute('aria-hidden', 'true');
-                teardownScanner();
-                viewport.innerHTML = '';
-                targetInput = null;
-                scanCompleted = false;
+                teardownScanner().then(function() {
+                    modal.classList.remove('is-open');
+                    modal.setAttribute('aria-hidden', 'true');
+                    viewport.innerHTML = '';
+                    targetInput = null;
+                    scanCompleted = false;
+                    document.body.style.overflow = '';
+                });
             }
 
             /**
@@ -790,20 +793,17 @@
                     (clean || '—') +
                     '</div></div>';
 
-                // 3) Stop the camera and close the modal after a brief
-                //    flash. Teardown is async, so we do it in parallel
-                //    with the visual confirmation.
-                teardownScanner();
-                setTimeout(function () {
+                // 3) أوقف الكاميرا أولاً ثم أغلق — بشكل متزامن وآمن
+                teardownScanner().then(function() {
                     modal.classList.remove('is-open');
                     modal.setAttribute('aria-hidden', 'true');
                     viewport.innerHTML = '';
+                    targetInput = null;
+                    scanCompleted = false;
                     if (input) {
                         try { input.focus(); } catch (e) { /* noop */ }
                     }
-                    targetInput = null;
-                    scanCompleted = false;
-                }, 700);
+                });
             }
 
             cancelBtn.addEventListener('click', closeModal);

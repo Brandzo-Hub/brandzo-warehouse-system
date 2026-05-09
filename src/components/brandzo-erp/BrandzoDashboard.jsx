@@ -316,7 +316,10 @@ const BrandzoDashboard = () => {
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div>
-              <h3 className="text-lg font-bold text-red-600 mb-4">Strict Administrative Policies (Non-negotiable / Safety)</h3>
+              <h3 className="text-lg font-bold text-red-600 mb-4">
+              السياسات الإدارية الصارمة — غير قابلة للتفاوض
+              <span className="block text-sm font-normal text-red-400 mt-1">Strict Administrative Policies (Non-negotiable / Safety)</span>
+            </h3>
               <ul className="space-y-3 text-sm">
                 <li className="flex items-start gap-2">
                   <span className="text-red-500 mt-1">•</span>
@@ -342,7 +345,10 @@ const BrandzoDashboard = () => {
             </div>
             
             <div>
-              <h3 className="text-lg font-bold text-blue-600 mb-4">General Operational Guidelines (Best Practices)</h3>
+              <h3 className="text-lg font-bold text-blue-600 mb-4">
+              الإرشادات التشغيلية العامة — أفضل الممارسات
+              <span className="block text-sm font-normal text-blue-400 mt-1">General Operational Guidelines (Best Practices)</span>
+            </h3>
               <ul className="space-y-3 text-sm">
                 <li className="flex items-start gap-2">
                   <span className="text-blue-500 mt-1">•</span>
