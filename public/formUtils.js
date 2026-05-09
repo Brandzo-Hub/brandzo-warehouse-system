@@ -1,6 +1,6 @@
 /**
  * Brandzo Smart Forms Utility (SAFE & ULTIMATE VERSION)
- * Handles localStorage persistence, barcode scanning, print optimization, dynamic rows, and row deletion.
+ * Handles localStorage persistence, barcode scanning, print optimization, dynamic rows, row deletion, and Form Reset.
  */
 
 (function () {
@@ -14,6 +14,7 @@
     injectLandscapePrint();
     setupPrintValidation();
     setupDynamicRows();
+    setupClearFormFeature(); // تفعيل ميزة إفراغ النموذج
   });
 
   // 2. Setup Event Listeners
@@ -185,12 +186,10 @@
       const tbody = table.querySelector('tbody');
       if (!tbody) return;
 
-      // إنشاء حاوية للأزرار لترتيبها بجانب بعضها
       const actionsContainer = document.createElement('div');
       actionsContainer.className = 'no-print table-actions-container';
       actionsContainer.style.cssText = 'display: flex; gap: 10px; margin: 6px 0;';
 
-      // زر إضافة صف
       const addBtn = document.createElement('button');
       addBtn.type = 'button';
       addBtn.textContent = '+ إضافة صف';
@@ -198,10 +197,9 @@
 
       addBtn.addEventListener('click', function () {
         addNewRow(table);
-        saveDraft(); // حفظ المسودة فوراً
+        saveDraft();
       });
 
-      // زر حذف صف
       const deleteBtn = document.createElement('button');
       deleteBtn.type = 'button';
       deleteBtn.textContent = '- حذف صف';
@@ -209,10 +207,9 @@
 
       deleteBtn.addEventListener('click', function () {
         deleteLastRow(table);
-        saveDraft(); // حفظ المسودة فوراً بعد الحذف
+        saveDraft();
       });
 
-      // إضافة الأزرار للحاوية ثم تحت الجدول
       actionsContainer.appendChild(addBtn);
       actionsContainer.appendChild(deleteBtn);
       table.parentNode.insertBefore(actionsContainer, table.nextSibling);
@@ -226,11 +223,9 @@
     const lastRow = tbody.querySelector('tr:last-child');
     if (!lastRow) return false;
 
-    // استنساخ الصف بالكامل
     const newRow = lastRow.cloneNode(true);
     const rowIndex = tbody.querySelectorAll('tr').length + 1;
 
-    // تصفير الحقول وإصلاح تعارض القواعد (IDs)
     newRow.querySelectorAll('input, textarea, select').forEach(function (el) {
       if (el.type === 'checkbox' || el.type === 'radio') {
         el.checked = false;
@@ -241,12 +236,10 @@
       }
       el.removeAttribute('value');
       
-      // إزالة المعرف ID لتجنب تداخل قواعد النموذج الجديد مع القديم
       if (el.hasAttribute('id')) {
         el.removeAttribute('id');
       }
 
-      // مسح عناصر الطباعة المنسوخة
       const parent = el.parentElement;
       if (parent) {
          const oldSpan = parent.querySelector('.print-only-text');
@@ -254,7 +247,6 @@
       }
     });
 
-    // تصفير النصوص الثابتة (مثل 0.00) بذكاء
     newRow.querySelectorAll('*').forEach(function (el) {
       const text = el.textContent.trim();
       if (el.children.length === 0 && (text === '0.00' || text === '0' || text === '0.0')) {
@@ -262,7 +254,6 @@
       }
     });
 
-    // تحديث الترقيم في العمود الأول
     const firstTd = newRow.querySelector('td:first-child');
     if (firstTd && !firstTd.querySelector('input') && /^\d+$/.test(firstTd.textContent.trim())) {
       firstTd.textContent = rowIndex;
@@ -270,7 +261,6 @@
 
     tbody.appendChild(newRow);
 
-    // إطلاق حدث برمجي لتنبيه النظام بتفعيل القواعد
     const firstInput = newRow.querySelector('input');
     if (firstInput) {
       firstInput.dispatchEvent(new Event('input', { bubbles: true }));
@@ -285,19 +275,40 @@
     
     const rows = tbody.querySelectorAll('tr');
     
-    // شرط أمان لمنع حذف الصف الأخير تماماً (يجب بقاء صف واحد للاستنساخ)
     if (rows.length <= 1) {
       alert('عذراً، لا يمكن حذف الصف الأخير.');
       return false;
     }
     
-    // حذف آخر صف في الجدول
     const lastRow = rows[rows.length - 1];
     lastRow.remove();
     return true;
   }
 
-  // 9. Extra Utils
+  // 9. Form Reset Feature (الميزة الجديدة لتفريغ النموذج)
+  function setupClearFormFeature() {
+    const clearBtn = document.createElement('button');
+    clearBtn.type = 'button';
+    clearBtn.textContent = '🗑️ إفراغ النموذج';
+    clearBtn.className = 'no-print';
+    // تنسيق الزر ليكون عائماً في زاوية الشاشة لسهولة الوصول إليه دائماً
+    clearBtn.style.cssText = 'position: fixed; bottom: 20px; left: 20px; padding: 10px 20px; background: #333; color: #fff; border: none; border-radius: 50px; cursor: pointer; font-size: 14px; font-family: inherit; z-index: 9999; box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: background 0.3s;';
+    
+    // تأثير لوني عند تمرير الماوس
+    clearBtn.onmouseover = () => clearBtn.style.background = '#dc3545';
+    clearBtn.onmouseout = () => clearBtn.style.background = '#333';
+
+    clearBtn.addEventListener('click', function () {
+      if (confirm('هل أنت متأكد أنك تريد مسح جميع البيانات والبدء بنموذج جديد؟')) {
+        localStorage.removeItem(`brandzo_draft_${FORM_ID}`);
+        window.location.reload(); // إعادة تحميل الصفحة لتفريغها بالكامل
+      }
+    });
+
+    document.body.appendChild(clearBtn);
+  }
+
+  // 10. Extra Utils
   function setupPrintValidation() { /* إلغاء القيود */ }
 
   function setupAutoFill() {
