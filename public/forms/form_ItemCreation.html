@@ -394,47 +394,61 @@
         });
     })();
 
-    // ── Export to Excel
     function exportToExcel() {
         var script = document.createElement('script');
         script.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
         script.onload = function () {
-            var date = document.getElementById('ic-date').value || new Date().toISOString().split('T')[0];
-            var user = document.getElementById('ic-user').value || '—';
-            var barcode = document.getElementById('ic-barcode').value || '—';
-            var nameAr = document.getElementById('ic-name-ar').value || '—';
-            var nameEn = document.getElementById('ic-name-en').value || '—';
-            var unit = document.getElementById('ic-unit').value || '—';
-            var qtyPerPkg = document.getElementById('ic-qty-per-pkg').value || '0';
-            var qty = document.getElementById('ic-qty').value || '0';
-            var totalPieces = document.getElementById('ic-total-pieces').value || '0';
-            var unitPrice = document.getElementById('ic-unit-price').value || '0';
-            var totalPrice = document.getElementById('ic-total-price').value || '0';
+            var dateEl = document.querySelector('input[type="date"]');
+            var date = dateEl ? dateEl.value || new Date().toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
+            var titleEl = document.querySelector('.form-title, .main-arabic-title, h1');
+            var title = titleEl ? titleEl.textContent.trim() : document.title;
 
-            var data = [
-                ['النموذج', 'بطاقة إنشاء صنف جديد — Item Creation Card (20)'],
-                ['التاريخ', date],
-                ['المستخدم', user],
-                [],
-                ['الحقل | Field', 'القيمة | Value'],
-                ['الباركود (Barcode)', barcode],
-                ['الاسم عربي (Arabic Name)', nameAr],
-                ['الاسم إنجليزي (English Name)', nameEn],
-                ['الوحدة (Unit)', unit],
-                ['الكمية في العبوة (Qty per Package)', qtyPerPkg],
-                ['الكمية (Quantity)', qty],
-                ['إجمالي القطع (Total Pieces)', totalPieces],
-                ['سعر الوحدة (Unit Price)', unitPrice],
-                ['إجمالي السعر (Total Price)', totalPrice],
-            ];
+            var rows = [['النموذج', title], ['التاريخ', date], []];
+
+            // 1. All field-group inputs (header/meta sections)
+            document.querySelectorAll('.field-group').forEach(function (group) {
+                var label = group.querySelector('label');
+                var input = group.querySelector('input, textarea, select');
+                if (label && input) {
+                    rows.push([label.textContent.trim(), input.value || '—']);
+                }
+            });
+
+            // 2. All tables (handles CycleCount lines, QC items, Packing rows, etc.)
+            document.querySelectorAll('table').forEach(function (table) {
+                rows.push([]);
+                var headers = [];
+                table.querySelectorAll('thead th').forEach(function (th) {
+                    headers.push(th.textContent.trim());
+                });
+                if (headers.length) rows.push(headers);
+                table.querySelectorAll('tbody tr').forEach(function (tr) {
+                    var rowData = [];
+                    tr.querySelectorAll('td').forEach(function (td) {
+                        var inp = td.querySelector('input, select, textarea');
+                        rowData.push(inp ? (inp.value || '') : td.textContent.trim());
+                    });
+                    rows.push(rowData);
+                });
+            });
+
+            // 3. Summary/footer field-groups outside the main grid
+            document.querySelectorAll('.summary-grid .field-group, .count-summary .field-group, .form-footer .field-group').forEach(function (group) {
+                var label = group.querySelector('label');
+                var input = group.querySelector('input, textarea, select');
+                if (label && input) {
+                    rows.push([label.textContent.trim(), input.value || '—']);
+                }
+            });
 
             var wb = XLSX.utils.book_new();
-            var ws = XLSX.utils.aoa_to_sheet(data);
-            ws['!cols'] = [{ wch: 35 }, { wch: 40 }];
-            XLSX.utils.book_append_sheet(wb, ws, 'ItemCreation');
-            XLSX.writeFile(wb, 'Brandzo_ItemCreation_' + date + '.xlsx');
+            var ws = XLSX.utils.aoa_to_sheet(rows);
+            ws['!cols'] = Array(15).fill({ wch: 22 });
+            XLSX.utils.book_append_sheet(wb, ws, 'Export');
+            var safeTitle = title.replace(/[\/:*?"<>|]/g, '').replace(/\s+/g, '_').slice(0, 40);
+            XLSX.writeFile(wb, 'Brandzo_' + safeTitle + '_' + date + '.xlsx');
         };
-        script.onerror = function () { alert('فشل تحميل مكتبة Excel. تحقق من الاتصال بالإنترنت.'); };
+        script.onerror = function () { alert('Failed to load Excel library. Check your internet connection.'); };
         document.head.appendChild(script);
     }
 </script>

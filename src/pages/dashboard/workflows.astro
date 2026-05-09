@@ -8,7 +8,7 @@ const base = import.meta.env.BASE_URL.endsWith('/')
   : import.meta.env.BASE_URL;
 ---
 
-<DashboardLayout title="الهيكل والمسارات" showGuide={true}>
+<DashboardLayout title="الهيكل والمسارات">
   <div class="text-right" dir="rtl">
     <header class="mb-6 sm:mb-8">
       <h1 class="text-2xl sm:text-3xl font-bold text-brand-navy">
@@ -26,14 +26,7 @@ const base = import.meta.env.BASE_URL.endsWith('/')
     </div>
 
     <footer class="mt-10 text-center text-xs text-gray-400">
-      مصدر البيانات:
-      <a
-        href={`${base}/Brandzo_Operational_Guide.html`}
-        class="text-brand-red font-bold hover:underline"
-      >
-        الدليل التشغيلي
-      </a>
-      — الباب الثاني والثالث.
+      مصدر البيانات: الدليل التشغيلي — الباب الثاني والثالث.
     </footer>
   </div>
 </DashboardLayout>

@@ -792,47 +792,119 @@
             });
         })();
     </script>
-    <script>
-        function exportToExcel() {
-            var script = document.createElement('script');
-            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
-            script.onload = function () {
-                var date = document.querySelector('.form-meta-date').value || new Date().toISOString().split('T')[0];
-                var fields = document.querySelectorAll('.fields-grid .field-line');
-                var binId = fields[0] ? fields[0].value : '';
-                var location = fields[1] ? fields[1].value : '';
-                var sku = fields[2] ? fields[2].value : '';
-                var itemName = fields[3] ? fields[3].value : '';
-                var qtyOnHand = fields[4] ? fields[4].value : '';
-                var reorderLevel = fields[5] ? fields[5].value : '';
-                var supervisor = fields[6] ? fields[6].value : '';
-                var auditor = fields[7] ? fields[7].value : '';
-                var manager = fields[8] ? fields[8].value : '';
 
-                var data = [
-                    ['النموذج', 'بطاقة مراقبة المخزون — Bin / Pallet Card'],
-                    ['التاريخ', date],
-                    [],
-                    ['الحقل | Field', 'القيمة | Value'],
-                    ['رقم البين / العرف', binId],
-                    ['الموقع', location],
-                    ['رمز SKU', sku],
-                    ['اسم الصنف', itemName],
-                    ['الكمية المتاحة', qtyOnHand],
-                    ['مستوى إعادة الطلب', reorderLevel],
-                    ['مشرف المخزون', supervisor],
-                    ['مراقب الجرد', auditor],
-                    ['مدير المستودع', manager],
-                ];
+        function exportToExcel() {
+
+            var script = document.createElement('script');
+
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+
+            script.onload = function () {
+
+                var dateEl = document.querySelector('input[type="date"]');
+
+                var date = dateEl ? dateEl.value || new Date().toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
+
+                var titleEl = document.querySelector('.form-title, .main-arabic-title, h1');
+
+                var title = titleEl ? titleEl.textContent.trim() : document.title;
+
+        
+
+                var rows = [['النموذج', title], ['التاريخ', date], []];
+
+        
+
+                // 1. All field-group inputs (header/meta sections)
+
+                document.querySelectorAll('.field-group').forEach(function (group) {
+
+                    var label = group.querySelector('label');
+
+                    var input = group.querySelector('input, textarea, select');
+
+                    if (label && input) {
+
+                        rows.push([label.textContent.trim(), input.value || '—']);
+
+                    }
+
+                });
+
+        
+
+                // 2. All tables (handles CycleCount lines, QC items, Packing rows, etc.)
+
+                document.querySelectorAll('table').forEach(function (table) {
+
+                    rows.push([]);
+
+                    var headers = [];
+
+                    table.querySelectorAll('thead th').forEach(function (th) {
+
+                        headers.push(th.textContent.trim());
+
+                    });
+
+                    if (headers.length) rows.push(headers);
+
+                    table.querySelectorAll('tbody tr').forEach(function (tr) {
+
+                        var rowData = [];
+
+                        tr.querySelectorAll('td').forEach(function (td) {
+
+                            var inp = td.querySelector('input, select, textarea');
+
+                            rowData.push(inp ? (inp.value || '') : td.textContent.trim());
+
+                        });
+
+                        rows.push(rowData);
+
+                    });
+
+                });
+
+        
+
+                // 3. Summary/footer field-groups outside the main grid
+
+                document.querySelectorAll('.summary-grid .field-group, .count-summary .field-group, .form-footer .field-group').forEach(function (group) {
+
+                    var label = group.querySelector('label');
+
+                    var input = group.querySelector('input, textarea, select');
+
+                    if (label && input) {
+
+                        rows.push([label.textContent.trim(), input.value || '—']);
+
+                    }
+
+                });
+
+        
 
                 var wb = XLSX.utils.book_new();
-                var ws = XLSX.utils.aoa_to_sheet(data);
-                ws['!cols'] = [{ wch: 35 }, { wch: 40 }];
-                XLSX.utils.book_append_sheet(wb, ws, 'BinCard');
-                XLSX.writeFile(wb, 'Brandzo_BinCard_' + date + '.xlsx');
+
+                var ws = XLSX.utils.aoa_to_sheet(rows);
+
+                ws['!cols'] = Array(15).fill({ wch: 22 });
+
+                XLSX.utils.book_append_sheet(wb, ws, 'Export');
+
+                var safeTitle = title.replace(/[\/:*?"<>|]/g, '').replace(/\s+/g, '_').slice(0, 40);
+
+                XLSX.writeFile(wb, 'Brandzo_' + safeTitle + '_' + date + '.xlsx');
+
             };
-            script.onerror = function () { alert('فشل تحميل مكتبة Excel. تحقق من الاتصال بالإنترنت.'); };
+
+            script.onerror = function () { alert('Failed to load Excel library. Check your internet connection.'); };
+
             document.head.appendChild(script);
+
         }
     </script>
 <script src="../formUtils.js"></script></body>
