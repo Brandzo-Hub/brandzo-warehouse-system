@@ -1,6 +1,6 @@
 /**
- * Brandzo Smart Forms Utility (SAFE VERSION)
- * Handles localStorage persistence, barcode scanning, print optimization, and dynamic rows.
+ * Brandzo Smart Forms Utility (SAFE & ULTIMATE VERSION)
+ * Handles localStorage persistence, barcode scanning, print optimization, dynamic rows, and row deletion.
  */
 
 (function () {
@@ -119,12 +119,11 @@
       const currentRowsCount = tbody.querySelectorAll('tr').length;
       const targetRowsCount = tData.rows.length;
 
-      // [تم الإصلاح هنا] إضافة الصفوف المفقودة باستخدام for loop وزر أمان لمنع التعليق
       if (targetRowsCount > currentRowsCount) {
         const rowsToAdd = targetRowsCount - currentRowsCount;
         for (let i = 0; i < rowsToAdd; i++) {
           const added = addNewRow(table);
-          if (!added) break; // خروج طوارئ إذا فشلت الإضافة
+          if (!added) break;
         }
       }
 
@@ -180,24 +179,43 @@
     }
   }
 
-  // 8. Dynamic Rows Feature 
+  // 8. Dynamic Rows Feature (Add & Delete)
   function setupDynamicRows() {
     document.querySelectorAll('table').forEach(function (table) {
       const tbody = table.querySelector('tbody');
       if (!tbody) return;
 
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.textContent = '+ إضافة صف';
-      btn.className = 'no-print';
-      btn.style.cssText = 'margin:6px 0; padding:5px 14px; background:#e65c00; color:#fff; border:none; border-radius:4px; cursor:pointer; font-size:13px; font-family:inherit;';
+      // إنشاء حاوية للأزرار لترتيبها بجانب بعضها
+      const actionsContainer = document.createElement('div');
+      actionsContainer.className = 'no-print table-actions-container';
+      actionsContainer.style.cssText = 'display: flex; gap: 10px; margin: 6px 0;';
 
-      btn.addEventListener('click', function () {
+      // زر إضافة صف
+      const addBtn = document.createElement('button');
+      addBtn.type = 'button';
+      addBtn.textContent = '+ إضافة صف';
+      addBtn.style.cssText = 'padding:5px 14px; background:#e65c00; color:#fff; border:none; border-radius:4px; cursor:pointer; font-size:13px; font-family:inherit;';
+
+      addBtn.addEventListener('click', function () {
         addNewRow(table);
-        saveDraft(); // حفظ المسودة فوراً لتسجيل الصف الجديد
+        saveDraft(); // حفظ المسودة فوراً
       });
 
-      table.parentNode.insertBefore(btn, table.nextSibling);
+      // زر حذف صف
+      const deleteBtn = document.createElement('button');
+      deleteBtn.type = 'button';
+      deleteBtn.textContent = '- حذف صف';
+      deleteBtn.style.cssText = 'padding:5px 14px; background:#dc3545; color:#fff; border:none; border-radius:4px; cursor:pointer; font-size:13px; font-family:inherit;';
+
+      deleteBtn.addEventListener('click', function () {
+        deleteLastRow(table);
+        saveDraft(); // حفظ المسودة فوراً بعد الحذف
+      });
+
+      // إضافة الأزرار للحاوية ثم تحت الجدول
+      actionsContainer.appendChild(addBtn);
+      actionsContainer.appendChild(deleteBtn);
+      table.parentNode.insertBefore(actionsContainer, table.nextSibling);
     });
   }
 
@@ -206,18 +224,29 @@
     if (!tbody) return false;
     
     const lastRow = tbody.querySelector('tr:last-child');
-    if (!lastRow) return false; // [تم الإصلاح هنا] التحقق من وجود صف أساسي لنسخه
+    if (!lastRow) return false;
 
+    // استنساخ الصف بالكامل
     const newRow = lastRow.cloneNode(true);
     const rowIndex = tbody.querySelectorAll('tr').length + 1;
 
+    // تصفير الحقول وإصلاح تعارض القواعد (IDs)
     newRow.querySelectorAll('input, textarea, select').forEach(function (el) {
-      if (el.type === 'number') el.value = '';
-      else if (el.tagName === 'SELECT') el.selectedIndex = 0;
-      else el.value = '';
+      if (el.type === 'checkbox' || el.type === 'radio') {
+        el.checked = false;
+      } else if (el.tagName === 'SELECT') {
+        el.selectedIndex = 0;
+      } else {
+        el.value = '';
+      }
       el.removeAttribute('value');
       
-      // [تم الإصلاح هنا] مسح أي نصوص طباعة قديمة تم نسخها بالخطأ مع الصف
+      // إزالة المعرف ID لتجنب تداخل قواعد النموذج الجديد مع القديم
+      if (el.hasAttribute('id')) {
+        el.removeAttribute('id');
+      }
+
+      // مسح عناصر الطباعة المنسوخة
       const parent = el.parentElement;
       if (parent) {
          const oldSpan = parent.querySelector('.print-only-text');
@@ -225,13 +254,47 @@
       }
     });
 
+    // تصفير النصوص الثابتة (مثل 0.00) بذكاء
+    newRow.querySelectorAll('*').forEach(function (el) {
+      const text = el.textContent.trim();
+      if (el.children.length === 0 && (text === '0.00' || text === '0' || text === '0.0')) {
+        el.textContent = ''; 
+      }
+    });
+
+    // تحديث الترقيم في العمود الأول
     const firstTd = newRow.querySelector('td:first-child');
     if (firstTd && !firstTd.querySelector('input') && /^\d+$/.test(firstTd.textContent.trim())) {
       firstTd.textContent = rowIndex;
     }
 
     tbody.appendChild(newRow);
-    return true; // تمت الإضافة بنجاح
+
+    // إطلاق حدث برمجي لتنبيه النظام بتفعيل القواعد
+    const firstInput = newRow.querySelector('input');
+    if (firstInput) {
+      firstInput.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+
+    return true;
+  }
+
+  function deleteLastRow(table) {
+    const tbody = table.querySelector('tbody');
+    if (!tbody) return false;
+    
+    const rows = tbody.querySelectorAll('tr');
+    
+    // شرط أمان لمنع حذف الصف الأخير تماماً (يجب بقاء صف واحد للاستنساخ)
+    if (rows.length <= 1) {
+      alert('عذراً، لا يمكن حذف الصف الأخير.');
+      return false;
+    }
+    
+    // حذف آخر صف في الجدول
+    const lastRow = rows[rows.length - 1];
+    lastRow.remove();
+    return true;
   }
 
   // 9. Extra Utils
