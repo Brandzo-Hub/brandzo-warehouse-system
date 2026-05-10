@@ -15,6 +15,7 @@
     setupPrintValidation();
     setupDynamicRows();
     setupClearFormFeature(); // تفعيل ميزة إفراغ النموذج
+    setupExcelExport();      // تفعيل ميزة تصدير Excel
   });
 
   // 2. Setup Event Listeners
@@ -323,6 +324,160 @@
     style.id = 'brandzo-landscape-print';
     style.textContent = '@page { size: A4 landscape; margin: 10mm; } @media print { .no-print { display: none !important; } }';
     document.head.appendChild(style);
+  }
+
+  // 11. Excel Export Feature
+  function setupExcelExport() {
+    // Inject SheetJS (xlsx) library dynamically
+    if (!window.__sheetjsLoaded) {
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+      script.onload = () => { window.__sheetjsLoaded = true; };
+      document.head.appendChild(script);
+    }
+
+    const exportBtn = document.createElement('button');
+    exportBtn.type = 'button';
+    exportBtn.textContent = '📊 تصدير Excel';
+    exportBtn.className = 'no-print';
+    exportBtn.style.cssText = [
+      'position: fixed',
+      'bottom: 20px',
+      'left: 130px',
+      'padding: 10px 20px',
+      'background: #1d6f42',
+      'color: #fff',
+      'border: none',
+      'border-radius: 50px',
+      'cursor: pointer',
+      'font-size: 14px',
+      'font-family: inherit',
+      'z-index: 9999',
+      'box-shadow: 0 4px 6px rgba(0,0,0,0.3)',
+      'transition: background 0.3s'
+    ].join(';');
+
+    exportBtn.onmouseover = () => exportBtn.style.background = '#145232';
+    exportBtn.onmouseout  = () => exportBtn.style.background = '#1d6f42';
+
+    exportBtn.addEventListener('click', function () {
+      if (typeof XLSX === 'undefined') {
+        alert('جارٍ تحميل مكتبة التصدير، يرجى الانتظار لحظة ثم المحاولة مجدداً.');
+        return;
+      }
+
+      // Ask user for a file name
+      const userFileName = prompt('أدخل اسم الملف للتصدير:', getDefaultFileName());
+      if (userFileName === null) return; // cancelled
+      const fileName = (userFileName.trim() || getDefaultFileName()).replace(/\.xlsx$/i, '') + '.xlsx';
+
+      exportToExcel(fileName);
+    });
+
+    document.body.appendChild(exportBtn);
+  }
+
+  function getDefaultFileName() {
+    const title = document.querySelector('h1, h2, title');
+    const base = title ? title.textContent.trim().replace(/\s+/g, '_') : 'نموذج';
+    const date = new Date().toISOString().split('T')[0];
+    return `${base}_${date}`;
+  }
+
+  function exportToExcel(fileName) {
+    const wb = XLSX.utils.book_new();
+    let sheetIndex = 0;
+
+    // ── 1. Export every <table> as its own sheet ──────────────────────────
+    document.querySelectorAll('table').forEach(function (table, tIdx) {
+      const aoa = []; // array of arrays
+
+      // Header rows
+      table.querySelectorAll('thead tr').forEach(function (tr) {
+        aoa.push(rowToArray(tr));
+      });
+
+      // Body rows
+      table.querySelectorAll('tbody tr').forEach(function (tr) {
+        aoa.push(rowToArray(tr));
+      });
+
+      // Footer rows
+      table.querySelectorAll('tfoot tr').forEach(function (tr) {
+        aoa.push(rowToArray(tr));
+      });
+
+      if (aoa.length === 0) return;
+
+      const ws = XLSX.utils.aoa_to_sheet(aoa);
+      styleWorksheet(ws, aoa);
+
+      const sheetName = ('جدول ' + (tIdx + 1)).substring(0, 31);
+      XLSX.utils.book_append_sheet(wb, ws, sheetName);
+      sheetIndex++;
+    });
+
+    // ── 2. Collect standalone inputs (outside tables) into a summary sheet ─
+    const summaryRows = [];
+    document.querySelectorAll('input, textarea').forEach(function (el) {
+      if (el.closest('table')) return;           // already exported
+      if (el.closest('.no-print')) return;       // skip toolbar inputs
+      const label = resolveLabel(el);
+      const value = el.value.trim();
+      if (label || value) {
+        summaryRows.push([label, value]);
+      }
+    });
+
+    if (summaryRows.length > 0) {
+      summaryRows.unshift(['الحقل', 'القيمة']); // header
+      const wsSummary = XLSX.utils.aoa_to_sheet(summaryRows);
+      wsSummary['!cols'] = [{ wch: 30 }, { wch: 40 }];
+      XLSX.utils.book_append_sheet(wb, wsSummary, 'البيانات العامة');
+    }
+
+    // ── 3. Fallback: if nothing was exported yet, create a blank sheet ────
+    if (wb.SheetNames.length === 0) {
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['لا توجد بيانات']]), 'ورقة1');
+    }
+
+    XLSX.writeFile(wb, fileName);
+  }
+
+  /** Convert a <tr> element to an array of cell values */
+  function rowToArray(tr) {
+    return Array.from(tr.querySelectorAll('th, td')).map(function (cell) {
+      const input = cell.querySelector('input, textarea');
+      if (input) return input.value.trim();
+      // Skip print-only spans to avoid duplication
+      const clone = cell.cloneNode(true);
+      clone.querySelectorAll('.print-only-text, .no-print').forEach(function (el) { el.remove(); });
+      return clone.textContent.trim();
+    });
+  }
+
+  /** Apply basic column-width and bold-header styling to a worksheet */
+  function styleWorksheet(ws, aoa) {
+    if (!aoa.length) return;
+    const colCount = Math.max(...aoa.map(function (r) { return r.length; }));
+    ws['!cols'] = Array.from({ length: colCount }, function () { return { wch: 20 }; });
+  }
+
+  /** Try to find a human-readable label for an input element */
+  function resolveLabel(el) {
+    // 1. <label for="id">
+    if (el.id) {
+      const lbl = document.querySelector('label[for="' + el.id + '"]');
+      if (lbl) return lbl.textContent.trim();
+    }
+    // 2. Wrapping <label>
+    const parent = el.closest('label');
+    if (parent) return parent.textContent.replace(el.value, '').trim();
+    // 3. Preceding sibling text / label
+    let prev = el.previousElementSibling;
+    if (prev) return prev.textContent.trim();
+    // 4. Placeholder as fallback
+    return el.placeholder || el.name || el.id || '';
   }
 
 })();
