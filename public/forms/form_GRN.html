@@ -614,7 +614,81 @@
             .form-top-nav { flex-direction: column !important; gap: 8px !important; padding: 0 12px !important; }
             .form-top-nav a { width: 100% !important; text-align: center !important; margin: 0 !important; }
         }
+@media (max-width: 767px) {
+  body {
+    padding: 8px 4px 32px;
+  }
+  .page-wrapper {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 4px;
+    align-items: stretch;
+  }
+  .form-wrap {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+  }
+  .brandzo-header {
+    flex-wrap: wrap;
+    padding: 12px 8px;
+    gap: 8px;
+  }
+  .logo-circle {
+    width: 56px !important;
+    height: 56px !important;
+    font-size: 18px !important;
+  }
+  .logo-text h1 {
+    font-size: 22px !important;
+  }
+  .table-scroll-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+  table.form-table {
+    min-width: 600px;
+  }
+}
 
+@media (max-width: 767px) {
+  body {
+    padding: 8px 4px 32px;
+  }
+  .page-wrapper {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 4px;
+    align-items: stretch;
+  }
+  .form-wrap {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+  }
+  .brandzo-header {
+    flex-wrap: wrap;
+    padding: 12px 8px;
+    gap: 8px;
+  }
+  .logo-circle {
+    width: 56px !important;
+    height: 56px !important;
+    font-size: 18px !important;
+  }
+  .logo-text h1 {
+    font-size: 22px !important;
+  }
+  .table-scroll-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+  table.form-table {
+    min-width: 600px;
+  }
+}
     </style>
 
     <style>
@@ -623,6 +697,43 @@
         .form-input:focus { outline: none; background: #f9f9f9; }
         input.field-line, textarea.field-line { border: none; border-bottom: 1.5px solid #333; width: 100%; font-family: inherit; font-size: inherit; background: transparent; }
         textarea.field-line { height: 100px; resize: vertical; }
+@media (max-width: 767px) {
+  body {
+    padding: 8px 4px 32px;
+  }
+  .page-wrapper {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 4px;
+    align-items: stretch;
+  }
+  .form-wrap {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+  }
+  .brandzo-header {
+    flex-wrap: wrap;
+    padding: 12px 8px;
+    gap: 8px;
+  }
+  .logo-circle {
+    width: 56px !important;
+    height: 56px !important;
+    font-size: 18px !important;
+  }
+  .logo-text h1 {
+    font-size: 22px !important;
+  }
+  .table-scroll-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+  table.form-table {
+    min-width: 600px;
+  }
+}
     </style>
 
 </head>
@@ -705,7 +816,9 @@
                     (يتم تعبئة الجدول في حالة عدم وجود مرفق. لو يوجد، يتم شطب الجدول بشكل متوازي وتحديد علامة صح على "يوجد مرفق مدبس مع النموذج")
                 </div>
 
-                <table class="form-table">
+                <div class="table-scroll-wrapper">
+                <div class="table-scroll-wrapper">
+<table class="form-table">
                     <thead>
                         <tr>
                             <th>#</th><th>رمز SKU</th>
@@ -910,6 +1023,8 @@
                         </tr>
                     </tbody>
                 </table>
+</div>
+                </div>
 
                 <div class="section-title">🔍 فحص التعبئة والتغليف — Packaging Inspection</div>
                 <div class="qc-controls no-print">

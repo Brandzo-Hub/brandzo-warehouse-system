@@ -13,6 +13,8 @@ const navItems = [
   { href: `${base}/dashboard/workflows`, label: 'الهيكل والمسارات', icon: 'workflows' },
   { href: `${base}/dashboard/forms`, label: 'اختار وظيفتك', icon: 'clipboardList' },
 ];
+
+const currentPath = Astro.url.pathname;
 ---
 
 <html lang="ar" dir="rtl">
@@ -199,7 +201,12 @@ const navItems = [
               <li>
                 <a
                   href={item.href}
-                  class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors"
+                  class={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                    currentPath === item.href || currentPath.startsWith(item.href + '/')
+                      ? 'bg-brand-red text-white font-bold shadow-md'
+                      : 'hover:bg-gray-800 text-gray-300'
+                  }`}
+                  style={currentPath === item.href ? 'border-right: 3px solid #e8b830;' : ''}
                 >
                   <Icon name={item.icon} class="text-brand-red" />
                   <span class="font-medium">{item.label}</span>

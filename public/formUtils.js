@@ -218,6 +218,8 @@
   }
 
   function addNewRow(table) {
+    saveDraft(); // Persist current values before cloning
+
     const tbody = table.querySelector('tbody');
     if (!tbody) return false;
     

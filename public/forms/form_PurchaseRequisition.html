@@ -223,6 +223,7 @@
 <tr><td>7</td><td><div class="scan-cell-wrap"><input type="text" class="form-input"><button type="button" class="scan-btn" title="مسح الباركود" aria-label="مسح الباركود">📷</button></div></td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td></tr>
 <tr><td>8</td><td><div class="scan-cell-wrap"><input type="text" class="form-input"><button type="button" class="scan-btn" title="مسح الباركود" aria-label="مسح الباركود">📷</button></div></td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td><td><input type="text" class="form-input"></td></tr></tbody>
 </table>
+</div>
 <div class="section-title">💰 الميزانية والاعتماد — Budget & Approvals</div>
 <div class="fields-grid two">
     <div class="field-group"><label>بند الميزانية / مركز التكلفة (Budget Code / Cost Center)</label><input type="text" class="field-line"></div>
@@ -341,6 +342,43 @@
         }
         .scan-modal__btn--cancel { background: #eee; color: #333; }
         .scan-modal__btn--cancel:hover { background: #ddd; }
+@media (max-width: 767px) {
+  body {
+    padding: 8px 4px 32px;
+  }
+  .page-wrapper {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 4px;
+    align-items: stretch;
+  }
+  .form-wrap {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+  }
+  .brandzo-header {
+    flex-wrap: wrap;
+    padding: 12px 8px;
+    gap: 8px;
+  }
+  .logo-circle {
+    width: 56px !important;
+    height: 56px !important;
+    font-size: 18px !important;
+  }
+  .logo-text h1 {
+    font-size: 22px !important;
+  }
+  .table-scroll-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+  table.form-table {
+    min-width: 600px;
+  }
+}
     </style>
 
     <script id="brandzo-smart-print-script">

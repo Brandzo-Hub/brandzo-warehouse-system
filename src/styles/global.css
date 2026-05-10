@@ -84,3 +84,114 @@
     color: transparent !important;
   }
 }
+
+/* ═══════════════════════════════════════════
+   BRANDZO DARK GLASSMORPHISM THEME — 2026
+   All classes are additive. No overrides.
+═══════════════════════════════════════════ */
+
+/* Space-grade body upgrade */
+body {
+  background: linear-gradient(135deg, #05050f 0%, #0a0a1f 40%, #0f0a1a 70%, #0a0f1f 100%);
+  background-attachment: fixed;
+}
+
+/* Glass card base */
+.glass-card {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(192, 57, 43, 0.3);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 24px rgba(192, 57, 43, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Sidebar glass upgrade */
+#brandzo-sidebar {
+  background: linear-gradient(180deg, rgba(15, 15, 40, 0.97) 0%, rgba(10, 10, 30, 0.99) 100%) !important;
+  backdrop-filter: blur(20px) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Neon accent line */
+.neon-line {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #c0392b, #e8b830, #c0392b, transparent);
+  border-radius: 1px;
+  animation: neon-flow 3s ease-in-out infinite;
+}
+
+@keyframes neon-flow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Fade-in animation for page sections */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.animate-fade-in-up:nth-child(1) { animation-delay: 0.05s; }
+.animate-fade-in-up:nth-child(2) { animation-delay: 0.1s; }
+.animate-fade-in-up:nth-child(3) { animation-delay: 0.15s; }
+.animate-fade-in-up:nth-child(4) { animation-delay: 0.2s; }
+.animate-fade-in-up:nth-child(5) { animation-delay: 0.25s; }
+.animate-fade-in-up:nth-child(6) { animation-delay: 0.3s; }
+
+/* Glow pulse for important elements */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(192, 57, 43, 0.4); }
+  50%       { box-shadow: 0 0 24px rgba(192, 57, 43, 0.8), 0 0 48px rgba(192, 57, 43, 0.3); }
+}
+
+.glow-pulse {
+  animation: glow-pulse 2.5s ease-in-out infinite;
+}
+
+/* Star field background overlay */
+.starfield {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.15) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.1) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 20%, rgba(255,255,255,0.12) 0%, transparent 100%),
+    radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,0.08) 0%, transparent 100%),
+    radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.1) 0%, transparent 100%);
+}
+
+/* Override white cards in dashboard to glass */
+.bg-white.shadow-sm.border.border-gray-200,
+.bg-white.shadow-sm.border {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: #e8e8f0 !important;
+}
+
+/* Text color adjustments for dark theme */
+.text-brand-navy { color: #e8e8f0 !important; }
+.text-gray-600, .text-gray-500 { color: #9ca3af !important; }
+.text-gray-700 { color: #d1d5db !important; }
+
+/* Print: restore white background — critical */
+@media print {
+  body { background: white !important; }
+  .glass-card, #brandzo-sidebar { background: white !important; backdrop-filter: none !important; }
+}
