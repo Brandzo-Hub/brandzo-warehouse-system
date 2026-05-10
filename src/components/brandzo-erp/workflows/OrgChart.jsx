@@ -30,11 +30,11 @@ const ACCENT_CLASSES = {
   navy: {
     border: 'border-slate-400/60',
     ring: 'ring-slate-300',
-    text: 'text-slate-200',
+    text: 'text-slate-800',
     bg: 'bg-slate-700',
     glow: 'shadow-[0_4px_16px_rgba(15,23,42,0.4)]',
     pillBg: 'bg-slate-700/60',
-    pillText: 'text-slate-200',
+    pillText: 'text-slate-800',
   },
 };
 
@@ -82,7 +82,7 @@ function Card({ node, active, onClick, size = 'md' }) {
           >
             {node.titleAr}
           </div>
-          <div className="text-[11px] sm:text-xs text-slate-300 mt-0.5 leading-tight">
+          <div className="text-[11px] sm:text-xs text-slate-500 mt-0.5 leading-tight">
             {node.titleEn}
           </div>
           {node.headcount && (

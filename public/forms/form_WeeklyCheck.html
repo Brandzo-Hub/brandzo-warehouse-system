@@ -209,7 +209,97 @@
     min-width: 600px;
   }
 }
-    </style>
+            /* ═══════════════════════════════════════════════════════
+           BRANDZO UNIVERSAL PRINT OVERRIDE — Landscape + Black
+           Applied to ALL forms. Do NOT remove.
+           ═══════════════════════════════════════════════════════ */
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 10mm 8mm;
+            }
+            .print-btn, .excel-btn, .no-print,
+            .scan-btn, .scan-modal, .qc-controls,
+            .form-top-nav { display: none !important; }
+
+            body {
+                background: #fff !important;
+                color: #1a1a1a !important;
+                padding: 0 !important;
+                font-size: 10.5px !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            body::before { display: none !important; }
+            .page-wrapper { max-width: 100% !important; padding: 0 !important; }
+            .form-wrap {
+                max-width: 100% !important;
+                box-shadow: none !important;
+                border: 1.5px solid #c41e3a !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
+            }
+            .luxury-header, .brandzo-header {
+                background: #f5f5f5 !important;
+                box-shadow: none !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                padding: 8px 12px !important;
+            }
+            .form-header {
+                background: #f5f5f5 !important;
+                border-bottom: 1.5px solid #c41e3a !important;
+            }
+            .form-header .logo,
+            .form-header .form-title,
+            .form-header .form-meta { color: #1a1a1a !important; }
+            .glass-circle {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                background: rgba(196,30,58,0.12) !important;
+                border: 1.5px solid #c41e3a !important;
+                box-shadow: none !important;
+                width: 60px !important;
+                height: 60px !important;
+                font-size: 1.3rem !important;
+                color: #1a1a1a !important;
+            }
+            .glass-circle::after { display: none !important; }
+            .brand-name { color: #c41e3a !important; text-shadow: none !important; font-size: 1.6rem !important; }
+            .arabic-title-section .main-arabic-title { color: #1a1a1a !important; text-shadow: none !important; }
+            .brand-footer p { color: #1a1a1a !important; text-shadow: none !important; }
+            .gold-separator { border-bottom: 1.5px solid #DAAA3C !important; opacity: 1 !important; }
+            .arabic-title-section .emoji-badge {
+                background: #fff !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                border: 1px solid #DAAA3C !important;
+                box-shadow: none !important;
+            }
+            .field-group label, .sign-box .sign-label { color: #1a1a1a !important; }
+            .section-title {
+                background: #c41e3a !important;
+                color: #fff !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            table.form-table th {
+                background: #2d0006 !important;
+                color: #fff !important;
+                border: 1px solid #333 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            table.form-table td {
+                background: #fff !important;
+                color: #1a1a1a !important;
+                border: 1px solid #555 !important;
+            }
+            tr { page-break-inside: avoid !important; }
+            table { page-break-inside: auto !important; }
+            td { vertical-align: top !important; page-break-inside: avoid !important; }
+        }
+</style>
 </head>
 <body>
 

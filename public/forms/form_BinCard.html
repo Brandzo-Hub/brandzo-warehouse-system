@@ -106,17 +106,39 @@
         .excel-btn:hover { background: #15803d; }
         .brand-footer { text-align: center; padding: 20px 16px 8px; margin-top: 14px; width: 100%; }
         .brand-footer p { font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 1.1rem; color: #FFD700; text-shadow: 0 0 12px rgba(255,215,0,0.35); }
-        @media print { 
-            .print-btn, .excel-btn { display: none !important; } 
-            body { background: #fff !important; padding: 5px; } 
-            .form-wrap { box-shadow: none; border: 2px solid #E84820 !important; }
-            .glass-circle { background: rgba(220,40,50,0.25); border: 2px solid #c41e3a; box-shadow: none; }
-            .brand-name { color: #c41e3a; text-shadow: none; }
-            .arabic-title-section .main-arabic-title { color: #333; text-shadow: none; }
-            .brand-footer p { color: #8B6914; text-shadow: none; }
-            table.form-table th { background: #1a0008 !important; color: #FFD700 !important; }
-            table.form-table td { background: #fff !important; border: 1px solid #000 !important; }
-            -webkit-print-color-adjust: exact; print-color-adjust: exact;
+        @page {
+            size: A4 landscape;
+            margin: 10mm;
+        }
+        @media print {
+            .print-btn, .excel-btn { display: none !important; }
+            body {
+                background: #fff !important;
+                color: #1a1a1a !important;
+            }
+            /* Force landscape orientation */
+            @page {
+                size: A4 landscape;
+                margin: 10mm;
+            }
+            /* Unify ALL text to black for readability on paper */
+            * {
+                color: #1a1a1a !important;
+                text-shadow: none !important;
+                background-color: transparent !important;
+            }
+            /* Exception: keep table headers readable with a light background */
+            table.form-table th {
+                background: #1a0008 !important;
+                color: #000 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .brand-name { color: #c41e3a !important; text-shadow: none !important; }
+            .arabic-title-section .main-arabic-title { color: #333 !important; text-shadow: none !important; }
+            .brand-footer p { color: #555 !important; text-shadow: none !important; }
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
         .form-input { width: 100%; border: none; border-bottom: 1px solid #aaa; font-family: inherit; font-size: inherit; background: transparent; padding: 2px 0; }
         .form-input:focus { outline: none; border-bottom-color: var(--orange); }
@@ -204,7 +226,97 @@
     min-width: 600px;
   }
 }
-    </style>
+            /* ═══════════════════════════════════════════════════════
+           BRANDZO UNIVERSAL PRINT OVERRIDE — Landscape + Black
+           Applied to ALL forms. Do NOT remove.
+           ═══════════════════════════════════════════════════════ */
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 10mm 8mm;
+            }
+            .print-btn, .excel-btn, .no-print,
+            .scan-btn, .scan-modal, .qc-controls,
+            .form-top-nav { display: none !important; }
+
+            body {
+                background: #fff !important;
+                color: #1a1a1a !important;
+                padding: 0 !important;
+                font-size: 10.5px !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            body::before { display: none !important; }
+            .page-wrapper { max-width: 100% !important; padding: 0 !important; }
+            .form-wrap {
+                max-width: 100% !important;
+                box-shadow: none !important;
+                border: 1.5px solid #c41e3a !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
+            }
+            .luxury-header, .brandzo-header {
+                background: #f5f5f5 !important;
+                box-shadow: none !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                padding: 8px 12px !important;
+            }
+            .form-header {
+                background: #f5f5f5 !important;
+                border-bottom: 1.5px solid #c41e3a !important;
+            }
+            .form-header .logo,
+            .form-header .form-title,
+            .form-header .form-meta { color: #1a1a1a !important; }
+            .glass-circle {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                background: rgba(196,30,58,0.12) !important;
+                border: 1.5px solid #c41e3a !important;
+                box-shadow: none !important;
+                width: 60px !important;
+                height: 60px !important;
+                font-size: 1.3rem !important;
+                color: #1a1a1a !important;
+            }
+            .glass-circle::after { display: none !important; }
+            .brand-name { color: #c41e3a !important; text-shadow: none !important; font-size: 1.6rem !important; }
+            .arabic-title-section .main-arabic-title { color: #1a1a1a !important; text-shadow: none !important; }
+            .brand-footer p { color: #1a1a1a !important; text-shadow: none !important; }
+            .gold-separator { border-bottom: 1.5px solid #DAAA3C !important; opacity: 1 !important; }
+            .arabic-title-section .emoji-badge {
+                background: #fff !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                border: 1px solid #DAAA3C !important;
+                box-shadow: none !important;
+            }
+            .field-group label, .sign-box .sign-label { color: #1a1a1a !important; }
+            .section-title {
+                background: #c41e3a !important;
+                color: #fff !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            table.form-table th {
+                background: #2d0006 !important;
+                color: #fff !important;
+                border: 1px solid #333 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            table.form-table td {
+                background: #fff !important;
+                color: #1a1a1a !important;
+                border: 1px solid #555 !important;
+            }
+            tr { page-break-inside: avoid !important; }
+            table { page-break-inside: auto !important; }
+            td { vertical-align: top !important; page-break-inside: avoid !important; }
+        }
+</style>
 </head>
 <body>
 
