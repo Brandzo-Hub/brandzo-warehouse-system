@@ -1,0 +1,197 @@
+@import 'tailwindcss';
+
+/* Brand palette — Tailwind 4 picks these up and emits utilities like
+   `bg-brand-red`, `text-brand-navy`, `hover:bg-brand-red-dark`, etc. */
+@theme {
+  --color-brand-red: #c0392b;
+  --color-brand-red-dark: #8b1a1a;
+  --color-brand-navy: #1a1a2e;
+  --color-brand-yellow: #e8b830;
+}
+
+/* Tell Tailwind v4 explicitly where to look for class names. */
+@source "../**/*.{astro,html,js,jsx,ts,tsx,md,mdx}";
+
+/* Pillar 4: Ink-Friendly Print CSS */
+@media print {
+  @page {
+    margin: 1cm;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 10pt;
+    direction: rtl;
+  }
+
+  /* Hide dark gradients and neon glows for printing */
+  .bg-brand-navy,
+  .bg-brand-red,
+  .bg-brand-red-dark,
+  .backdrop-blur-md,
+  .shadow-lg,
+  .shadow-md,
+  .neon-glow-gold,
+  .neon-glow-red {
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    border-color: #ccc !important;
+    color: black !important;
+  }
+
+  /* Hide navigation elements */
+  aside,
+  header,
+  button,
+  nav,
+  #brandzo-mobile-header,
+  #brandzo-sidebar,
+  #brandzo-backdrop,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Ensure main content takes full width */
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Hide inputs when print-span is present to avoid double text */
+  .has-print-text input,
+  .has-print-text textarea {
+    display: none !important;
+  }
+
+  /* Force remaining input values to be visible if no print-span */
+  input, textarea {
+    border: 1px solid #000 !important;
+    background: transparent !important;
+    color: black !important;
+  }
+
+  /* Show the print-only-text synced by formUtils.js */
+  .print-only-text {
+    display: block !important;
+    color: black !important;
+    min-height: 1em;
+  }
+
+  input::placeholder {
+    color: transparent !important;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   BRANDZO DARK GLASSMORPHISM THEME — 2026
+   All classes are additive. No overrides.
+═══════════════════════════════════════════ */
+
+/* Space-grade body upgrade */
+body {
+  background: linear-gradient(135deg, #05050f 0%, #0a0a1f 40%, #0f0a1a 70%, #0a0f1f 100%);
+  background-attachment: fixed;
+}
+
+/* Glass card base */
+.glass-card {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(192, 57, 43, 0.3);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 24px rgba(192, 57, 43, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Sidebar glass upgrade */
+#brandzo-sidebar {
+  background: linear-gradient(180deg, rgba(15, 15, 40, 0.97) 0%, rgba(10, 10, 30, 0.99) 100%) !important;
+  backdrop-filter: blur(20px) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Neon accent line */
+.neon-line {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #c0392b, #e8b830, #c0392b, transparent);
+  border-radius: 1px;
+  animation: neon-flow 3s ease-in-out infinite;
+}
+
+@keyframes neon-flow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Fade-in animation for page sections */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.animate-fade-in-up:nth-child(1) { animation-delay: 0.05s; }
+.animate-fade-in-up:nth-child(2) { animation-delay: 0.1s; }
+.animate-fade-in-up:nth-child(3) { animation-delay: 0.15s; }
+.animate-fade-in-up:nth-child(4) { animation-delay: 0.2s; }
+.animate-fade-in-up:nth-child(5) { animation-delay: 0.25s; }
+.animate-fade-in-up:nth-child(6) { animation-delay: 0.3s; }
+
+/* Glow pulse for important elements */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(192, 57, 43, 0.4); }
+  50%       { box-shadow: 0 0 24px rgba(192, 57, 43, 0.8), 0 0 48px rgba(192, 57, 43, 0.3); }
+}
+
+.glow-pulse {
+  animation: glow-pulse 2.5s ease-in-out infinite;
+}
+
+/* Star field background overlay */
+.starfield {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.15) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.1) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 20%, rgba(255,255,255,0.12) 0%, transparent 100%),
+    radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,0.08) 0%, transparent 100%),
+    radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.1) 0%, transparent 100%);
+}
+
+/* Override white cards in dashboard to glass */
+.bg-white.shadow-sm.border.border-gray-200,
+.bg-white.shadow-sm.border {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: #e8e8f0 !important;
+}
+
+/* Text color adjustments for dark theme */
+.text-brand-navy { color: #e8e8f0 !important; }
+.text-gray-600, .text-gray-500 { color: #9ca3af !important; }
+.text-gray-700 { color: #d1d5db !important; }
+
+/* Print: restore white background — critical */
+@media print {
+  body { background: white !important; }
+  .glass-card, #brandzo-sidebar { background: white !important; backdrop-filter: none !important; }
+}
